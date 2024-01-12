@@ -13,7 +13,7 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
 </head>
-<body>
+<body class="d-flex flex-column align-items-center m-4">
   <nav class="navbar navbar-expand-lg d-flex justify-content-between fixed-top px-4">
     
     <img src="{% static 'images/green-diary-logo.png' %}" class="img-fluid logo">
@@ -31,13 +31,13 @@
     </div>
   </nav>
 
-  <main class="container mt-5 pt-5 text-center">
+  <main class="container-fluid m-5 w-100 text-center">
     {% block content %}
     {% endblock %}
   </main>
 
-  <footer class="fixed-bottom text-end">
-    <div class="right">&copy; 2024 Green Diary &nbsp;</div>
+  <footer class="fixed-bottom text-end transparent">
+    &copy; 2024 Green Diary &nbsp;
   </footer>
 
   <div class="background"></div>

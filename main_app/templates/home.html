@@ -2,5 +2,19 @@
 
 
 {% block content%}
-    <h1>home</h1>
+    <!-- Row 1: 10% vh, Full Width -->
+    <div class="row d-flex align-items-center" style="height: 14vh;">
+        <div class="col bg-white rounded-5" style="height: 95%;"></div>
+    </div>
+
+    <!-- Row 2: 60% vh, Full Width -->
+    <div class="row d-flex align-items-center" style="height: 63vh;">
+        <div class="col bg-white rounded-5" style="height: 95%;"></div>
+    </div>
+
+    <!-- Row 3: 15% vh, Two 40% width containers -->
+    <div class="row d-flex justify-content-around" style="height: 14vh;">
+        <div class="col-5 bg-white rounded-5"></div>
+        <div class="col-5 bg-white rounded-5"></div>
+    </div>
 {%endblock%}

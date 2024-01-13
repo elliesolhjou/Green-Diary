@@ -44,7 +44,7 @@ main {
   padding: 0;
 }
 .vehicle-arrow {
-  width: 30px;
+  width: 3vmin;
   margin: 0 2%;
   transform: rotate(90deg);
   cursor: pointer;
@@ -53,9 +53,12 @@ main {
   outline: 2px solid rgba(79, 176, 79, 0.275);
 }
 .vehicle-stats {
+  font-size: 1.5vmin;
   color: rgb(165, 165, 165);
 }
-
+.text-large {
+  font-size: 2vmin;
+}
 .rounded-5 {
   border-radius: 20px;
   border: 2px solid rgb(237, 243, 238);
@@ -71,16 +74,27 @@ main {
 .hr {
   width: 94%;
 }
-.ruler {
-  height: 20px;
-}
 .dark {
   color: rgb(42, 42, 42);
 }
+.fvmin-1 {
+  font-size: 3.5vmin;
+}
+.fvmin-2 {
+  font-size: 2vmin;
+}
+
 .vehicle-buttons > div {
-  height: hover;
   font-size: 2.5rem;
   border-radius: 10px;
+}
+.green,
+.red {
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .green {
   color: green;
@@ -92,9 +106,11 @@ main {
 }
 .green:hover {
   color: rgb(3, 205, 3);
+  background: rgb(238, 255, 229);
   cursor: pointer;
 }
 .red:hover {
   color: rgb(255, 135, 135);
+  background: rgb(253, 213, 213);
   cursor: pointer;
 }

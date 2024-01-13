@@ -6,48 +6,59 @@
         <div class="col bg-white rounded-5" style="height: 95%;">
             <div class="vehicle-container d-flex justify-content-between">
                 <div>
-                    <h1 class="ps-2">Toyota</h1>
-                    <span class="fs-4 mt-2">Corolla</span>
+                    <h1 class="ps-2 fvmin-1">Toyota</h1>
+                    <span class="fvmin-2 mt-2">Corolla</span>
                     <img class="vehicle-arrow rounded-3 p-1" src="../static/images/arrow.svg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay='400' title="Select vehicles" >
                 </div>
-                <h2 class="pt-2 m-0">1993</h2>
+                <h2 class="pt-2 m-0 fvmin-1">1993</h2>
             </div>
             <div class="ruler d-flex justify-content-center w-100">
-                <hr class="hr">
+                <hr class="hr my-2">
             </div>
-            <div class="container-fluid p-2">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-2 pb-2 d-flex justify-content-start align-items-end">
                         <img class="img-fluid vehicle-edit m-2" src="../static/images/edit-icon.svg" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Edit current vehicle">
                     </div>
                     <div class="vehicle-stats col-8">
                         <div class="row d-flex align-items-center">
-                            <div class="col-6 text-start">Average CO2 Output / Mile</div>
-                            <div class="dark col-6 fs-5">300 g</div>
+                            <div class="col-6 text-end">Average CO2 Output / Mile</div>
+                            <div class="dark col-6 text-large">300 g</div>
                         </div>
                         <div class="row d-flex align-items-center">
-                            <div class="col-6 text-start">Total Recorded Mileage</div>
-                            <div class="dark col-6 fs-5">25000</div>
+                            <div class="col-6 text-end">Total Recorded Mileage</div>
+                            <div class="dark col-6 text-large">25000</div>
                         </div>
                     </div>
         
-                    <div class="col-2">
-                        <div class="vehicle-buttons d-flex align-items-center">
-                            <div class="w-50 h-25 me-2">
-                                <div class="green" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Add a new vehicle">+</div>
+                    <div class="vehicle-buttons col-2 p-0 d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-lg-between">
+                        <div class="w-100 w-sm-50 d-flex justify-content-center">
+                            <div class="green pb-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Add a new vehicle">
+                                +
                             </div>
-                            <div class="w-50 h-25">
-                                <div class="red" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Delete current vehicle">-</div>
+                        </div>
+                        <div class="w-100 w-sm-50 d-flex justify-content-center">
+                            <div class="red pb-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Delete current vehicle">
+                                -
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div> 
         </div>
     </div>
     <div class="row d-flex align-items-center" style="height: 63vh;">
         <div class="col bg-white rounded-5" style="height: 95%;">
-        
+            <div class="row">
+                <h1 class="w-100 fs-2 ms-2 pt-2 text-start">My Trips</h1>
+            </div>
+
+        <div class="ruler d-flex justify-content-center w-100">
+            <hr class="hr">
+        </div>
+
+
         </div>
     </div>
     <div class="row d-flex justify-content-around" style="height: 14vh;">

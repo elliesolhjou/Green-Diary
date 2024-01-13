@@ -3,15 +3,59 @@
 
 {% block content%}
     <div class="row d-flex align-items-center" style="height: 14vh;">
-        <div class="col bg-white rounded-5" style="height: 95%;"></div>
+        <div class="col bg-white rounded-5" style="height: 95%;">
+            <div class="vehicle-container d-flex justify-content-between">
+                <div>
+                    <h1 class="ps-2">Toyota</h1>
+                    <span class="fs-4 mt-2">Corolla</span>
+                    <img class="vehicle-arrow rounded-3 p-1" src="../static/images/arrow.svg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay='400' title="Select vehicles" >
+                </div>
+                <h2 class="pt-2 m-0">1993</h2>
+            </div>
+            <div class="ruler d-flex justify-content-center w-100">
+                <hr class="hr">
+            </div>
+            <div class="container-fluid p-2">
+                <div class="row">
+                    <div class="col-2 pb-2 d-flex justify-content-start align-items-end">
+                        <img class="img-fluid vehicle-edit m-2" src="../static/images/edit-icon.svg" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Edit current vehicle">
+                    </div>
+                    <div class="vehicle-stats col-8">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-6 text-start">Average CO2 Output / Mile</div>
+                            <div class="dark col-6 fs-5">300 g</div>
+                        </div>
+                        <div class="row d-flex align-items-center">
+                            <div class="col-6 text-start">Total Recorded Mileage</div>
+                            <div class="dark col-6 fs-5">25000</div>
+                        </div>
+                    </div>
+        
+                    <div class="col-2">
+                        <div class="vehicle-buttons d-flex align-items-center">
+                            <div class="w-50 h-25 me-2">
+                                <div class="green" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Add a new vehicle">+</div>
+                            </div>
+                            <div class="w-50 h-25">
+                                <div class="red" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Delete current vehicle">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
     </div>
-
     <div class="row d-flex align-items-center" style="height: 63vh;">
-        <div class="col bg-white rounded-5" style="height: 95%;"></div>
+        <div class="col bg-white rounded-5" style="height: 95%;">
+        
+        </div>
     </div>
-
     <div class="row d-flex justify-content-around" style="height: 14vh;">
-        <div class="col-5 bg-white rounded-5"></div>
-        <div class="col-5 bg-white rounded-5"></div>
+        <div class="col-5 bg-white rounded-5">
+
+        </div>
+        <div class="col-5 bg-white rounded-5">
+
+        </div>
     </div>
 {%endblock%}

@@ -19,6 +19,7 @@
     <img src="{% static 'images/green-diary-logo.png' %}" class="img-fluid logo">
  
     <p class="fs-2 header-title">Green Diary</p>
+    
     <div class="dropdown show">
       <a class="btn btn-secondary transparent" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img src="{% static 'images/no-user.svg' %}" class="img-fluid logo">
@@ -42,4 +43,8 @@
 
   <div class="background position-absolute top-0 start-0 w-100 h-100"></div>
 </body>
+<script>
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  </script>
 </html>

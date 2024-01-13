@@ -1,18 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
 
 body {
   min-height: 100vh;
   overflow: hidden;
 }
-.background {
-  background-image: url('../images/bg-map.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: .2;
-  z-index: -1;
-}
-  
+
 nav {
   background: none;
 }
@@ -22,7 +14,7 @@ nav {
   top: 25%;
   left: 50%;
   transform: translateX(-50%);
-  color: rgb(29, 166, 29);
+  color: #3f7a2b;
 }
 main {
   max-width: 750px;
@@ -38,7 +30,71 @@ main {
 .bg-white {
   background-color: white !important;
 }
+.vehicle-edit:hover {
+  opacity: .25;
+  cursor: pointer;
+}
+.vehicle-container > div {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.vehicle-container h1 {
+  margin: 0;
+  padding: 0;
+}
+.vehicle-arrow {
+  width: 30px;
+  margin: 0 2%;
+  transform: rotate(90deg);
+  cursor: pointer;
+}
+.vehicle-arrow:hover {
+  outline: 2px solid rgba(79, 176, 79, 0.275);
+}
+.vehicle-stats {
+  color: rgb(165, 165, 165);
+}
+
 .rounded-5 {
   border-radius: 20px;
-  border: 4px solid rgb(229, 236, 230);
+  border: 2px solid rgb(237, 243, 238);
+}
+.background {
+  background-image: url('../images/bg-map.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: .25;
+  z-index: -1;
+}
+.hr {
+  width: 94%;
+}
+.ruler {
+  height: 20px;
+}
+.dark {
+  color: rgb(42, 42, 42);
+}
+.vehicle-buttons > div {
+  height: hover;
+  font-size: 2.5rem;
+  border-radius: 10px;
+}
+.green {
+  color: green;
+  border-radius: 10px;
+}
+.red {
+  color: red;
+  border-radius: 10px;
+}
+.green:hover {
+  color: rgb(3, 205, 3);
+  cursor: pointer;
+}
+.red:hover {
+  color: rgb(255, 135, 135);
+  cursor: pointer;
 }

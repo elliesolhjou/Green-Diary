@@ -14,8 +14,6 @@ class User(models.Model):
         return self.name
     
 
-
-
 class Vehicle (models.Model):
     make = models.CharField(max_length=200)
     model = models.CharField(max_length=200)
@@ -45,6 +43,5 @@ class Trip(models.Model):
     def get_absolute_url(self):
         return reverse('trip_detail', kwargs={'trip_id': self.id})
     
-
     class Meta:
         ordering = ['-date']

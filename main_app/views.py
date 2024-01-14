@@ -40,7 +40,7 @@ class VehicleList(ListView):
 
 class CreateVehicle(CreateView):
     model = Vehicle
-    fields='__all__'
+    fields=['make', 'model', 'year', 'fuel']
 
 class UpdateVehicle(UpdateView):
     model= Vehicle

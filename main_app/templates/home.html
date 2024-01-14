@@ -83,7 +83,7 @@
             </div>
             <div class="row h-100 d-flex flex-column justify-content-start align-items-center overflow-auto">
                 <div class="col-12 px-4 mb-4 d-flex flex-column justify-content-center">
-                    {% for trip in trips.records %}
+                    {% for trip in trips %}
                     <div class="row p-0 my-2 justify-content-center align-items-center">
                         <div class="col-1">
                             <img class="marker" src="../static/images/nav-marker.png">
@@ -93,10 +93,10 @@
                                 <div class="col"><h2 class="m-0 text-lg">{{trip.year}}</h2></div>
                                 <div class="col d-flex flex-column align-items-center">
                                     <div class="row text-reg">
-                                        March 19
+                                        {{trip.start}}
                                     </div>
                                     <div class="row text-reg">
-                                        March 24
+                                        {{trip.end}}
                                     </div>
                                 </div>
                             </div>

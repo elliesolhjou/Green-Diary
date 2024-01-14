@@ -74,7 +74,7 @@ main {
   color: rgb(71, 71, 71);
 }
 .text-reg {
-  font-size: clamp(8px, 1.5vmin, 22px);
+  font-size: clamp(8px, 1.25vmin, 22px);
   color: rgb(122, 122, 122);
 }
 .text-sm {

@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+nav {
+  background: none;
+}
+.header-title{
+  font-family: 'Josefin Sans', sans-serif;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #3f7a2b;
+}
+main {
+  max-width: 750px;
+}
+.logo {
+  max-height: 50px;
+  border-radius: 10px;
+}
+.transparent {
+  background: transparent !important;
+  border: none !important;
+}
+.bg-white {
+  background-color: white !important;
+}
+.vehicle-edit:hover {
+  opacity: .25;
+  cursor: pointer;
+}
+.vehicle-container > div {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.vehicle-container h1 {
+  margin: 0;
+  padding: 0;
+}
+.vehicle-arrow {
+  width: 3vmin;
+  margin: 0 2%;
+  transform: rotate(90deg);
+  cursor: pointer;
+}
+.vehicle-arrow:hover {
+  outline: 2px solid rgba(79, 176, 79, 0.275);
+}
+.vehicle-stats {
+  font-size: 1.5vmin;
+  color: rgb(165, 165, 165);
+}
+.text-large {
+  font-size: 2vmin;
+}
+.rounded-5 {
+  border-radius: 20px;
+  border: 2px solid rgb(237, 243, 238);
+}
+.background {
+  background-image: url('../images/bg-map.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: .25;
+  z-index: -1;
+}
+.hr {
+  width: 94%;
+}
+.dark {
+  color: rgb(42, 42, 42);
+}
+.fvmin-1 {
+  font-size: 3.5vmin;
+}
+.fvmin-2 {
+  font-size: 2vmin;
+}
+
+.vehicle-buttons > div {
+  font-size: 2.5rem;
+  border-radius: 10px;
+}
+.green,
+.red {
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.green {
+  color: green;
+  border-radius: 10px;
+}
+.red {
+  color: red;
+  border-radius: 10px;
+}
+.green:hover {
+  color: rgb(3, 205, 3);
+  background: rgb(238, 255, 229);
+  cursor: pointer;
+}
+.red:hover {
+  color: rgb(255, 135, 135);
+  background: rgb(253, 213, 213);
+  cursor: pointer;
+}

@@ -63,6 +63,12 @@ main {
   font-size: clamp(6px, 1.5vmin, 30px);
   color: rgb(165, 165, 165);
 }
+.light {
+  color: rgb(165, 165, 165);
+}
+.marker {
+  width: clamp(30px, 3vmin, 40px);
+}
 .text-large {
   font-size: 2vmin;
 }

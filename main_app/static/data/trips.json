@@ -2,6 +2,7 @@
   "records": [
     {
       "vehicleID": "12345",
+      "year": "2023",
       "startDate": "2020-03-19",
       "endDate": "2020-03-24",
       "distance": 537,
@@ -12,6 +13,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2022",
       "startDate": "2020-04-10",
       "endDate": "2020-04-15",
       "distance": 450,
@@ -22,6 +24,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2022",
       "startDate": "2020-05-01",
       "endDate": "2020-05-06",
       "distance": 520,
@@ -32,6 +35,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2022",
       "startDate": "2020-06-14",
       "endDate": "2020-06-19",
       "distance": 480,
@@ -42,6 +46,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2021",
       "startDate": "2020-07-23",
       "endDate": "2020-07-28",
       "distance": 500,
@@ -52,6 +57,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2021",
       "startDate": "2020-08-15",
       "endDate": "2020-08-20",
       "distance": 550,
@@ -62,6 +68,7 @@
     },
     {
       "vehicleID": "65432",
+      "year": "2021",
       "startDate": "2020-09-05",
       "endDate": "2020-09-10",
       "distance": 530,
@@ -72,6 +79,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2020",
       "startDate": "2020-10-12",
       "endDate": "2020-10-17",
       "distance": 490,
@@ -82,6 +90,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2020",
       "startDate": "2020-11-20",
       "endDate": "2020-11-25",
       "distance": 510,
@@ -92,6 +101,7 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2019",
       "startDate": "2020-12-01",
       "endDate": "2020-12-06",
       "distance": 470,
@@ -102,6 +112,128 @@
     },
     {
       "vehicleID": "12345",
+      "year": "2018",
+      "startDate": "2021-01-13",
+      "endDate": "2021-01-18",
+      "distance": 560,
+      "impactData": {
+        "weight_lb": 345,
+        "trees": 7.6
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2023",
+      "startDate": "2020-03-19",
+      "endDate": "2020-03-24",
+      "distance": 537,
+      "impactData": {
+        "weight_lb": 355,
+        "trees": 7.3
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2022",
+      "startDate": "2020-04-10",
+      "endDate": "2020-04-15",
+      "distance": 450,
+      "impactData": {
+        "weight_lb": 300,
+        "trees": 6.5
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2022",
+      "startDate": "2020-05-01",
+      "endDate": "2020-05-06",
+      "distance": 520,
+      "impactData": {
+        "weight_lb": 280,
+        "trees": 8.1
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2022",
+      "startDate": "2020-06-14",
+      "endDate": "2020-06-19",
+      "distance": 480,
+      "impactData": {
+        "weight_lb": 350,
+        "trees": 7.0
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2021",
+      "startDate": "2020-07-23",
+      "endDate": "2020-07-28",
+      "distance": 500,
+      "impactData": {
+        "weight_lb": 365,
+        "trees": 6.8
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2021",
+      "startDate": "2020-08-15",
+      "endDate": "2020-08-20",
+      "distance": 550,
+      "impactData": {
+        "weight_lb": 320,
+        "trees": 7.5
+      }
+    },
+    {
+      "vehicleID": "65432",
+      "year": "2021",
+      "startDate": "2020-09-05",
+      "endDate": "2020-09-10",
+      "distance": 530,
+      "impactData": {
+        "weight_lb": 340,
+        "trees": 7.2
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2020",
+      "startDate": "2020-10-12",
+      "endDate": "2020-10-17",
+      "distance": 490,
+      "impactData": {
+        "weight_lb": 330,
+        "trees": 6.9
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2020",
+      "startDate": "2020-11-20",
+      "endDate": "2020-11-25",
+      "distance": 510,
+      "impactData": {
+        "weight_lb": 310,
+        "trees": 7.4
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2019",
+      "startDate": "2020-12-01",
+      "endDate": "2020-12-06",
+      "distance": 470,
+      "impactData": {
+        "weight_lb": 360,
+        "trees": 6.7
+      }
+    },
+    {
+      "vehicleID": "12345",
+      "year": "2018",
       "startDate": "2021-01-13",
       "endDate": "2021-01-18",
       "distance": 560,

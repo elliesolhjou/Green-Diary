@@ -26,7 +26,7 @@ main {
   max-height: 50px;
   border-radius: 10px;
 }
-.user-dropdown.show a:focus {
+.dropdown.show a:focus {
   box-shadow: none;
 }
 .transparent {
@@ -52,7 +52,7 @@ main {
   padding: 0;
 }
 .vehicle-arrow {
-  width: 3vmin;
+  width: clamp(20px, 3vmin, 40px);
   margin: 0 2%;
   transform: rotate(90deg);
 }
@@ -92,9 +92,6 @@ main {
 .fvmin-2 {
   font-size: 2vmin;
 }
-.vehicle-title:hover {
-  border: 2px solid grey;
-}
 .vehicle-buttons > div {
   font-size: 2.5rem;
   border-radius: 10px;
@@ -104,7 +101,10 @@ main {
     font-size: 1.5rem;
   }
 }
-
+.green,
+.red {
+  text-decoration: none;
+}
 .green {
   color: green;
 }

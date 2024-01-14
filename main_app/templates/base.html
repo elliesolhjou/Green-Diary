@@ -20,8 +20,8 @@
  
     <p class="fs-2 header-title">Green Diary</p>
 
-    <div class="user-dropdown show">
-      <a class="btn btn-secondary transparent" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="dropdown show">
+      <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img src="{% static 'images/no-user.svg' %}" class="img-fluid logo">
       </a>
     
@@ -46,5 +46,7 @@
 <script>
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+
   </script>
 </html>

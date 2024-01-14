@@ -11,18 +11,9 @@ body {
 nav {
   background: none;
 }
-.header-title{
-  font-family: 'Josefin Sans', sans-serif;
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #3f7a2b;
-}
 main {
   max-width: 750px;
 }
-
 form {
   display: flex;
   flex-direction: column;
@@ -48,13 +39,20 @@ form input[type="number"]:focus,
 form input[type="text"]:focus {
   outline: 2px solid rgb(172, 216, 172) !important;
 }
-
 form .btn,
 form a {
   width: 15%;
   text-decoration: none;
 }
 
+.header-title{
+  font-family: 'Josefin Sans', sans-serif;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #3f7a2b;
+}
 .logo {
   max-height: 50px;
   border-radius: 10px;
@@ -120,24 +118,28 @@ form a {
 .rounded-5 {
   border-radius: 20px;
 }
-.ps-10 {
-  padding-left: 10%;
-}
 .btn-red {
-  background: rgb(248, 216, 216);
-  border: 2px solid rgb(220, 151, 151);
+  height: 40px;
+  padding: 0 10px;
+  color: rgb(192, 0, 0);
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: none;
+  background: none;
 }
 .btn-green {
-  background: rgb(218, 249, 218);
-  border: 2px solid rgb(139, 209, 139);
+  height: 40px;
+  color: green;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: none;
+  background: none;
 }
 .btn-red:hover {
   background: rgb(230, 194, 194);
-  border: 2px solid rgb(220, 151, 151);
 }
 .btn-green:hover {
   background: rgb(174, 220, 174);
-  border: 2px solid rgb(139, 209, 139);
 }
 
 .background {

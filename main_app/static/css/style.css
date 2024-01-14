@@ -22,6 +22,39 @@ nav {
 main {
   max-width: 750px;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+form table {
+  border-collapse: collapse;
+}
+form tr {
+  border: 10px solid transparent; /* This creates the 'space' */
+}
+form select,
+form input[type="number"],
+form input[type="text"] {
+  width: 100%;
+  height: clamp(35px, 3vmin, 45px);
+  border-radius: 5px;
+  border: 2px solid rgb(225, 245, 227);
+}
+form select:focus,
+form input[type="number"]:focus,
+form input[type="text"]:focus {
+  outline: 2px solid rgb(172, 216, 172) !important;
+}
+
+form .btn,
+form a {
+  width: 15%;
+  text-decoration: none;
+}
+
 .logo {
   max-height: 50px;
   border-radius: 10px;
@@ -87,6 +120,26 @@ main {
 .rounded-5 {
   border-radius: 20px;
 }
+.ps-10 {
+  padding-left: 10%;
+}
+.btn-red {
+  background: rgb(248, 216, 216);
+  border: 2px solid rgb(220, 151, 151);
+}
+.btn-green {
+  background: rgb(218, 249, 218);
+  border: 2px solid rgb(139, 209, 139);
+}
+.btn-red:hover {
+  background: rgb(230, 194, 194);
+  border: 2px solid rgb(220, 151, 151);
+}
+.btn-green:hover {
+  background: rgb(174, 220, 174);
+  border: 2px solid rgb(139, 209, 139);
+}
+
 .background {
   background-image: url('../images/bg-map.png');
   background-size: cover;

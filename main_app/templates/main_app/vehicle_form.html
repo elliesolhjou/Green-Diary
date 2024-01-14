@@ -9,10 +9,16 @@
   {%endif%}
 <form action="" method="POST">
     {%csrf_token%}
-    <table>
+    <table class="w-100">
         {{form.as_table}}
     </table>
-    <input type="submit" value="Submit!" class="btn">
+    <div class="w-50 mt-4 ps-10 d-flex flex-row justify-content-between">
+        <input type="submit" value="Submit!" class="btn-green w-75 rounded-3">
+  
+        <a href="/" class="w-50">
+          <input type="button" value="Cancel" class="btn-red w-75 rounded-3">
+        </a>
+    </div>
 </form>
 
 

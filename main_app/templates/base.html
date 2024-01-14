@@ -2,30 +2,30 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Green Diary</title>
-  <!-- the link has django syntax to point directly to the  -->
-  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-  {% load bootstrap5 %}
-  {% bootstrap_css %}
-  {% bootstrap_javascript %}
-</head>
-<body class="d-flex flex-column align-items-center m-4">
-    {% include 'header.html' %}
-  <main class="container-fluid m-5 w-100 text-center">
-    {% block content %}
-    {% endblock %}
-  </main>
-  <footer class="fixed-bottom text-end transparent">
-    &copy; 2024 Green Diary &nbsp;
-  </footer>
-  <div class="background position-absolute top-0 start-0 w-100 h-100"></div>
-</body>
-<script>
-  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Green Diary</title>
+    <!-- the link has django syntax to point directly to the  -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+  </head>
+  <body class="d-flex flex-column align-items-center m-4">
+      {% include 'header.html' %}
+    <main class="container-fluid m-5 w-100 text-center">
+      {% block content %}
+      {% endblock %}
+    </main>
+    <footer class="fixed-bottom text-end transparent">
+      &copy; 2024 Green Diary &nbsp;
+    </footer>
+    <div class="background position-absolute top-0 start-0 w-100 h-100"></div>
+  </body>
+  <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
   </script>
 </html>

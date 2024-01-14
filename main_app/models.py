@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 
 FUEL = (('P', 'Premium'), ('R', 'Regular'), ('M', 'Mid-Grade'))
 # Create your models here.
@@ -10,6 +12,7 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 
 
@@ -24,6 +27,9 @@ class Vehicle (models.Model):
     def __Str__(self):
         return  f'You have assigned {self.get_fuel_display()} for your {self.make} {self.model} {self.year} '
 
+    def get_absolute_url(self):
+        return reverse('vehicle_detail', kwargs={'vehicle_id': self.id})
+
 
 class Trip(models.Model):
     date = models.DateField()
@@ -35,7 +41,10 @@ class Trip(models.Model):
 
     def __str__(self):
         return f'Trip ID: {self.id} - Trip Date: {self.date}'
+
+    def get_absolute_url(self):
+        return reverse('trip_detail', kwargs={'trip_id': self.id})
     
-    
+
     class Meta:
         ordering = ['-date']

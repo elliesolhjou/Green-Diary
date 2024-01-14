@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
 
+* {
+  box-sizing: border-box;
+}
 body {
   min-height: 100vh;
   overflow: hidden;
@@ -23,6 +26,9 @@ main {
   max-height: 50px;
   border-radius: 10px;
 }
+.user-dropdown.show a:focus {
+  box-shadow: none;
+}
 .transparent {
   background: transparent !important;
   border: none !important;
@@ -30,9 +36,11 @@ main {
 .bg-white {
   background-color: white !important;
 }
+.vehicle-edit {
+  width: clamp(15px, 4vmin, 25px);
+}
 .vehicle-edit:hover {
   opacity: .25;
-  cursor: pointer;
 }
 .vehicle-container > div {
   display: flex;
@@ -47,21 +55,22 @@ main {
   width: 3vmin;
   margin: 0 2%;
   transform: rotate(90deg);
-  cursor: pointer;
 }
 .vehicle-arrow:hover {
   outline: 2px solid rgba(79, 176, 79, 0.275);
 }
 .vehicle-stats {
-  font-size: 1.5vmin;
+  font-size: clamp(6px, 1.5vmin, 30px);
   color: rgb(165, 165, 165);
 }
 .text-large {
   font-size: 2vmin;
 }
+.rounded-4 {
+  border-radius: 10px;
+}
 .rounded-5 {
   border-radius: 20px;
-  border: 2px solid rgb(237, 243, 238);
 }
 .background {
   background-image: url('../images/bg-map.png');
@@ -83,34 +92,31 @@ main {
 .fvmin-2 {
   font-size: 2vmin;
 }
-
+.vehicle-title:hover {
+  border: 2px solid grey;
+}
 .vehicle-buttons > div {
   font-size: 2.5rem;
   border-radius: 10px;
 }
-.green,
-.red {
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media (max-width: 450px){
+  .vehicle-buttons > div {
+    font-size: 1.5rem;
+  }
 }
+
 .green {
   color: green;
-  border-radius: 10px;
 }
 .red {
   color: red;
-  border-radius: 10px;
 }
 .green:hover {
   color: rgb(3, 205, 3);
   background: rgb(238, 255, 229);
-  cursor: pointer;
+  user-select: none;
 }
 .red:hover {
   color: rgb(255, 135, 135);
   background: rgb(253, 213, 213);
-  cursor: pointer;
 }

@@ -11,7 +11,7 @@ urlpatterns=[
     # CBV Paths
 
     # USER CBV
-    path('user/create/', views.CreateUser.as_view(), name='user_create'),
+    path('user/create/', views.CreateUser.as_view(), name='user_create'),#HANDLED BY AUTH?
     path('user/<int:pk>/update/', views.UpdateUser.as_view(), name='user_update'),
     path('user/<int:pk>/delete', views.DeleteUser.as_view(), name='user_delete'),
 
@@ -22,8 +22,8 @@ urlpatterns=[
     path('vehicle/<int:pk>/update', views.UpdateVehicle.as_view(), name='vehicle_update'),
     path('vehicle/<int:pk>/delete', views.DeleteVehicle.as_view(), name='vehicle_delete'),
 
-    path('vehicle/<int: vehicle_id>/', views.vehicle_detail, name='vehicle_detail'),
-    
+    path('vehicle/<int:vehicle_id>/', views.vehicle_detail, name='vehicle_detail'),
+
 
     # TRIP CBV
     path('trip/', views.TripList.as_view(), name = 'trip_list'),

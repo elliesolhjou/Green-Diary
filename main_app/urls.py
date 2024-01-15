@@ -33,5 +33,6 @@ urlpatterns=[
     
     path('user/vehicle/<int:vehicle_id>/trip/<int:trip_id>/', views.trip_detail, name='trip_detail'),
 
-
+    # for API
+    # path('weather/<str:city>/', views.weather),
 ]

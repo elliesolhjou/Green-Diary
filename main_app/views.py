@@ -1,13 +1,21 @@
+import requests
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from .models import *
+
+
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
 
 
-
+# def weather(request, city):
+#     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&appid=<your_api_key>'.format(city)
+#     response = requests.get(url)
+#     data = response.json()
+#     return JsonResponse(data)
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
 # ------------------------------------------------------------------------------------------#

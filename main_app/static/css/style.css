@@ -59,8 +59,10 @@ form a {
   color: #3f7a2b;
 }
 .logo {
-  max-height: 50px;
-  border-radius: 10px;
+  max-height: clamp(50px, 8vmin, 100px);
+}
+.user {
+  max-height: 50px
 }
 .dropdown.show a:focus {
   box-shadow: none;
@@ -70,7 +72,7 @@ form a {
   border: none !important;
 }
 .bg-white {
-  background-color: white !important;
+  background-color: rgb(250, 255, 247) !important;
 }
 .vehicle-edit {
   width: clamp(15px, 4vmin, 25px);
@@ -106,6 +108,10 @@ form a {
 .trip-card:hover {
   background: rgb(240, 246, 240);
 }
+.trip-card {
+  text-decoration: none;
+}
+
 .light {
   color: rgb(165, 165, 165);
 }
@@ -116,6 +122,10 @@ form a {
   font-size: clamp(14px, 2.5vmin, 30px);
   color: rgb(71, 71, 71);
 }
+.text-xl {
+  font-size: clamp(20px, 3vmin, 40px);
+  color: rgb(71, 71, 71);
+}
 .text-reg {
   font-size: clamp(6px, 1.25vmin, 22px);
   color: rgb(122, 122, 122);
@@ -123,6 +133,9 @@ form a {
 .text-sm {
   font-size: clamp(8px, 1vmin, 18px);
   color: rgb(165, 165, 165);
+}
+.h-70 {
+  height: 70%;
 }
 .rounded-4 {
   border-radius: 10px;

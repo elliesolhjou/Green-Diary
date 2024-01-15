@@ -59,7 +59,7 @@ form a {
   color: #3f7a2b;
 }
 .logo {
-  max-height: clamp(50px, 8vmin, 100px);
+  max-height: clamp(50px, 8vmin, 75px);
 }
 .user {
   max-height: 50px

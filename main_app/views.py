@@ -94,6 +94,7 @@ def vehicle_detail(request, vehicle_id):
 class TripList(ListView):
     model = Trip
     template_name= 'trips/index.html'
+    
 class CreateTrip(CreateView):
     model = Trip
     fields='__all__'

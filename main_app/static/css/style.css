@@ -27,6 +27,7 @@ form tr {
   border: 10px solid transparent; /* This creates the 'space' */
 }
 form select,
+form textarea,
 form input[type="number"],
 form input[type="text"] {
   width: 100%;
@@ -34,7 +35,11 @@ form input[type="text"] {
   border-radius: 5px;
   border: 2px solid rgb(225, 245, 227);
 }
+form textarea {
+  height: 80px;
+}
 form select:focus,
+form textarea:focus,
 form input[type="number"]:focus,
 form input[type="text"]:focus {
   outline: 2px solid rgb(172, 216, 172) !important;
@@ -94,18 +99,25 @@ form a {
   font-size: clamp(6px, 1.5vmin, 30px);
   color: rgb(165, 165, 165);
 }
+.trip-card {
+  padding: 1% 0;
+  user-select: none;
+}
+.trip-card:hover {
+  background: rgb(240, 246, 240);
+}
 .light {
   color: rgb(165, 165, 165);
 }
 .marker {
-  width: clamp(30px, 3vmin, 40px);
+  width: clamp(20px, 3vmin, 40px);
 }
 .text-lg {
   font-size: clamp(14px, 2.5vmin, 30px);
   color: rgb(71, 71, 71);
 }
 .text-reg {
-  font-size: clamp(8px, 1.25vmin, 22px);
+  font-size: clamp(6px, 1.25vmin, 22px);
   color: rgb(122, 122, 122);
 }
 .text-sm {
@@ -136,12 +148,20 @@ form a {
   background: none;
 }
 .btn-red:hover {
-  background: rgb(230, 194, 194);
+  background: rgba(230, 194, 194, 0.5);
 }
 .btn-green:hover {
-  background: rgb(174, 220, 174);
+  background: rgba(174, 220, 174, 0.5);
 }
-
+.btn-add {
+  width: 15%;
+  font-size: clamp(8px, 1.5vmin, 14px);
+  text-decoration: none;
+  border-radius: 0 10px;
+}
+.btn-add:hover {
+  color: green;
+}
 .background {
   background-image: url('../images/bg-map.png');
   background-size: cover;
@@ -155,12 +175,6 @@ form a {
 }
 .dark {
   color: rgb(42, 42, 42);
-}
-.fvmin-1 {
-  font-size: 3.5vmin;
-}
-.fvmin-2 {
-  font-size: 2vmin;
 }
 .vehicle-buttons > div {
   font-size: 2.5rem;
@@ -183,7 +197,7 @@ form a {
 }
 .green:hover {
   color: rgb(3, 205, 3);
-  background: rgb(238, 255, 229);
+  background: rgba(174, 220, 174, 0.5);
   user-select: none;
 }
 .red:hover {

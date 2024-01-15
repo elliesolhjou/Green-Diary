@@ -134,6 +134,9 @@ form a {
   font-size: clamp(8px, 1vmin, 18px);
   color: rgb(165, 165, 165);
 }
+.w-35 {
+  width: 35%;
+}
 .h-70 {
   height: 70%;
 }
@@ -168,6 +171,7 @@ form a {
 }
 .btn-add {
   width: 15%;
+  height: 5%;
   font-size: clamp(8px, 1.5vmin, 14px);
   text-decoration: none;
   border-radius: 0 10px;

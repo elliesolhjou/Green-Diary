@@ -8,7 +8,6 @@ from django.db.models.query import QuerySet
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-# from django.urls import reverse_lazy, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import login
@@ -31,23 +30,24 @@ from .models import *
 def home(request):
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
-
+    
+    try:
+        vehicle = Vehicle.objects.first()
+    except Vehicle.DoesNotExist:
+        vehicle = None
 
     for trip in trips:
         pounds = 300 / 453.592
         trip.output = int(trip.distance * pounds)
         trip.cost = int(trip.output / 48)
 
-    return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips})
+    return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
 
 
 
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
 # ------------------------------------------------------------------------------------------#
-# class CreateUser(CreateView):
-#     model = User
-#     fields = '__all__'
     
 class UpdateUser(UpdateView):
     model = User
@@ -76,11 +76,27 @@ def signup(request):
     # pass data to html to display
     context = {'form': form, 'error_message': error_message}
     return render (request, 'registration/signup.html', context)
+
+
+def get_login_redirect():
+    try:
+        default_vehicle = Vehicle.objects.first()
+        if default_vehicle:
+            return reverse('vehicle_detail', args=[default_vehicle.id])
+    except Vehicle.DoesNotExist:
+        pass 
+
+    return '/' 
+
 # ------------------------------------------------------------------------------------------#
 class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
     template_name = 'vehicles/index.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        redirect_url = get_login_redirect()
+        return redirect(redirect_url)
+    
     def get_queryset(self):
         return Vehicle.objects.filter(user=self.request.user)
 
@@ -99,7 +115,8 @@ class CreateVehicleForm(forms.ModelForm):
 
 class CreateVehicle(CreateView):
     model = Vehicle
-    fields=['make', 'model', 'year', 'fuel']
+    form_class = CreateVehicleForm
+    success_url = '/'
 
     # def form_valid(self, form):
     #     form.instance.user = self.request.user
@@ -115,8 +132,11 @@ class DeleteVehicle(DeleteView):
 
 
 def vehicle_detail(request, vehicle_id):
+    vehicles = Vehicle.objects.all()
+    trips = Trip.objects.all()
+
     vehicle= Vehicle.objects.get(id=vehicle_id)
-    return render(request, 'vehicles/detail.html', {'vehicle':vehicle})
+    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips})
 
 # ------------------------------------------------------------------------------------------#
 class TripList(LoginRequiredMixin, ListView):
@@ -131,6 +151,7 @@ class CreateTripForm(forms.ModelForm):
             'date': DateInput(attrs={'type': 'date'}),
         }
 
+
     def get_queryset(self):
         return Trip.objects.filter(vehicle__user = self.request.user)
 
@@ -138,17 +159,23 @@ class CreateTripForm(forms.ModelForm):
 class CreateTrip(CreateView):
     model = Trip
     form_class = CreateTripForm
-    success_url = '/'
+
+    def form_valid(self, form):
+        vehicle_id = self.kwargs['vehicle_id']
+        form.instance.vehicle_id = vehicle_id
+        form.save()
+
+        return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 class UpdateTrip(UpdateView):
     model = Trip
     fields = '__all__'
 
 
-def delete_trip(request, pk):
-    trip = get_object_or_404(Trip, pk=pk)
+def delete_trip(request, vehicle_id, pk):
+    trip = get_object_or_404(Trip, vehicle_id=vehicle_id, pk=pk)
     trip.delete()
-    return redirect('/') 
+    return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 
 def trip_detail(request, trip_id):

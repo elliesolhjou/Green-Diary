@@ -164,7 +164,7 @@ class VehicleList(LoginRequiredMixin, ListView):
 class CreateVehicleForm(forms.ModelForm):
     class Meta:
         model = Vehicle
-        fields=['make', 'model', 'year_date', 'fuel']
+        fields=['make', 'model', 'year', 'fuel']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
         }

@@ -45,7 +45,11 @@ class VehicleList(ListView):
 
 class CreateVehicle(CreateView):
     model = Vehicle
-    fields='__all__'
+    fields=['make', 'model', 'year_date', 'fuel']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 class UpdateVehicle(UpdateView):
     model= Vehicle

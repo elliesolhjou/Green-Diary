@@ -26,7 +26,7 @@ def home(request):
     trips = Trip.objects.all()
     # user = User.objects.get(pk=1)
 
-
+    
     
 
     for trip in trips:
@@ -80,14 +80,27 @@ class VehicleList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Vehicle.objects.filter(user=self.request.user)
 
+class CreateVehicleForm(forms.ModelForm):
+    class Meta:
+        model = Vehicle
+        fields=['make', 'model', 'year_date', 'fuel']
+        widgets = {
+            'date': DateInput(attrs={'type': 'date'}),
+        }
+
+
+    def get_queryset(self):
+        return Vehicle.objects.filter(vehicle__user = self.request.user)
+
 
 class CreateVehicle(CreateView):
     model = Vehicle
-    fields=['make', 'model', 'year_date', 'fuel']
+    form_class = CreateVehicleForm
+    success_url = '/'
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     return super().form_valid(form)
 
 class UpdateVehicle(UpdateView):
     model= Vehicle

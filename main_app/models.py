@@ -9,7 +9,7 @@ FUEL = (('P', 'Premium'), ('R', 'Regular'), ('M', 'Mid-Grade'))
 class Vehicle (models.Model):
     make = models.CharField(max_length=200)
     model = models.CharField(max_length=200)
-    year = models.IntegerField()
+    year = models.IntegerField(null=True)
     year_date = models.DateField()
     fuel = models.CharField(max_length=1, choices= FUEL, default = FUEL[1][0])
     carbon = models.IntegerField(default=0)
@@ -20,6 +20,14 @@ class Vehicle (models.Model):
 
     def get_absolute_url(self):
         return reverse('vehicle_detail', kwargs={'vehicle_id': self.id})
+    
+    @property
+    def calculate_year(self):
+        return self.year_date.year
+    
+    def save(self, *args, **kwargs):
+        self.year = self.calculate_year
+        super().save(*args, **kwargs)
         
 
 class Trip(models.Model):

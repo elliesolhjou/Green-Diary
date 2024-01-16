@@ -2,30 +2,54 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Green Diary</title>
-    <!-- the link has django syntax to point directly to the  -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-  </head>
-  <body class="d-flex flex-column align-items-center m-4">
-      {% include 'header.html' %}
-    <main class="container-fluid m-5 w-100 text-center">
-      {% block content %}
-      {% endblock %}
-    </main>
-    <footer class="fixed-bottom text-end transparent">
-      &copy; 2024 Green Diary &nbsp;
-    </footer>
-    <div class="background position-absolute top-0 start-0 w-100 h-100"></div>
-  </body>
-  <script>
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Green Diary</title>
+  <!-- the link has django syntax to point directly to the  -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+</head>
+<body class="d-flex flex-column align-items-center m-4">
+  <nav class="navbar navbar-expand-lg d-flex justify-content-between fixed-top px-4">
+    
+    <img src="{% static 'images/green-diary-logo.png' %}" class="img-fluid logo">
+ 
+    <p class="fs-2 header-title">Green Diary</p>
+    
+    <div class="dropdown show">
+      <a class="btn btn-secondary transparent" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img src="{% static 'images/no-user.svg' %}" class="img-fluid logo">
+      </a>
+    
+      <div class="dropdown-menu dropdown-menu-end m-2" aria-labelledby="dropdownMenuLink">
+        {% if user.is_authenticated %}
+          <form action="{%url 'logout'%}" method="POST">
+            {%csrf_token%}
+            <button type="submit" class="btn"> Log Out</button>
+          </form>
+        {% else %}
+          <a class="dropdown-item" href="{%url 'signup'%}">Sign Up</a>
+          <a class="dropdown-item" href="{%url 'login'%}">Log In</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid m-5 w-100 text-center">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="fixed-bottom text-end transparent">
+    &copy; 2024 Green Diary &nbsp;
+  </footer>
+
+  <div class="background position-absolute top-0 start-0 w-100 h-100"></div>
+</body>
+<script>
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
   </script>
 </html>

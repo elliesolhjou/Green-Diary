@@ -3,11 +3,22 @@ import os
 from django import forms
 from datetime import datetime
 from django.forms.widgets import DateInput
+from typing import Any
+from django.db.models.query import QuerySet
+import requests
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+# from django.urls import reverse_lazy, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import CustomUserCreationForm 
 from .models import *
+
+
 # Create your views here.
 
 def home(request):
@@ -26,48 +37,13 @@ def home(request):
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips})
 
 
-### DATA TESTING ###
-# from django.conf import settings 
-# def home(request):
-#     vehicles_path = os.path.join(settings.BASE_DIR, 'main_app/static/data/vehicles.json')
-#     trips_path = os.path.join(settings.BASE_DIR, 'main_app/static/data/trips.json')
-# 
-# 
-#     with open(trips_path, 'r') as json_data:
-#         trip_raw = json.load(json_data)
-# 
-#     def trip_remap(trip):
-#         print(trip)
-#         year = trip['startDate'].split('-')[0]
-#         date_obj = datetime.strptime(trip['startDate'], '%Y-%m-%d')
-#         start = date_obj.strftime('%B, %d')
-#         year = trip['endDate'].split('-')[0]
-#         date_obj = datetime.strptime(trip['endDate'], '%Y-%m-%d')
-#         end = date_obj.strftime('%B, %d')
-# 
-#         return {
-#             'year': year,
-#             'start': start,
-#             'end': end,
-#             'distance': trip['distance'],
-#             'weight': trip['impactData']['weight_lb'],
-#             'trees': trip['impactData']['trees']
-#         }
-# 
-#     trip_data = [trip_remap(trip) for trip in trip_raw['records']]
-# 
-#     with open(vehicles_path, 'r') as json_data:
-#         vehicle_data = json.load(json_data)
-# 
-#     return render(request, 'home.html', {'vehicles': vehicle_data, 'trips': trip_data})
-
 
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
 # ------------------------------------------------------------------------------------------#
-class CreateUser(CreateView):
-    model = User
-    fields = '__all__'
+# class CreateUser(CreateView):
+#     model = User
+#     fields = '__all__'
     
 class UpdateUser(UpdateView):
     model = User
@@ -84,15 +60,40 @@ def user(request):
 
 
 
+def signup(request):
+    error_message= ""
+    if request.method =='POST':
+        # create a form with info passed in through Req.Post
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            # create new user if form is valid
+            user = form.save()
+            login(request, user)
+            return redirect("vehicle_create")
+        else:
+            print(form.errors)
+            error_message= " Invalid. Please try again!"
+    # clear form after user creation
+    form = CustomUserCreationForm
+    # pass data to html to display
+    context = {'form': form, 'error_message': error_message}
+    return render (request, 'registration/signup.html', context)
 # ------------------------------------------------------------------------------------------#
-class VehicleList(ListView):
+class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
     template_name = 'vehicles/index.html'
+
+    def get_queryset(self):
+        return Vehicle.objects.filter(user=self.request.user)
 
 
 class CreateVehicle(CreateView):
     model = Vehicle
-    fields=['make', 'model', 'year', 'fuel']
+    fields=['make', 'model', 'year_date', 'fuel']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 class UpdateVehicle(UpdateView):
     model= Vehicle
@@ -108,7 +109,7 @@ def vehicle_detail(request, vehicle_id):
     return render(request, 'vehicles/detail.html', {'vehicle':vehicle})
 
 # ------------------------------------------------------------------------------------------#
-class TripList(ListView):
+class TripList(LoginRequiredMixin, ListView):
     model = Trip
     template_name= 'trips/index.html'
 
@@ -119,6 +120,11 @@ class CreateTripForm(forms.ModelForm):
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
         }
+
+
+    def get_queryset(self):
+        return Trip.objects.filter(vehicle__user = self.request.user)
+
 
 class CreateTrip(CreateView):
     model = Trip

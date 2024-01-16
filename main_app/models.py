@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 FUEL = (('P', 'Premium'), ('R', 'Regular'), ('M', 'Mid-Grade'))
@@ -22,6 +23,7 @@ class Vehicle (models.Model):
     make = models.CharField(max_length=200)
     model = models.CharField(max_length=200)
     year = models.IntegerField()
+    year_date = models.DateField()
     fuel = models.CharField(max_length=1, choices= FUEL, default = FUEL[1][0])
     carbon = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

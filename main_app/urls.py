@@ -35,4 +35,6 @@ urlpatterns=[
 
     # for API
     # path('weather/<str:city>/', views.weather),
+
+    path('accounts/signup/', views.signup, name='signup')
 ]

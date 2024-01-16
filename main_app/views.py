@@ -1,8 +1,10 @@
 import requests
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
 
@@ -37,6 +39,23 @@ def user(request):
     user = User.objects.all()
     return render(request, 'users/index.html', {'user':user})
 
+def signup(request):
+    error_message= ""
+    if request.method =='POST':
+        # create a form with info passed in through Req.Post
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            # create new user if form is valid
+            user = form.save()
+            login(request, user)
+            return redirect("vehicle_create")
+        else:
+            error_message= " Invalid. Please try again!"
+    # clear form after user creation
+    form = UserCreationForm
+    # pass data to html to display
+    context = {'form': form, 'error_message': error_message}
+    return render (request, 'registration/signup.html', context)
 # ------------------------------------------------------------------------------------------#
 class VehicleList(ListView):
     model = Vehicle

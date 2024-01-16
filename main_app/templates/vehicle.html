@@ -8,7 +8,7 @@
                     <img class="vehicle-arrow rounded-3 p-1" src="../static/images/arrow.svg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay='400' title="Select vehicles" >
                 </a>
                 <div class="dropdown-menu" aria-labelledby="vehicleMenu">
-                    {% for vehicle in vehicles.records %}
+                    {% for vehicle in vehicles %}
                     <a class="dropdown-item" href="#"><b>{{vehicle.year}}</b> {{vehicle.make}} - {{ vehicle.model }}</a>
                     {% endfor %}
                 </div>

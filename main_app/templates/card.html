@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="col-1 p-0">
-      <a href="#" class="red w-75 pt-1 pb-2 rounded-4 d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-delay='400' title="Remove Trip">
+      <a href="{% url 'trip_delete' trip.id %}" class="red w-75 pt-1 pb-2 rounded-4 d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-delay='400' title="Remove Trip">
         <div class="w-35">
             <img class="img-fluid" src="{% static 'images/trash.svg' %}">
         </div>

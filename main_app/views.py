@@ -16,6 +16,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CustomUserCreationForm 
+from django.contrib.auth.models import User
+
 from .models import *
 
 
@@ -24,10 +26,7 @@ from .models import *
 def home(request):
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
-    user = User.objects.get(pk=1)
 
-
-    
 
     for trip in trips:
         pounds = 300 / 453.592
@@ -89,7 +88,7 @@ class VehicleList(LoginRequiredMixin, ListView):
 
 class CreateVehicle(CreateView):
     model = Vehicle
-    fields=['make', 'model', 'year_date', 'fuel']
+    fields=['make', 'model', 'year', 'fuel']
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -121,7 +120,6 @@ class CreateTripForm(forms.ModelForm):
             'date': DateInput(attrs={'type': 'date'}),
         }
 
-
     def get_queryset(self):
         return Trip.objects.filter(vehicle__user = self.request.user)
 
@@ -135,9 +133,6 @@ class UpdateTrip(UpdateView):
     model = Trip
     fields = '__all__'
 
-# class DeleteTrip(DeleteView):
-#     model=Trip
-#     success_url = '/'
 
 def delete_trip(request, pk):
     trip = get_object_or_404(Trip, pk=pk)

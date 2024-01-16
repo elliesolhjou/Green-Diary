@@ -7,11 +7,7 @@
                 <a href="#" class="" type="button" id="vehicleMenu" data-bs-toggle="dropdown" data-bs-placement="bottom-start" aria-haspopup="true" aria-expanded="false">
                     <img class="vehicle-arrow rounded-3 p-1" src="../static/images/arrow.svg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay='400' title="Select vehicles" >
                 </a>
-                <div class="dropdown-menu" aria-labelledby="vehicleMenu">
-                    {% for vehicle in vehicles %}
-                    <a class="dropdown-item" href="#"><b>{{vehicle.year}}</b> {{vehicle.make}} - {{ vehicle.model }}</a>
-                    {% endfor %}
-                </div>
+
             </div>
         </div>
         <h2 class="pt-2 m-0 text-lg">1993</h2>

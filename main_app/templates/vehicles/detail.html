@@ -24,7 +24,7 @@
                     {% include 'card.html' %}
                 </div>
             </div>
-            <a href="/trip/create" class="btn-green btn-add position-absolute top-0 end-0 d-flex align-items-center justify-content-center">
+            <a href="{% url 'trip_create' vehicle.id %}" class="btn-green btn-add position-absolute top-0 end-0 d-flex align-items-center justify-content-center">
                 New Trip
             </a>
         </div>

@@ -24,10 +24,6 @@ from .models import *
 def home(request):
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
-    # user = User.objects.get(pk=1)
-
-    
-    
 
     for trip in trips:
         pounds = 300 / 453.592
@@ -96,12 +92,11 @@ class CreateVehicleForm(forms.ModelForm):
 class CreateVehicle(CreateView):
     model = Vehicle
     form_class = CreateVehicleForm
-    success_url = '/'
 
-    # def form_valid(self, form):
-    #     form.instance.user = self.request.user
-    #     return super().form_valid(form)
-
+    def get_success_url(self):
+        vehicle = self.object
+        return reverse('vehicle_detail', kwargs={'vehicle_id': vehicle.id})
+    
 class UpdateVehicle(UpdateView):
     model= Vehicle
     fields='__all__'
@@ -112,8 +107,11 @@ class DeleteVehicle(DeleteView):
 
 
 def vehicle_detail(request, vehicle_id):
+    vehicles = Vehicle.objects.all()
+    trips = Trip.objects.all()
+
     vehicle= Vehicle.objects.get(id=vehicle_id)
-    return render(request, 'vehicles/detail.html', {'vehicle':vehicle})
+    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips})
 
 # ------------------------------------------------------------------------------------------#
 class TripList(LoginRequiredMixin, ListView):

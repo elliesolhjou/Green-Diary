@@ -12,7 +12,9 @@ nav {
   background: none;
 }
 main {
+  width: 100%;
   max-width: 750px;
+  height: 100vh;
 }
 form {
   display: flex;
@@ -61,6 +63,15 @@ form a {
 .logo {
   max-height: clamp(50px, 8vmin, 75px);
 }
+
+.leaf-btn {
+  background: rgb(38, 187, 38);
+  padding: 10px 0;
+}
+.leaf-btn img{
+  width: clamp(15px, 4vmin, 25px);
+}
+
 .user {
   max-height: 50px
 }
@@ -118,21 +129,21 @@ form a {
 .marker {
   width: clamp(20px, 3vmin, 40px);
 }
+.text-sm {
+  font-size: clamp(10px, 1vmin, 18px);
+  color: rgb(165, 165, 165);
+}
+.text-reg {
+  font-size: clamp(12px, 1.5vmin, 22px);
+  color: rgb(122, 122, 122);
+}
 .text-lg {
   font-size: clamp(14px, 2.5vmin, 30px);
   color: rgb(71, 71, 71);
 }
 .text-xl {
-  font-size: clamp(20px, 3vmin, 40px);
+  font-size: clamp(20px, 3.5vmin, 40px);
   color: rgb(71, 71, 71);
-}
-.text-reg {
-  font-size: clamp(6px, 1.25vmin, 22px);
-  color: rgb(122, 122, 122);
-}
-.text-sm {
-  font-size: clamp(8px, 1vmin, 18px);
-  color: rgb(165, 165, 165);
 }
 .w-35 {
   width: 35%;

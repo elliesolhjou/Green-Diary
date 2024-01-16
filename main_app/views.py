@@ -34,10 +34,45 @@ def home(request):
         trip.output = int(trip.distance * pounds)
         trip.cost = int(trip.output / 48)
 
+    makes = get_makes()
+    models = get_models('1a51451b-c27e-4e24-92f5-2432ca359a41')
+
+    # for make in makes:
+    #     print(make['data']['id'])
+    #     print(make['data']['attributes']['name'])
+
+    for model in models:
+        print(model['data']['id'])
+        print(model['data']['attributes']['name'])
+        print(model['data']['attributes']['year'])
+
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
 
+def get_makes():
+    api_url = 'https://www.carboninterface.com/api/v1/vehicle_makes'
+    headers = {
+        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg'
+    }
 
+    response = requests.get(api_url, headers=headers)
 
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code}, {response.text}")
+
+def get_models(make_id):
+    api_url = f'https://www.carboninterface.com/api/v1/vehicle_makes/{make_id}/vehicle_models'
+    headers = {
+        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg'
+    }
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code}, {response.text}")
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
 # ------------------------------------------------------------------------------------------#
@@ -126,6 +161,9 @@ class DeleteVehicle(DeleteView):
 def vehicle_detail(request, vehicle_id):
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
+
+    for trip in trips:
+        print(trip.vehicle_id)
 
     vehicle= Vehicle.objects.get(id=vehicle_id)
     return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips})

@@ -1,7 +1,12 @@
 {% extends 'base.html' %} 
+{% load static %}
 
 {% block content %}
-    <div class="col mt-4 bg-white rounded-5 border" style="height: 95%;">
-        Welcome<br>Login to continue
+    <div class="col h-100 d-flex justify-content-center align-items-center">
+        <div class="row leaf-container w-25">
+            <div class="col leaf-btn rounded-5 border-dark">
+                <img src="{% static '/images/leaf.svg' %}">
+            </div>
+        </div>
     </div>
 {% endblock %}

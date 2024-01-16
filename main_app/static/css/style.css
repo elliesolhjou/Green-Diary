@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
 
+* {
+  box-sizing: border-box;
+}
 body {
   min-height: 100vh;
   overflow: hidden;
@@ -8,6 +11,45 @@ body {
 nav {
   background: none;
 }
+main {
+  max-width: 750px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+form table {
+  border-collapse: collapse;
+}
+form tr {
+  border: 10px solid transparent; /* This creates the 'space' */
+}
+form select,
+form textarea,
+form input[type="number"],
+form input[type="text"] {
+  width: 100%;
+  height: clamp(35px, 3vmin, 45px);
+  border-radius: 5px;
+  border: 2px solid rgb(225, 245, 227);
+}
+form textarea {
+  height: 80px;
+}
+form select:focus,
+form textarea:focus,
+form input[type="number"]:focus,
+form input[type="text"]:focus {
+  outline: 2px solid rgb(172, 216, 172) !important;
+}
+form .btn,
+form a {
+  width: 15%;
+  text-decoration: none;
+}
+
 .header-title{
   font-family: 'Josefin Sans', sans-serif;
   position: absolute;
@@ -16,23 +58,27 @@ nav {
   transform: translateX(-50%);
   color: #3f7a2b;
 }
-main {
-  max-width: 750px;
-}
 .logo {
-  max-height: 50px;
-  border-radius: 10px;
+  max-height: clamp(50px, 8vmin, 75px);
+}
+.user {
+  max-height: 50px
+}
+.dropdown.show a:focus {
+  box-shadow: none;
 }
 .transparent {
   background: transparent !important;
   border: none !important;
 }
 .bg-white {
-  background-color: white !important;
+  background-color: rgb(250, 255, 247) !important;
+}
+.vehicle-edit {
+  width: clamp(15px, 4vmin, 25px);
 }
 .vehicle-edit:hover {
   opacity: .25;
-  cursor: pointer;
 }
 .vehicle-container > div {
   display: flex;
@@ -44,24 +90,94 @@ main {
   padding: 0;
 }
 .vehicle-arrow {
-  width: 3vmin;
+  width: clamp(20px, 3vmin, 40px);
   margin: 0 2%;
   transform: rotate(90deg);
-  cursor: pointer;
 }
 .vehicle-arrow:hover {
   outline: 2px solid rgba(79, 176, 79, 0.275);
 }
 .vehicle-stats {
-  font-size: 1.5vmin;
+  font-size: clamp(6px, 1.5vmin, 30px);
   color: rgb(165, 165, 165);
 }
-.text-large {
-  font-size: 2vmin;
+.trip-card {
+  padding: 1% 0;
+  user-select: none;
+}
+.trip-card:hover {
+  background: rgb(240, 246, 240);
+}
+.trip-card {
+  text-decoration: none;
+}
+
+.light {
+  color: rgb(165, 165, 165);
+}
+.marker {
+  width: clamp(20px, 3vmin, 40px);
+}
+.text-lg {
+  font-size: clamp(14px, 2.5vmin, 30px);
+  color: rgb(71, 71, 71);
+}
+.text-xl {
+  font-size: clamp(20px, 3vmin, 40px);
+  color: rgb(71, 71, 71);
+}
+.text-reg {
+  font-size: clamp(6px, 1.25vmin, 22px);
+  color: rgb(122, 122, 122);
+}
+.text-sm {
+  font-size: clamp(8px, 1vmin, 18px);
+  color: rgb(165, 165, 165);
+}
+.w-35 {
+  width: 35%;
+}
+.h-70 {
+  height: 70%;
+}
+.rounded-4 {
+  border-radius: 10px;
 }
 .rounded-5 {
   border-radius: 20px;
-  border: 2px solid rgb(237, 243, 238);
+}
+.btn-red {
+  height: 40px;
+  padding: 0 10px;
+  color: rgb(192, 0, 0);
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: none;
+  background: none;
+}
+.btn-green {
+  height: 40px;
+  color: green;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: none;
+  background: none;
+}
+.btn-red:hover {
+  background: rgba(230, 194, 194, 0.5);
+}
+.btn-green:hover {
+  background: rgba(174, 220, 174, 0.5);
+}
+.btn-add {
+  width: 15%;
+  height: 5%;
+  font-size: clamp(8px, 1.5vmin, 14px);
+  text-decoration: none;
+  border-radius: 0 10px;
+}
+.btn-add:hover {
+  color: green;
 }
 .background {
   background-image: url('../images/bg-map.png');
@@ -77,40 +193,31 @@ main {
 .dark {
   color: rgb(42, 42, 42);
 }
-.fvmin-1 {
-  font-size: 3.5vmin;
-}
-.fvmin-2 {
-  font-size: 2vmin;
-}
-
 .vehicle-buttons > div {
   font-size: 2.5rem;
   border-radius: 10px;
 }
+@media (max-width: 450px){
+  .vehicle-buttons > div {
+    font-size: 1.5rem;
+  }
+}
 .green,
 .red {
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-decoration: none;
 }
 .green {
   color: green;
-  border-radius: 10px;
 }
 .red {
   color: red;
-  border-radius: 10px;
 }
 .green:hover {
   color: rgb(3, 205, 3);
-  background: rgb(238, 255, 229);
-  cursor: pointer;
+  background: rgba(174, 220, 174, 0.5);
+  user-select: none;
 }
 .red:hover {
   color: rgb(255, 135, 135);
   background: rgb(253, 213, 213);
-  cursor: pointer;
 }

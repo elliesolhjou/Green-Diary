@@ -1,8 +1,14 @@
+import json
+import os
+from django import forms
+from datetime import datetime
+from django.forms.widgets import DateInput
 from typing import Any
 from django.db.models.query import QuerySet
 import requests
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
+# from django.urls import reverse_lazy, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import login
@@ -14,35 +20,45 @@ from .models import *
 
 
 # Create your views here.
+
 def home(request):
-    return render(request, 'home.html')
+    vehicles = Vehicle.objects.all()
+    trips = Trip.objects.all()
+    user = User.objects.get(pk=1)
 
 
-# def weather(request, city):
-#     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&appid=<your_api_key>'.format(city)
-#     response = requests.get(url)
-#     data = response.json()
-#     return JsonResponse(data)
+    
+
+    for trip in trips:
+        pounds = 300 / 453.592
+        trip.output = int(trip.distance * pounds)
+        trip.cost = int(trip.output / 48)
+
+    return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips})
+
+
+
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
 # ------------------------------------------------------------------------------------------#
 # class CreateUser(CreateView):
 #     model = User
 #     fields = '__all__'
-
-
+    
 class UpdateUser(UpdateView):
     model = User
     fields = '__all__'
 
 class DeleteUser(DeleteView):
     model=User
-    success_url  = " "
+    success_url  = '/'
 
 
 def user(request):
     user = User.objects.all()
     return render(request, 'users/index.html', {'user':user})
+
+
 
 def signup(request):
     error_message= ""
@@ -85,7 +101,7 @@ class UpdateVehicle(UpdateView):
 
 class DeleteVehicle(DeleteView):
     model = Vehicle
-    success_url = ''
+    success_url = '/'
 
 
 def vehicle_detail(request, vehicle_id):
@@ -97,21 +113,36 @@ class TripList(LoginRequiredMixin, ListView):
     model = Trip
     template_name= 'trips/index.html'
 
+class CreateTripForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = ['date', 'departure', 'destination', 'co_em', 'distance']
+        widgets = {
+            'date': DateInput(attrs={'type': 'date'}),
+        }
+
+
     def get_queryset(self):
         return Trip.objects.filter(vehicle__user = self.request.user)
 
 
 class CreateTrip(CreateView):
     model = Trip
-    fields='__all__'
+    form_class = CreateTripForm
+    success_url = '/'
 
 class UpdateTrip(UpdateView):
     model = Trip
     fields = '__all__'
 
-class DeleteTrip(DeleteView):
-    model=Trip
-    success_url = ''
+# class DeleteTrip(DeleteView):
+#     model=Trip
+#     success_url = '/'
+
+def delete_trip(request, pk):
+    trip = get_object_or_404(Trip, pk=pk)
+    trip.delete()
+    return redirect('/') 
 
 
 def trip_detail(request, trip_id):

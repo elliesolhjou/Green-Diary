@@ -1,0 +1,20 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg d-flex justify-content-between fixed-top px-4">
+  <a href="/">
+    <img src="{% static 'images/green-diary-logo.png' %}" class="img-fluid logo rounded-4 pt-1">
+  </a>
+
+  <p class="fs-2 header-title">Green Diary</p>
+
+  <div class="dropdown show">
+    <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <img src="{% static 'images/no-user.svg' %}" class="img-fluid user">
+    </a>
+  
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="#">Login</a>
+      <a class="dropdown-item" href="#">Logout</a>
+    </div>
+  </div>
+</nav>

@@ -1,95 +1,204 @@
 {
   "records": [
     {
-      "startDate": "2020-03-19",
-      "endDate": "2020-03-24",
-      "miles": 537,
-      "weight_lb": 355,
-      "trees": 7.3
+      "vehicleID": "85994",
+      "startDate": "2021-03-26",
+      "endDate": "2022-01-25",
+      "distance": 597,
+      "impactData": {
+        "weight_lb": 691,
+        "trees": 4.9
+      }
     },
     {
-      "startDate": "2020-04-10",
-      "endDate": "2020-04-15",
-      "miles": 450,
-      "weight_lb": 300,
-      "trees": 6.5
+      "vehicleID": "40884",
+      "startDate": "2023-04-14",
+      "endDate": "2023-12-09",
+      "distance": 306,
+      "impactData": {
+        "weight_lb": 249,
+        "trees": 9.9
+      }
     },
     {
-      "startDate": "2020-03-19",
-      "endDate": "2020-03-24",
-      "miles": 537,
-      "weight_lb": 355,
-      "trees": 7.3
+      "vehicleID": "77999",
+      "startDate": "2021-09-07",
+      "endDate": "2023-09-09",
+      "distance": 132,
+      "impactData": {
+        "weight_lb": 353,
+        "trees": 4.5
+      }
     },
     {
-      "startDate": "2020-04-10",
-      "endDate": "2020-04-15",
-      "miles": 450,
-      "weight_lb": 300,
-      "trees": 6.5
+      "vehicleID": "77688",
+      "startDate": "2020-03-06",
+      "endDate": "2023-07-11",
+      "distance": 113,
+      "impactData": {
+        "weight_lb": 139,
+        "trees": 1.4
+      }
     },
     {
-      "startDate": "2020-05-01",
-      "endDate": "2020-05-06",
-      "miles": 520,
-      "weight_lb": 280,
-      "trees": 8.1
+      "vehicleID": "59885",
+      "startDate": "2023-05-15",
+      "endDate": "2023-05-21",
+      "distance": 588,
+      "impactData": {
+        "weight_lb": 763,
+        "trees": 7.5
+      }
     },
     {
-      "startDate": "2020-06-14",
-      "endDate": "2020-06-19",
-      "miles": 480,
-      "weight_lb": 350,
-      "trees": 7.0
+      "vehicleID": "76327",
+      "startDate": "2023-03-17",
+      "endDate": "2023-03-18",
+      "distance": 900,
+      "impactData": {
+        "weight_lb": 634,
+        "trees": 9.5
+      }
     },
     {
-      "startDate": "2020-07-23",
-      "endDate": "2020-07-28",
-      "miles": 500,
-      "weight_lb": 365,
-      "trees": 6.8
+      "vehicleID": "45519",
+      "startDate": "2020-03-25",
+      "endDate": "2020-04-17",
+      "distance": 416,
+      "impactData": {
+        "weight_lb": 995,
+        "trees": 2.7
+      }
     },
     {
-      "startDate": "2020-08-15",
-      "endDate": "2020-08-20",
-      "miles": 550,
-      "weight_lb": 320,
-      "trees": 7.5
+      "vehicleID": "60567",
+      "startDate": "2023-09-12",
+      "endDate": "2023-10-25",
+      "distance": 153,
+      "impactData": {
+        "weight_lb": 404,
+        "trees": 5.8
+      }
     },
     {
-      "startDate": "2020-09-05",
-      "endDate": "2020-09-10",
-      "miles": 530,
-      "weight_lb": 340,
-      "trees": 7.2
+      "vehicleID": "84123",
+      "startDate": "2022-09-02",
+      "endDate": "2023-11-29",
+      "distance": 311,
+      "impactData": {
+        "weight_lb": 708,
+        "trees": 9.6
+      }
     },
     {
-      "startDate": "2020-10-12",
-      "endDate": "2020-10-17",
-      "miles": 490,
-      "weight_lb": 330,
-      "trees": 6.9
+      "vehicleID": "11808",
+      "startDate": "2021-05-22",
+      "endDate": "2023-05-17",
+      "distance": 671,
+      "impactData": {
+        "weight_lb": 663,
+        "trees": 9.2
+      }
     },
     {
-      "startDate": "2020-11-20",
-      "endDate": "2020-11-25",
-      "miles": 510,
-      "weight_lb": 310,
-      "trees": 7.4
+      "vehicleID": "85994",
+      "startDate": "2021-03-26",
+      "endDate": "2022-01-25",
+      "distance": 597,
+      "impactData": {
+        "weight_lb": 691,
+        "trees": 4.9
+      }
     },
     {
-      "startDate": "2020-12-01",
-      "endDate": "2020-12-06",
-      "miles": 470,
-      "weight_lb": 360,
-      "trees": 6.7
+      "vehicleID": "40884",
+      "startDate": "2023-04-14",
+      "endDate": "2023-12-09",
+      "distance": 301,
+      "impactData": {
+        "weight_lb": 249,
+        "trees": 9.9
+      }
     },
     {
-      "startDate": "2021-01-13",
-      "endDate": "2021-01-18",
-      "miles": 560,
-      "weight_lb": 345,
-      "trees": 7.6
+      "vehicleID": "77999",
+      "startDate": "2021-09-07",
+      "endDate": "2023-09-09",
+      "distance": 132,
+      "impactData": {
+        "weight_lb": 353,
+        "trees": 4.5
+      }
+    },
+    {
+      "vehicleID": "77688",
+      "startDate": "2020-03-06",
+      "endDate": "2023-07-11",
+      "distance": 113,
+      "impactData": {
+        "weight_lb": 139,
+        "trees": 1.4
+      }
+    },
+    {
+      "vehicleID": "59885",
+      "startDate": "2023-05-15",
+      "endDate": "2023-05-21",
+      "distance": 588,
+      "impactData": {
+        "weight_lb": 763,
+        "trees": 7.5
+      }
+    },
+    {
+      "vehicleID": "76327",
+      "startDate": "2023-03-17",
+      "endDate": "2023-03-18",
+      "distance": 900,
+      "impactData": {
+        "weight_lb": 634,
+        "trees": 9.5
+      }
+    },
+    {
+      "vehicleID": "45519",
+      "startDate": "2020-03-25",
+      "endDate": "2020-04-17",
+      "distance": 681,
+      "impactData": {
+        "weight_lb": 995,
+        "trees": 2.7
+      }
+    },
+    {
+      "vehicleID": "60567",
+      "startDate": "2023-09-12",
+      "endDate": "2023-10-25",
+      "distance": 153,
+      "impactData": {
+        "weight_lb": 404,
+        "trees": 5.8
+      }
+    },
+    {
+      "vehicleID": "84123",
+      "startDate": "2022-09-02",
+      "endDate": "2023-11-29",
+      "distance": 311,
+      "impactData": {
+        "weight_lb": 708,
+        "trees": 9.6
+      }
+    },
+    {
+      "vehicleID": "11808",
+      "startDate": "2021-05-22",
+      "endDate": "2023-05-17",
+      "distance": 671,
+      "impactData": {
+        "weight_lb": 663,
+        "trees": 9.2
+      }
     }
   ]
 }

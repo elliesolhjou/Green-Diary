@@ -19,9 +19,8 @@ urlpatterns=[
     # VEHICLE CBV
     path('accounts/vehicle/', views.VehicleList.as_view(), name='vehicle_list'),
     path('accounts/vehicle/create/', views.CreateVehicle.as_view(), name='vehicle_create'),
-    path('accounts/vehicle/<int:pk>/update', views.UpdateVehicle.as_view(), name='vehicle_update'),
-    path('accounts/vehicle/<int:pk>/delete', views.DeleteVehicle.as_view(), name='vehicle_delete'),
-
+    path('accounts/vehicle/<int:vehicle_id>/update', views.UpdateVehicle.as_view(), name='vehicle_update'),
+    path('accounts/vehicle/<int:vehicle_id>/delete', views.DeleteVehicle.as_view(), name='vehicle_delete'),
     path('vehicle/<int:vehicle_id>/', views.vehicle_detail, name='vehicle_detail'),
 
 
@@ -29,7 +28,7 @@ urlpatterns=[
     path('accounts/vehicle/<int:vehicle_id>/trip/', views.TripList.as_view(), name = 'trip_list'),
     path('accounts/vehicle/<int:vehicle_id>/trip/create/', views.CreateTrip.as_view(), name = 'trip_create'),
     path('accounts/vehicle/<int:vehicle_id>/trip/<int:pk>/update', views.UpdateTrip.as_view(), name = 'trip_update'),
-    path('accounts/vehicle/<int:vehicle_id>/trip/<int:pk>/delete', views.DeleteTrip.as_view(), name = 'trip_delete'),
+    path('accounts/vehicle/<int:vehicle_id>/trip/<int:pk>/delete', views.delete_trip, name = 'trip_delete'),
     
     path('accounts/vehicle/<int:vehicle_id>/trip/<int:trip_id>/', views.trip_detail, name='trip_detail'),
 

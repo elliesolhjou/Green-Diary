@@ -1,0 +1,40 @@
+{
+  "records": [
+    {
+      "vehicleID": "12345",
+      "userID": "user123",
+      "make": "Toyota",
+      "model": "Camry",
+      "year": 2018,
+      "fuelType": "Gasoline",
+      "carbon(lbs)": 3000
+    },
+    {
+      "vehicleID": "54321",
+      "userID": "user123",
+      "make": "Honda",
+      "model": "Civic",
+      "year": 2019,
+      "fuelType": "Gasoline",
+      "carbon(lbs)": 2800
+    },
+    {
+      "vehicleID": "98765",
+      "userID": "user789",
+      "make": "Ford",
+      "model": "Escape",
+      "year": 2020,
+      "fuelType": "Hybrid",
+      "carbon(lbs)": 2200
+    },
+    {
+      "vehicleID": "45678",
+      "userID": "user101",
+      "make": "Nissan",
+      "model": "Altima",
+      "year": 2017,
+      "fuelType": "Gasoline",
+      "carbon(lbs)": 3200
+    }
+  ]
+}

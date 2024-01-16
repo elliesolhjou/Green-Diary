@@ -1,0 +1,58 @@
+<div class="col mt-4 bg-white rounded-5 border" style="height: 95%;">
+    <div class="vehicle-container d-flex justify-content-between">
+        <div class="vehicle-title pe-2 rounded-4 d-flex align-items-end">
+            <h1 class="ps-2 text-lg user-select-none">Toyota</h1>
+            <span class="text-reg user-select-none">Corolla</span>
+            <div class="dropdown show">
+                <a href="#" class="" type="button" id="vehicleMenu" data-bs-toggle="dropdown" data-bs-placement="bottom-start" aria-haspopup="true" aria-expanded="false">
+                    <img class="vehicle-arrow rounded-3 p-1" src="../static/images/arrow.svg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay='400' title="Select vehicles" >
+                </a>
+                <div class="dropdown-menu" aria-labelledby="vehicleMenu">
+                    {% for vehicle in vehicles %}
+                    <a class="dropdown-item" href="#"><b>{{vehicle.year}}</b> {{vehicle.make}} - {{ vehicle.model }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <h2 class="pt-2 m-0 text-lg">1993</h2>
+    </div>
+    <div class="ruler d-flex justify-content-center w-100">
+        <hr class="hr my-2">
+    </div>
+    <div class="container-fluidps-2 d-flex justify-content-center">
+        <div class="row w-100  pb-2 d-flex justify-content-center align-items-center">
+            <div class="col-2 pb-3 h-100 d-flex justify-content-start align-items-end">
+                <a href="#">
+                    <img class="img-fluid vehicle-edit" src="../static/images/edit-icon.svg" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Edit current vehicle">
+                </a>
+            </div>
+            <div class="vehicle-stats col-8">
+                <div class="row d-flex align-items-center">
+                    <div class="col-6 text-end text-reg p-0">Average CO2 Output / Mile</div>
+                    <div class="dark col-6 text-lg">300 g</div>
+                </div>
+                <div class="row d-flex align-items-center">
+                    <div class="col-6 text-end text-reg p-0">Total Recorded Mileage</div>
+                    <div class="dark col-6 text-lg">25000</div>
+                </div>
+            </div>
+
+            <div class="col-2 vehicle-buttons h-100 p-0 d-flex flex-row align-items-end justify-content-between">
+                <div class="w-100 d-flex justify-content-center">
+                    <a href="{% url 'vehicle_create' %}" class="green pb-1 w-100 w-sm-50 h-100 h-sm-50 rounded-4" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Add a new vehicle">
+                        <div>
+                            +
+                        </div>
+                    </a>
+                </div>
+                <div class="w-100 d-flex justify-content-center">
+                    <a href="#" class="red pb-1 w-100 w-sm-50 h-100 h-sm-50 rounded-4" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Remove current vehicle">
+                        <div>
+                            -
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>

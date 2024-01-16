@@ -43,17 +43,24 @@ def home(request):
 
     makes = get_makes()
     models = get_models('1a51451b-c27e-4e24-92f5-2432ca359a41')
+    estimate = get_estimate('e16aa48e-4b94-441d-87a0-b12baf385cec')
 
     # for make in makes:
     #     print(make['data']['id'])
     #     print(make['data']['attributes']['name'])
 
-    for model in models:
-        print(model['data']['id'])
-        print(model['data']['attributes']['name'])
-        print(model['data']['attributes']['year'])
+    # for model in models:
+    #     print(model['data']['id'])
+    #     print(model['data']['attributes']['name'])
+    #     print(model['data']['attributes']['year'])
+
+    print(estimate)
+
 
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
+
+
+
 
 def get_makes():
     api_url = 'https://www.carboninterface.com/api/v1/vehicle_makes'
@@ -80,6 +87,32 @@ def get_models(make_id):
         return response.json()
     else:
         print(f"Error: {response.status_code}, {response.text}")
+
+def get_estimate(vehicle_id):
+    api_url = 'https://www.carboninterface.com/api/v1/estimates'
+    headers = {
+        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        "type": "vehicle",
+        "distance_unit": "mi",
+        "distance_value": 100,
+        "vehicle_model_id": vehicle_id
+    }
+    
+    json_data = json.dumps(data)
+
+    response = requests.get(api_url, data=json_data, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code}, {response.text}")
+
+
+
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
 # ------------------------------------------------------------------------------------------#

@@ -20,6 +20,11 @@ from django.contrib.auth.models import User
 
 from .models import *
 
+# def co_em(request, city):
+#     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&appid=<your_api_key>'.format(city)
+#     response = requests.get(url)
+#     data = response.json()
+#     return JsonResponse(data)
 
 # Create your views here.
 
@@ -53,12 +58,6 @@ class DeleteUser(DeleteView):
     success_url  = '/'
 
 
-def user(request):
-    user = User.objects.all()
-    return render(request, 'users/index.html', {'user':user})
-
-
-
 def signup(request):
     error_message= ""
     if request.method =='POST':
@@ -85,14 +84,26 @@ class VehicleList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Vehicle.objects.filter(user=self.request.user)
 
+class CreateVehicleForm(forms.ModelForm):
+    class Meta:
+        model = Vehicle
+        fields=['make', 'model', 'year_date', 'fuel']
+        widgets = {
+            'date': DateInput(attrs={'type': 'date'}),
+        }
+
+
+    def get_queryset(self):
+        return Vehicle.objects.filter(vehicle__user = self.request.user)
+
 
 class CreateVehicle(CreateView):
     model = Vehicle
     fields=['make', 'model', 'year', 'fuel']
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     return super().form_valid(form)
 
 class UpdateVehicle(UpdateView):
     model= Vehicle

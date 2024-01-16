@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg d-flex justify-content-between fixed-top px-4">
+<nav class="navbar test navbar-expand-lg d-flex justify-content-between fixed-top px-4">
   <a href="/">
     <img src="{% static 'images/green-diary-logo.png' %}" class="img-fluid logo rounded-4 pt-1">
   </a>
@@ -13,8 +13,15 @@
     </a>
   
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="#">Login</a>
-      <a class="dropdown-item" href="#">Logout</a>
+      {% if user.is_authenticated %}
+        <form action="{%url 'logout'%}" method="POST">
+          {%csrf_token%}
+          <button type="submit" class="btn"> Log Out</button>
+        </form>
+      {% else %}
+        <a class="dropdown-item" href="{%url 'signup'%}">Sign Up</a>
+        <a class="dropdown-item" href="{%url 'login'%}">Log In</a>
+      {% endif %}
     </div>
   </div>
 </nav>

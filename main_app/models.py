@@ -9,9 +9,13 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     avatar = models.CharField(max_length=100)
+    current_vehicle = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
+    
+    def set_current(self, vehicle_id):
+        self.current_vehicle = vehicle_id
     
 
 class Vehicle (models.Model):
@@ -27,7 +31,7 @@ class Vehicle (models.Model):
 
     def get_absolute_url(self):
         return reverse('vehicle_detail', kwargs={'vehicle_id': self.id})
-
+        
 
 class Trip(models.Model):
     date = models.DateField()
@@ -39,7 +43,7 @@ class Trip(models.Model):
 
     def __str__(self):
         return f'Trip ID: {self.id} - Trip Date: {self.date}'
-
+    
     def get_absolute_url(self):
         return reverse('trip_detail', kwargs={'trip_id': self.id})
     

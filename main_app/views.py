@@ -13,8 +13,15 @@ from .models import *
 def home(request):
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
+    user = User.objects.get(pk=1)
+
 
     
+
+    for trip in trips:
+        pounds = 300 / 453.592
+        trip.output = int(trip.distance * pounds)
+        trip.cost = int(trip.output / 48)
 
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips})
 
@@ -74,6 +81,8 @@ class DeleteUser(DeleteView):
 def user(request):
     user = User.objects.all()
     return render(request, 'users/index.html', {'user':user})
+
+
 
 # ------------------------------------------------------------------------------------------#
 class VehicleList(ListView):

@@ -8,10 +8,10 @@
     </div>
     <div class="col-4">
         <div class="row d-flex align-items-center">
-            <div class="col"><h2 class="m-0 text-lg">{{trip.year}}</h2></div>
+            <div class="col"><h2 class="m-0 text-lg">{{trip.date|date:"Y"}}</h2></div>
             <div class="col d-flex flex-column align-items-start">
                 <div class="row text-reg">
-                    {{trip.start}}
+                    {{trip.date|date:"F j"}}
                 </div>
                 <div class="row text-reg">
                     {{trip.end}}
@@ -27,13 +27,13 @@
     </div>
     <div class="col-2">
         <div class="row d-flex align-items-center">
-            <div class="col text-lg text-lg-end">{{trip.weight}}</div>
+            <div class="col text-lg text-lg-end">{{trip.output}}</div>
             <div class="col text-sm p-lg-0 text-lg-start">lb</div>
         </div>
     </div>
     <div class="col-2">
         <div class="row d-flex align-items-center">
-            <div class="col text-lg text-lg-end">{{trip.trees}}</div>
+            <div class="col text-lg text-lg-end">{{trip.cost}}</div>
             <div class="col text-sm p-lg-0 text-lg-start">trees</div>
         </div>
     </div>

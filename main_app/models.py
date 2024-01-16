@@ -6,21 +6,12 @@ from django.contrib.auth.models import User
 FUEL = (('P', 'Premium'), ('R', 'Regular'), ('M', 'Mid-Grade'))
 # Create your models here.
 
-# class User(models.Model):
-#     name = models.CharField(max_length=100)
-#     email = models.CharField(max_length=100)
-#     avatar = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return self.name
-    
-
-
 
 class Vehicle (models.Model):
     make = models.CharField(max_length=200)
     model = models.CharField(max_length=200)
     year = models.IntegerField()
+    year_date = models.DateField()
     fuel = models.CharField(max_length=1, choices= FUEL, default = FUEL[1][0])
     carbon = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

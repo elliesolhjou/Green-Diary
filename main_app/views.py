@@ -19,9 +19,9 @@ def home(request):
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
 # ------------------------------------------------------------------------------------------#
-class CreateUser(CreateView):
-    model = User
-    fields = '__all__'
+# class CreateUser(CreateView):
+#     model = User
+#     fields = '__all__'
 
 
 class UpdateUser(UpdateView):

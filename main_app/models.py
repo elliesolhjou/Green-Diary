@@ -6,19 +6,6 @@ from django.contrib.auth.models import User
 FUEL = (('P', 'Premium'), ('R', 'Regular'), ('M', 'Mid-Grade'))
 # Create your models here.
 
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    avatar = models.CharField(max_length=100)
-    current_vehicle = models.IntegerField(null=True)
-
-    def __str__(self):
-        return self.name
-    
-    def set_current(self, vehicle_id):
-        self.current_vehicle = vehicle_id
-    
-
 class Vehicle (models.Model):
     make = models.CharField(max_length=200)
     model = models.CharField(max_length=200)

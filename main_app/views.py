@@ -24,7 +24,7 @@ from .models import *
 def home(request):
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
-    user = User.objects.get(pk=1)
+    # user = User.objects.get(pk=1)
 
 
     
@@ -52,12 +52,6 @@ class UpdateUser(UpdateView):
 class DeleteUser(DeleteView):
     model=User
     success_url  = '/'
-
-
-def user(request):
-    user = User.objects.all()
-    return render(request, 'users/index.html', {'user':user})
-
 
 
 def signup(request):

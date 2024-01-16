@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -5,6 +7,9 @@ from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import CustomUserCreationForm 
 from .models import *
 
 
@@ -43,23 +48,27 @@ def signup(request):
     error_message= ""
     if request.method =='POST':
         # create a form with info passed in through Req.Post
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             # create new user if form is valid
             user = form.save()
             login(request, user)
             return redirect("vehicle_create")
         else:
+            print(form.errors)
             error_message= " Invalid. Please try again!"
     # clear form after user creation
-    form = UserCreationForm
+    form = CustomUserCreationForm
     # pass data to html to display
     context = {'form': form, 'error_message': error_message}
     return render (request, 'registration/signup.html', context)
 # ------------------------------------------------------------------------------------------#
-class VehicleList(ListView):
+class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
     template_name = 'vehicles/index.html'
+
+    def get_queryset(self):
+        return Vehicle.objects.filter(user=self.request.user)
 
 
 class CreateVehicle(CreateView):
@@ -84,9 +93,14 @@ def vehicle_detail(request, vehicle_id):
     return render(request, 'vehicles/detail.html', {'vehicle':vehicle})
 
 # ------------------------------------------------------------------------------------------#
-class TripList(ListView):
+class TripList(LoginRequiredMixin, ListView):
     model = Trip
     template_name= 'trips/index.html'
+
+    def get_queryset(self):
+        return Trip.objects.filter(vehicle__user = self.request.user)
+
+
 class CreateTrip(CreateView):
     model = Trip
     fields='__all__'

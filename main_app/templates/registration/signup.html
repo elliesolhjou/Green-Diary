@@ -2,13 +2,16 @@
 {% block content %}
 
 <h1>Sign Up</h1>
-
 <p class="red-text">{{ error_message }}</p>
+<p class="red-text">{{ form.non_field_errors }}</p>
 
 <form method="POST" action="{% url 'signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" class="btn" value="Sign Up">
+    {% csrf_token %}
+    {{ form.username.label_tag }} {{ form.username }} {{ form.username.errors }}
+    {{ form.email.label_tag }} {{ form.email }} {{ form.email.errors }}
+    {{ form.password1.label_tag }} {{ form.password1 }} {{ form.password1.errors }}
+    {{ form.password2.label_tag }} {{ form.password2 }} {{ form.password2.errors }}
+    <input type="submit" class="btn" value="Sign Up">
 </form>
 
 {% endblock %}

@@ -319,13 +319,18 @@ class CreateTrip(CreateView):
         distance = form.cleaned_data['distance']
         trip.cost = distance * vehicle.carbon
 
-        trip.save()
 
 
         # set cost based on distance
-
+        vehicle.mileage += trip.distance
         user.output += trip.carbon / 2204
         user.cost += trip.cost
+
+        user.save()
+        vehicle.save()
+        trip.save()
+
+        print(user.output, trip.carbon)
         
         return redirect('vehicle_detail', vehicle_id=vehicle_id)
 

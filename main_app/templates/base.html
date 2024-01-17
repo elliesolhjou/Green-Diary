@@ -22,7 +22,7 @@
   </main>
 
   <footer class="fixed-bottom text-end transparent">
-    &copy; 2024 Green Diary &nbsp;
+    &copy 2024 Green Diary &nbsp
   </footer>
 
   <div class="background position-absolute top-0 start-0 w-100 h-100"></div>
@@ -30,5 +30,23 @@
 <script>
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-  </script>
+</script>
+<script type="text/javascript">
+  // listen for dropdown changes in vehicle creation
+  // update query params based on selections
+  document.addEventListener('DOMContentLoaded', function() {
+      var makeDropdown = document.getElementById('make')
+      var modelDropdown = document.getElementById('model')
+      
+      makeDropdown.addEventListener('change', function() {
+          var selectedMake = this.value
+          window.location.href = '?make=' + selectedMake
+      })
+      modelDropdown.addEventListener('change', function() {
+          var selectedModel = this.value
+          var selectedMake = makeDropdown.value
+          window.location.href = '?make=' + selectedMake + '&model=' + selectedModel
+      })
+  })
+</script>
 </html>

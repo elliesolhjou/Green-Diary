@@ -16,56 +16,41 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.http import require_http_methods
-from django.http import JsonResponse
 from .forms import CustomUserCreationForm, VehicleForm
 from .models import *
 from .api import get_makes
 
 
 # API Fns:
-@require_http_methods(["GET", "POST"])
-def add_or_edit_vehicle(request, vehicle_id=None):
-    if vehicle_id:
-        vehicle = Vehicle.objects.get(pk=vehicle_id)
-        form = VehicleForm(request.POST or None, instance=vehicle)
-    else:
-        vehicle = None
-        form = VehicleForm(request.POST or None)
-    
-    if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        make_id = request.GET.get('make_id')
-        if make_id:
-            models = get_models_for_make(make_id)
-            return JsonResponse({'models': models})
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('vehicle_list')  # Redirect to vehicle list or detail view as appropriate
-
-    # Ensure this part is outside of the 'if' block
-    car_makes = get_makes()  # This will be called on both GET and POST if form is not valid
-    print(car_makes) 
-    context = {
-        'form': form,
-        'car_makes': car_makes,
-        'vehicle_id': vehicle_id,
-    }
-
-    return render(request, 'add_or_edit_vehicle.html', context)  # Make sure this template exists
-
-def get_models(request):
-    make_id = request.GET.get('make_id')
-    if make_id:
-        try:
-            # Call the function to get the models based on make_id
-            models = get_models_for_make(make_id)
-            # Make sure models is a list of tuples (id, name) or similar structure
-            return JsonResponse({'models': models})
-        except Exception as e:  # Catch any exceptions and return an error response
-            return JsonResponse({'error': str(e)}, status=500)
-    else:
-        # If make_id is not provided, return an empty list or an error message
-        return JsonResponse({'models': []})
+# @require_http_methods(["GET", "POST"])
+# def add_or_edit_vehicle(request, vehicle_id=None):
+#     if vehicle_id:
+#         vehicle = Vehicle.objects.get(pk=vehicle_id)
+#         form = VehicleForm(request.POST or None, instance=vehicle)
+#     else:
+#         vehicle = None
+#         form = VehicleForm(request.POST or None)
+#     
+#     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+#         make_id = request.GET.get('make_id')
+#         if make_id:
+#             models = get_models_for_make(make_id)
+#             return JsonResponse({'models': models})
+# 
+#     if request.method == 'POST' and form.is_valid():
+#         form.save()
+#         return redirect('vehicle_list')  # Redirect to vehicle list or detail view as appropriate
+# 
+#     # Ensure this part is outside of the 'if' block
+#     car_makes = get_makes()  # This will be called on both GET and POST if form is not valid
+#     print(car_makes) 
+#     context = {
+#         'form': form,
+#         'car_makes': car_makes,
+#         'vehicle_id': vehicle_id,
+#     }
+# 
+#     return render(request, 'add_or_edit_vehicle.html', context)  # Make sure this template exists
 
 
 
@@ -85,10 +70,6 @@ def home(request):
         trip.output = int(trip.distance * pounds)
         trip.cost = int(trip.output / 48)
 
-    makes = get_makes()
-    models = get_models('1a51451b-c27e-4e24-92f5-2432ca359a41')
-    estimate = get_estimate('e16aa48e-4b94-441d-87a0-b12baf385cec')
-
     # for make in makes:
     #     print(make['data']['id'])
     #     print(make['data']['attributes']['name'])
@@ -97,8 +78,6 @@ def home(request):
     #     print(model['data']['id'])
     #     print(model['data']['attributes']['name'])
     #     print(model['data']['attributes']['year'])
-
-    print(estimate)
 
 
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
@@ -148,9 +127,9 @@ def get_estimate(vehicle_id):
     
     json_data = json.dumps(data)
 
-    response = requests.get(api_url, data=json_data, headers=headers)
+    response = requests.post(api_url, data=json_data, headers=headers)
 
-    if response.status_code == 200:
+    if response.status_code == 201:
         return response.json()
     else:
         print(f"Error: {response.status_code}, {response.text}")
@@ -212,26 +191,94 @@ class VehicleList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Vehicle.objects.filter(user=self.request.user)
 
-class CreateVehicleForm(forms.ModelForm):
-    class Meta:
-        model = Vehicle
-        fields=['make', 'model', 'year', 'fuel']
-        widgets = {
-            'date': DateInput(attrs={'type': 'date'}),
-        }
+
 
 class CreateVehicle(CreateView):
     model = Vehicle
-    form_class = CreateVehicleForm
-    # makes = get_makes()
+    fields = ['make', 'model']
 
-    def get_success_url(self):
-        vehicle = self.object
-        return reverse('vehicle_detail', kwargs={'vehicle_id': vehicle.id})
+    def get_context_data(self, **kwargs):
+        context = super(CreateVehicle, self).get_context_data(**kwargs)
+        
+        # fetch make data
+        makes_response = get_makes()
+
+        # build and sort makes list
+        makes_data = [
+            {
+                'id': item['data']['id'], 
+                'name': item['data']['attributes']['name']
+            } 
+            for item in makes_response
+        ]
+        makes_data = sorted(makes_data, key=lambda x: x['name'])
+
+        # get make query param if make selected
+        selected_make = self.request.GET.get('make')
+
+        # fetch models and update models dropdown
+        if selected_make:
+            models_response = get_models(selected_make)
+            model_data = [
+                {
+                    'id': item['data']['id'], 
+                    'name': item['data']['attributes']['name'],
+                    'year': item['data']['attributes']['year']
+                } 
+                for item in models_response
+            ]
+
+            model_data = sorted(model_data, key=lambda x: x['name'])
+            context['models'] = model_data if len(model_data) > 0 else []
+
+        # use context to set dropdown options
+        context['makes'] = makes_data if len(makes_data) > 0 else []
+
+        return context
     
-    def get_queryset(self):
-        return Vehicle.objects.filter(vehicle__user = self.request.user)
+    def form_valid(self, form):        
+        vehicle = form.save(commit=False)
+
+        # get selected model ID
+        selected_model = form.cleaned_data.get('model')
+        
+        # {"data":{
+        #         "id":"fe61a2be-a69f-4016-b2a0-3203433d0afc",
+        #         "type":"estimate",
+        #         "attributes":{
+        #             "distance_value":100.0,
+        #             "vehicle_make":"Infiniti",
+        #             "vehicle_model":"FX35 AWD",
+        #             "vehicle_year":2003,
+        #             "vehicle_model_id":"c7ea1f8d-b6bf-4618-9bd2-88c12313c171",
+        #             "distance_unit":"mi",
+        #             "estimated_at":"2024-01-17T16:11:20.476Z",
+        #             "carbon_g":52276,
+        #             "carbon_lb":115.25,
+        #             "carbon_kg":52.28,
+        #             "carbon_mt":0.05
+        #         }
+        #     }
+        # }
+        
+        # fetch estimate for specified vehicle
+        estimate = get_estimate(selected_model)
+
+        # update data for model creation
+        vehicle.make = estimate['data']['attributes']['vehicle_make']
+        vehicle.model = estimate['data']['attributes']['vehicle_model']
+        vehicle.year = estimate['data']['attributes']['vehicle_year']
+        vehicle.fuel = 'R'
+        vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
+        vehicle.user = self.request.user
+
+        # save data to model
+        vehicle.save()
+
+        return super(CreateVehicle, self).form_valid(form)
     
+    
+
 class UpdateVehicle(UpdateView):
     model= Vehicle
     fields='__all__'

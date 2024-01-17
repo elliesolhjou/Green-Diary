@@ -41,5 +41,10 @@ urlpatterns=[
     path('accounts/vehicle/<int:vehicle_id>/trip/<int:trip_id>/', views.trip_detail, name='trip_detail'),
 
 
-    path('accounts/signup/', views.signup, name='signup')
+    path('accounts/signup/', views.signup, name='signup'),
+
+    # GOOGLE OAUTH
+    path("logout", views.google_logout, name="google_logout" )
+
+
 ]

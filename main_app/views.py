@@ -83,7 +83,9 @@ def home(request):
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
 
 
-
+def google_logout(request):
+    logout(request)
+    return redirect("/")
 
 def get_makes():
     api_url = 'https://www.carboninterface.com/api/v1/vehicle_makes'

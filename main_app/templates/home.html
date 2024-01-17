@@ -7,6 +7,11 @@
             <div class="col leaf-btn rounded-5 border-dark">
                 <img src="{% static '/images/leaf.svg' %}">
             </div>
+            <div class = 'google-signin'>
+                {% load socialaccount %}
+                <h2>Google Login</h2>
+                <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
+            </div>
         </div>
     </div>
 {% endblock %}

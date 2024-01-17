@@ -179,10 +179,13 @@ def get_login_redirect():
 
     return '/' 
 
+        
 # ------------------------------------------------------------------------------------------#
 class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
     template_name = 'vehicles/index.html'
+    
+    
 
     def dispatch(self, request, *args, **kwargs):
         redirect_url = get_login_redirect()
@@ -190,8 +193,6 @@ class VehicleList(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return Vehicle.objects.filter(user=self.request.user)
-
-
 
 class CreateVehicle(CreateView):
     model = Vehicle
@@ -212,6 +213,7 @@ class CreateVehicle(CreateView):
             for item in makes_response
         ]
         makes_data = sorted(makes_data, key=lambda x: x['name'])
+        makes_data.insert(0, {'id': '', 'name': '--- Select Make ---'})
 
         # get make query param if make selected
         selected_make = self.request.GET.get('make')
@@ -229,7 +231,8 @@ class CreateVehicle(CreateView):
             ]
 
             model_data = sorted(model_data, key=lambda x: x['name'])
-            context['models'] = model_data if len(model_data) > 0 else []
+            model_data.insert(0, {'id': '', 'name': '--- Select Model ---'})
+            context['models'] = model_data if len(model_data) > 1 else []
 
         # use context to set dropdown options
         context['makes'] = makes_data if len(makes_data) > 0 else []
@@ -241,25 +244,6 @@ class CreateVehicle(CreateView):
 
         # get selected model ID
         selected_model = form.cleaned_data.get('model')
-        
-        # {"data":{
-        #         "id":"fe61a2be-a69f-4016-b2a0-3203433d0afc",
-        #         "type":"estimate",
-        #         "attributes":{
-        #             "distance_value":100.0,
-        #             "vehicle_make":"Infiniti",
-        #             "vehicle_model":"FX35 AWD",
-        #             "vehicle_year":2003,
-        #             "vehicle_model_id":"c7ea1f8d-b6bf-4618-9bd2-88c12313c171",
-        #             "distance_unit":"mi",
-        #             "estimated_at":"2024-01-17T16:11:20.476Z",
-        #             "carbon_g":52276,
-        #             "carbon_lb":115.25,
-        #             "carbon_kg":52.28,
-        #             "carbon_mt":0.05
-        #         }
-        #     }
-        # }
         
         # fetch estimate for specified vehicle
         estimate = get_estimate(selected_model)
@@ -277,7 +261,6 @@ class CreateVehicle(CreateView):
 
         return super(CreateVehicle, self).form_valid(form)
     
-    
 
 class UpdateVehicle(UpdateView):
     model= Vehicle
@@ -289,6 +272,8 @@ class DeleteVehicle(DeleteView):
 
 
 def vehicle_detail(request, vehicle_id):
+
+    user = request.user.userprofile
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
 
@@ -296,7 +281,7 @@ def vehicle_detail(request, vehicle_id):
         print(trip.vehicle_id)
 
     vehicle= Vehicle.objects.get(id=vehicle_id)
-    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips})
+    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips, 'output': user.output, 'cost': user.cost})
 
 # ------------------------------------------------------------------------------------------#
 class TripList(LoginRequiredMixin, ListView):
@@ -306,7 +291,7 @@ class TripList(LoginRequiredMixin, ListView):
 class CreateTripForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['date', 'departure', 'destination', 'co_em', 'distance']
+        fields = ['date', 'departure', 'destination', 'carbon', 'distance']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
         }
@@ -320,19 +305,33 @@ class CreateTrip(CreateView):
     form_class = CreateTripForm
 
     def form_valid(self, form):
+        trip = form.save(commit=False)
+        
+
+        # set vehicle id reference
         vehicle_id = self.kwargs['vehicle_id']
         form.instance.vehicle_id = vehicle_id
-        form.save()
+        
+        # define vehicle and user
+        vehicle = Vehicle.objects.get(id=vehicle_id)
+        user = UserProfile.objects.get(user=vehicle.user)
+        
+        distance = form.cleaned_data['distance']
+        trip.cost = distance * vehicle.carbon
 
+        trip.save()
+
+
+        # set cost based on distance
+
+        user.output += trip.carbon / 2204
+        user.cost += trip.cost
+        
         return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 class UpdateTrip(UpdateView):
     model = Trip
     fields = '__all__'
-
-# class DeleteTrip(DeleteView):
-#     model=Trip
-#     success_url = '/'
 
 def delete_trip(request, vehicle_id, pk):
     trip = get_object_or_404(Trip, vehicle_id=vehicle_id, pk=pk)

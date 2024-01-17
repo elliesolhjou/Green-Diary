@@ -16,6 +16,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from .forms import CustomUserCreationForm, VehicleForm
 from .models import *
@@ -196,7 +197,7 @@ class VehicleList(LoginRequiredMixin, ListView):
 
 
 
-class CreateVehicle(CreateView):
+class CreateVehicle(LoginRequiredMixin, CreateView):
     model = Vehicle
     fields = ['make', 'model']
 
@@ -282,16 +283,16 @@ class CreateVehicle(CreateView):
     
     
 
-class UpdateVehicle(UpdateView):
+class UpdateVehicle(LoginRequiredMixin, UpdateView):
     model= Vehicle
     fields='__all__'
 
-class DeleteVehicle(DeleteView):
+class DeleteVehicle(LoginRequiredMixin, DeleteView):
     model = Vehicle
     success_url = '/'
 
-
-def vehicle_detail(request, vehicle_id):
+@login_required
+def vehicle_detail( request, vehicle_id):
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
 
@@ -318,7 +319,7 @@ class CreateTripForm(forms.ModelForm):
         return Trip.objects.filter(vehicle__user = self.request.user)
 
 
-class CreateTrip(CreateView):
+class CreateTrip(LoginRequiredMixin, CreateView):
     model = Trip
     form_class = CreateTripForm
 
@@ -329,7 +330,7 @@ class CreateTrip(CreateView):
 
         return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
-class UpdateTrip(UpdateView):
+class UpdateTrip(LoginRequiredMixin, UpdateView):
     model = Trip
     fields = '__all__'
 
@@ -337,12 +338,13 @@ class UpdateTrip(UpdateView):
 #     model=Trip
 #     success_url = '/'
 
+@login_required
 def delete_trip(request, vehicle_id, pk):
     trip = get_object_or_404(Trip, vehicle_id=vehicle_id, pk=pk)
     trip.delete()
     return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
-
+@login_required
 def trip_detail(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
     return render(request, 'trips/detail.html', {'trip': trip})

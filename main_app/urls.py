@@ -23,6 +23,11 @@ urlpatterns=[
     path('accounts/vehicle/<int:vehicle_id>/delete', views.DeleteVehicle.as_view(), name='vehicle_delete'),
     path('vehicle/<int:vehicle_id>/', views.vehicle_detail, name='vehicle_detail'),
 
+    # for API
+    path('accounts/vehicle/add', views.add_or_edit_vehicle, name='vehicle_create'),
+    
+
+
 
     # TRIP CBV
     path('accounts/vehicle/<int:vehicle_id>/trip/', views.TripList.as_view(), name = 'trip_list'),
@@ -32,8 +37,6 @@ urlpatterns=[
     
     path('accounts/vehicle/<int:vehicle_id>/trip/<int:trip_id>/', views.trip_detail, name='trip_detail'),
 
-    # for API
-    # path('weather/<str:city>/', views.weather),
 
     path('accounts/signup/', views.signup, name='signup')
 ]

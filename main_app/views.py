@@ -13,9 +13,37 @@ from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CustomUserCreationForm 
+from .forms import CustomUserCreationForm, VehicleForm
 from .models import *
+from .api import get_makes
+
+
+# API Fns:
+def add_or_edit_vehicle(request, vehicle_id=None):
+    if vehicle_id:
+        vehicle = Vehicle.objects.get(pk=vehicle_id)
+        form = VehicleForm(request.POST or None, instance=vehicle)
+    else:
+        vehicle = None
+        form = VehicleForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('vehicle_list')  # Redirect to vehicle list or detail view as appropriate
+
+    # Ensure this part is outside of the 'if' block
+    car_makes = get_makes()  # This will be called on both GET and POST if form is not valid
+    context = {
+        'form': form,
+        'car_makes': car_makes,
+        'vehicle_id': vehicle_id,
+    }
+    return render(request, 'add_or_edit_vehicle.html', context)  # Make sure this template exists
+
+
+
 
 
 # Create your views here.
@@ -169,18 +197,17 @@ class CreateVehicleForm(forms.ModelForm):
             'date': DateInput(attrs={'type': 'date'}),
         }
 
-
-    def get_queryset(self):
-        return Vehicle.objects.filter(vehicle__user = self.request.user)
-
-
 class CreateVehicle(CreateView):
     model = Vehicle
     form_class = CreateVehicleForm
+    # makes = get_makes()
 
     def get_success_url(self):
         vehicle = self.object
         return reverse('vehicle_detail', kwargs={'vehicle_id': vehicle.id})
+    
+    def get_queryset(self):
+        return Vehicle.objects.filter(vehicle__user = self.request.user)
     
 class UpdateVehicle(UpdateView):
     model= Vehicle

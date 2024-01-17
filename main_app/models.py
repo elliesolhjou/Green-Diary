@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 
+
 FUEL = (('P', 'Premium'), ('R', 'Regular'), ('M', 'Mid-Grade'))
 # Create your models here.
 

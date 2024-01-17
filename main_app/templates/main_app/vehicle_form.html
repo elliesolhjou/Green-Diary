@@ -7,10 +7,21 @@
   {% else %}
     <h1>Add Vehicle</h1>
   {%endif%}
-<form action="" method="POST">
+<form action="{% url 'make_api'%}" method="POST">
     {%csrf_token%}
     <table class="w-100">
         {{form.as_table}}
+        <tr>
+          <th>Make:</th>
+          <td>
+              <select name="make" id="make">
+                  <option value="">Select Make</option>
+                  {% for make in car_makes %}
+                      <option value="{{ make }}">{{ make }}</option>
+                  {% endfor %}
+              </select>
+          </td>
+      </tr>
     </table>
     <div class="row w-100 mt-4">
       <div class="col-4">

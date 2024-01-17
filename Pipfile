@@ -9,6 +9,8 @@ psycopg2-binary = "*"
 requests = "*"
 python-dotenv = "*"
 django-bootstrap-v5 = "*"
+django-heroku = "*"
+gunicorn = "*"
 
 [dev-packages]
 

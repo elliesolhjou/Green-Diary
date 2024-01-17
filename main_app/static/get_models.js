@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var modelDropdown = document.getElementById('model');
 
     makeDropdown.onchange = function() {
-        var makeId = this.value;
         modelDropdown.innerHTML = '<option value="">Select Model</option>';
 
         if (makeId) {

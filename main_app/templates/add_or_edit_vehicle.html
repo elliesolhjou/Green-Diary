@@ -1,13 +1,13 @@
 {% extends 'base.html'%}
+{% load static %}
+
 
 {% block content%}
 <div class="container">
     <h1>{% if vehicle_id %}Edit Vehicle{% else %}Add Vehicle{% endif %}</h1>
     
-    <form method="post" action="">
+    <form method="POST" action="">
         {% csrf_token %}
-
-        <!-- Car Makes Dropdown -->
         <label for="make">Make:</label>
         <select name="make" id="make">
             <option value="">Select Make</option>
@@ -16,10 +16,18 @@
             {% endfor %}
         </select>
         
+        <!-- Model Dropdown, initially empty -->
+        <label for="model">Model:</label>
+        <select name="model" id="model">
+            <option value="">Select Model</option>
+        </select>
+        
         <!-- Submit and Cancel Buttons -->
         <input type="submit" value="Submit" class="btn btn-primary">
         <a href="{% url 'vehicle_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
+
+<script src="{% static 'get_models.js' %}" defer></script>
 
 {% endblock %}

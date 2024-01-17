@@ -15,12 +15,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
 from .forms import CustomUserCreationForm, VehicleForm
 from .models import *
 from .api import get_makes
 
 
 # API Fns:
+@require_http_methods(["GET", "POST"])
 def add_or_edit_vehicle(request, vehicle_id=None):
     if vehicle_id:
         vehicle = Vehicle.objects.get(pk=vehicle_id)
@@ -28,6 +31,12 @@ def add_or_edit_vehicle(request, vehicle_id=None):
     else:
         vehicle = None
         form = VehicleForm(request.POST or None)
+    
+    if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        make_id = request.GET.get('make_id')
+        if make_id:
+            models = get_models_for_make(make_id)
+            return JsonResponse({'models': models})
 
     if request.method == 'POST' and form.is_valid():
         form.save()
@@ -35,14 +44,28 @@ def add_or_edit_vehicle(request, vehicle_id=None):
 
     # Ensure this part is outside of the 'if' block
     car_makes = get_makes()  # This will be called on both GET and POST if form is not valid
+    print(car_makes) 
     context = {
         'form': form,
         'car_makes': car_makes,
         'vehicle_id': vehicle_id,
     }
+
     return render(request, 'add_or_edit_vehicle.html', context)  # Make sure this template exists
 
-
+def get_models(request):
+    make_id = request.GET.get('make_id')
+    if make_id:
+        try:
+            # Call the function to get the models based on make_id
+            models = get_models_for_make(make_id)
+            # Make sure models is a list of tuples (id, name) or similar structure
+            return JsonResponse({'models': models})
+        except Exception as e:  # Catch any exceptions and return an error response
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        # If make_id is not provided, return an empty list or an error message
+        return JsonResponse({'models': []})
 
 
 

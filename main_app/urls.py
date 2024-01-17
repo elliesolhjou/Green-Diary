@@ -3,6 +3,7 @@ from . import views
 
 
 
+
 urlpatterns=[
     path('', views.home, name='home'),
     # path('user/', views.user, name='user_profile'),
@@ -18,13 +19,15 @@ urlpatterns=[
 
     # VEHICLE CBV
     path('accounts/vehicle/', views.VehicleList.as_view(), name='vehicle_list'),
-    path('accounts/vehicle/create/', views.CreateVehicle.as_view(), name='vehicle_create'),
+    # path('accounts/vehicle/create/', views.CreateVehicle.as_view(), name='vehicle_create'),
     path('accounts/vehicle/<int:vehicle_id>/update', views.UpdateVehicle.as_view(), name='vehicle_update'),
     path('accounts/vehicle/<int:vehicle_id>/delete', views.DeleteVehicle.as_view(), name='vehicle_delete'),
     path('vehicle/<int:vehicle_id>/', views.vehicle_detail, name='vehicle_detail'),
 
     # for API
     path('accounts/vehicle/add', views.add_or_edit_vehicle, name='vehicle_create'),
+     # AJAX URL for getting vehicle models based on the selected make
+    path('ajax/get-models/', views.get_models, name='get-models'),
     
 
 

@@ -1,1 +1,1 @@
-web: gunicorn green_diary.wsgi
+web: gunicorn greendiary.wsgi

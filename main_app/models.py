@@ -11,7 +11,7 @@ FUEL = (('P', 'Premium'), ('R', 'Regular'), ('M', 'Mid-Grade'))
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    output = models.IntegerField(default=0)
+    output = models.FloatField(default=0)
     cost = models.IntegerField(default=0)
 
     def __str__(self):

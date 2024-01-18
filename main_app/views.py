@@ -18,43 +18,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.http import require_http_methods
 from .forms import CustomUserCreationForm, VehicleForm
 from .models import *
-from .api import get_makes
+from .api import *
 
-
-# API Fns:
-# @require_http_methods(["GET", "POST"])
-# def add_or_edit_vehicle(request, vehicle_id=None):
-#     if vehicle_id:
-#         vehicle = Vehicle.objects.get(pk=vehicle_id)
-#         form = VehicleForm(request.POST or None, instance=vehicle)
-#     else:
-#         vehicle = None
-#         form = VehicleForm(request.POST or None)
-#     
-#     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-#         make_id = request.GET.get('make_id')
-#         if make_id:
-#             models = get_models_for_make(make_id)
-#             return JsonResponse({'models': models})
-# 
-#     if request.method == 'POST' and form.is_valid():
-#         form.save()
-#         return redirect('vehicle_list')  # Redirect to vehicle list or detail view as appropriate
-# 
-#     # Ensure this part is outside of the 'if' block
-#     car_makes = get_makes()  # This will be called on both GET and POST if form is not valid
-#     print(car_makes) 
-#     context = {
-#         'form': form,
-#         'car_makes': car_makes,
-#         'vehicle_id': vehicle_id,
-#     }
-# 
-#     return render(request, 'add_or_edit_vehicle.html', context)  # Make sure this template exists
-
-
-
-# Create your views here.
 
 def home(request):
     vehicles = Vehicle.objects.all()
@@ -65,76 +30,7 @@ def home(request):
     except Vehicle.DoesNotExist:
         vehicle = None
 
-    for trip in trips:
-        pounds = 300 / 453.592
-        trip.output = int(trip.distance * pounds)
-        trip.cost = int(trip.output / 48)
-
-    # for make in makes:
-    #     print(make['data']['id'])
-    #     print(make['data']['attributes']['name'])
-
-    # for model in models:
-    #     print(model['data']['id'])
-    #     print(model['data']['attributes']['name'])
-    #     print(model['data']['attributes']['year'])
-
-
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
-
-
-
-
-def get_makes():
-    api_url = 'https://www.carboninterface.com/api/v1/vehicle_makes'
-    headers = {
-        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg'
-    }
-
-    response = requests.get(api_url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-
-def get_models(make_id):
-    api_url = f'https://www.carboninterface.com/api/v1/vehicle_makes/{make_id}/vehicle_models'
-    headers = {
-        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg'
-    }
-
-    response = requests.get(api_url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-
-def get_estimate(vehicle_id):
-    api_url = 'https://www.carboninterface.com/api/v1/estimates'
-    headers = {
-        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg',
-        'Content-Type': 'application/json'
-    }
-
-    data = {
-        "type": "vehicle",
-        "distance_unit": "mi",
-        "distance_value": 100,
-        "vehicle_model_id": vehicle_id
-    }
-    
-    json_data = json.dumps(data)
-
-    response = requests.post(api_url, data=json_data, headers=headers)
-
-    if response.status_code == 201:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-
-
 
 # ------------------------------------------------------------------------------------------#
                                             # CBV 
@@ -291,7 +187,7 @@ class TripList(LoginRequiredMixin, ListView):
 class CreateTripForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['date', 'departure', 'destination', 'carbon', 'distance']
+        fields = ['date', 'departure', 'destination', 'distance']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
         }
@@ -317,7 +213,10 @@ class CreateTrip(CreateView):
         user = UserProfile.objects.get(user=vehicle.user)
         
         distance = form.cleaned_data['distance']
-        trip.cost = distance * vehicle.carbon
+
+        pounds = vehicle.carbon / 453.592
+        trip.carbon = pounds * distance
+        trip.cost = int(trip.carbon / 48)
 
 
 

@@ -1,7 +1,8 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Vehicle
+from .models import *
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -45,3 +46,13 @@ class VehicleForm(forms.ModelForm):
 #             super(VehicleForm, self).__init__(*args, **kwargs)
 #             # Dynamically set the choices for the 'make' field
 #             self.fields['make'].choices = get_makes()
+
+    modes = (('driving', 'driving'),('walking', 'walking'), ('biking', 'biking'), ('transit', 'transit') )
+
+class DistanceForm(ModelForm):
+    from_location = forms.ModelChoiceField(label = 'Departure', required=True, queryset = Locations.objects.all())
+    to_location= forms.ModelChoiceField(label = 'Destination', required=True, queryset = Locations.objects.all())
+
+    class Meta:
+        model = Distances
+        exclude = ['created_at', 'distance_km', 'duration_mins', 'duration_traffic_mins']

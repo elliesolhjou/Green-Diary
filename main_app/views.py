@@ -18,12 +18,14 @@ import googlemaps
 from django.conf import settings
 from datetime import datetime
 from typing import Any
-from .forms import CustomUserCreationForm, VehicleForm
+from .forms import *
 from .models import *
 from .api import get_makes
 import json
 import os
 import requests
+from .forms import DistanceForm
+from datetime import datetime
 
 
 # API Fns:
@@ -405,3 +407,68 @@ class GeocodingView(View):
 
         return render(request, self.template_name, context)
 
+class DistanceView(View):
+    template_name = 'distance.html'
+
+    def get(self, request):
+        form = DistanceForm
+        distances = Distances.objects.all()
+        context = {
+            'form': form,
+            'distances': distances
+        }
+
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        form = DistanceForm(request.POST)
+        if form.is_valid():
+            distance_instance = form.save(commit=False)
+
+            # Fetching location information from the form
+            from_location_info = form.cleaned_data['from_location']
+            to_location_info = form.cleaned_data['to_location']
+
+            # Preparing address strings
+            from_address_string = f"{from_location_info.address}, {from_location_info.zipcode}, {from_location_info.city}, {from_location_info.country}"
+            to_address_string = f"{to_location_info.address}, {to_location_info.zipcode}, {to_location_info.city}, {to_location_info.country}"
+
+            # Initializing Google Maps client
+            gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+
+            # Making the API call
+            calculate = gmaps.distance_matrix(
+                from_address_string,
+                to_address_string,
+
+                departure_time=datetime.now()
+            )
+
+            # Extracting the distance and duration from the Google Maps API response
+            distance_data = calculate['rows'][0]['elements'][0]
+            if distance_data['status'] == 'OK':
+                # Check if duration data is available
+                if 'duration' in distance_data and 'value' in distance_data['duration']:
+                    duration_secs = distance_data['duration']['value']
+                    duration_mins = duration_secs / 60  # Convert seconds to minutes
+                    distance_instance.duration_mins = duration_mins
+
+                # Assigning values to the distance_instance fields
+                distance_instance.distance_km = distance_data['distance']['value'] / 1609.34  # Convert meters to miles
+                distance_instance.duration_mins = duration_mins
+
+                # Saving the instance
+                distance_instance.save()
+
+                # Redirect to the desired view
+                return redirect('my_distance_view')
+            else:
+                # Handle the case where the API call is not successful
+                print("API call failed:", distance_data['status'])
+                return render(request, self.template_name, {'form': form, 'error': 'API call failed'})
+
+        else:
+            print(form.errors)
+            return render(request, self.template_name, {'form': form})
+
+        

@@ -47,7 +47,22 @@ class Locations(models.Model):
     country = models.CharField(max_length=500, blank = True, null=True)
     address = models.CharField(max_length=500, blank = True, null=True)
     trip=models.ForeignKey(Trip, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add =True, blank = True, null=True)
 
     lat = models.CharField(max_length=500, blank = True, null=True)
     lng= models.CharField(max_length=500, blank = True, null=True)
     place_id = models.CharField(max_length=500, blank = True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Distances(models.Model):
+    from_location = models.ForeignKey(Locations, related_name='from_location', on_delete = models.CASCADE)
+    to_location = models.ForeignKey(Locations, related_name='to_location', on_delete = models.CASCADE)
+    distance_km = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    duration_mins= models.DecimalField(max_digits=10, decimal_places=2)
+    duration_traffic_mins= models.DecimalField(max_digits=10, decimal_places=2, blank = True, null=True)
+    created_at = models.DateTimeField(auto_now_add =True, blank = True, null=True)
+
+    def __str__(self):
+        return self.id

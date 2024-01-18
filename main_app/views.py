@@ -11,10 +11,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import login
+from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from .forms import CustomUserCreationForm, VehicleForm
 from .models import *
@@ -83,7 +85,9 @@ def home(request):
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
 
 
-
+def google_logout(request):
+    logout(request)
+    return redirect("/")
 
 def get_makes():
     api_url = 'https://www.carboninterface.com/api/v1/vehicle_makes'
@@ -177,9 +181,8 @@ def get_login_redirect():
     except Vehicle.DoesNotExist:
         pass 
 
-    return '/' 
+    return '/'         
 
-        
 # ------------------------------------------------------------------------------------------#
 class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
@@ -194,7 +197,9 @@ class VehicleList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Vehicle.objects.filter(user=self.request.user)
 
-class CreateVehicle(CreateView):
+
+
+class CreateVehicle(LoginRequiredMixin, CreateView):
     model = Vehicle
     fields = ['make', 'model']
 
@@ -261,12 +266,13 @@ class CreateVehicle(CreateView):
 
         return super(CreateVehicle, self).form_valid(form)
     
+    
 
-class UpdateVehicle(UpdateView):
+class UpdateVehicle(LoginRequiredMixin, UpdateView):
     model= Vehicle
     fields='__all__'
 
-class DeleteVehicle(DeleteView):
+class DeleteVehicle(LoginRequiredMixin, DeleteView):
     model = Vehicle
     success_url = '/'
 
@@ -300,7 +306,7 @@ class CreateTripForm(forms.ModelForm):
         return Trip.objects.filter(vehicle__user = self.request.user)
 
 
-class CreateTrip(CreateView):
+class CreateTrip(LoginRequiredMixin, CreateView):
     model = Trip
     form_class = CreateTripForm
 
@@ -334,16 +340,21 @@ class CreateTrip(CreateView):
         
         return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
-class UpdateTrip(UpdateView):
+class UpdateTrip(LoginRequiredMixin, UpdateView):
     model = Trip
     fields = '__all__'
 
+# class DeleteTrip(DeleteView):
+#     model=Trip
+#     success_url = '/'
+
+@login_required
 def delete_trip(request, vehicle_id, pk):
     trip = get_object_or_404(Trip, vehicle_id=vehicle_id, pk=pk)
     trip.delete()
     return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
-
+@login_required
 def trip_detail(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
     return render(request, 'trips/detail.html', {'trip': trip})

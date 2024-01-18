@@ -10,6 +10,8 @@ requests = "*"
 python-dotenv = "*"
 django-bootstrap-v5 = "*"
 django-heroku = "*"
+gunicorn = "*"
+django-heroku = "*"
 django-on-heroku = "*"
 gunicorn = "*"
 

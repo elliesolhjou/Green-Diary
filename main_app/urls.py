@@ -48,7 +48,7 @@ urlpatterns=[
 
 
     # GOOGLE MAP API
-    path("geocoding/<int:pk>", GeocodingView.as_view(), name='my_geocoding_view')
+    path("geocoding/<int:pk>", views.GeocodingView.as_view(), name='my_geocoding_view')
 
 
 ]

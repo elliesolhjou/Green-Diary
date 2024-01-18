@@ -38,3 +38,16 @@ class Trip(models.Model):
     
     class Meta:
         ordering = ['-date']
+
+
+class Locations(models.Model):
+    name = models.CharField(max_length=500)
+    zipcode = models.CharField(max_length=500, blank = True, null=True)
+    city = models.CharField(max_length=500, blank = True, null=True)
+    country = models.CharField(max_length=500, blank = True, null=True)
+    address = models.CharField(max_length=500, blank = True, null=True)
+    trip=models.ForeignKey(Trip, on_delete=models.CASCADE, null=True)
+
+    lat = models.CharField(max_length=500, blank = True, null=True)
+    lng= models.CharField(max_length=500, blank = True, null=True)
+    place_id = models.CharField(max_length=500, blank = True, null=True)

@@ -14,6 +14,8 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+import googlemaps
+from django.conf import settings
 from datetime import datetime
 from typing import Any
 from .forms import CustomUserCreationForm, VehicleForm
@@ -351,4 +353,55 @@ def trip_detail(request, trip_id):
     return render(request, 'trips/detail.html', {'trip': trip})
 
 # ------------------------------------------------------------------------------------------#
-class GeocodingView(ListView):
+class GeocodingView(View):
+    template_name = 'geocoding.html'
+
+    def get(self, request, pk):
+        location = Locations.objects.get(pk=pk)
+        result = None
+        if location.lng and location.lat and location.place_id != None:
+            lat = location.lat
+            lng = location.lng
+            place_id= location.place_id
+            label = "from my db"
+        
+        elif location.address and location.country and location.zipcode and location.city!=None:
+            address_string = str(location.address)+", "+ str(location.zipcode)+", "+str(location.city)+", "+str(location.country)
+            gmaps = googlemaps.Client(key = settings.GOOGLE_API_KEY)
+            result = gmaps.geocode(address_string)[0]
+            lat = result.get('geometry', {}).get('location', {}).get('lat', None)
+            lng = result.get('geometry', {}).get('location', {}).get('lng', None)
+            place_id = result.get('place_id', {})
+            label = "from my API call"
+
+            # lat = location1.get('lat', None)
+            # lng = location1.get('lng', None)
+
+            # geometry = result.get('geometry', {})
+            # location1 = geometry.get('location', {})
+
+            # saving to DB
+            location.lat = lat
+            location.lng = lng
+            location.place_id = place_id
+            location.save()
+            
+
+        else:
+            result = ""
+            lat =""
+            lng=""
+            place_id = ""
+            label = "no call made"
+        # to pass data to template:
+        context = {
+            'location':location,
+            'result' : result,
+            'lat': lat,
+            'lng':lng,
+            'place_id': place_id,
+            'label': label
+        }
+
+        return render(request, self.template_name, context)
+

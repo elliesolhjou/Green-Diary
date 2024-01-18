@@ -44,7 +44,11 @@ urlpatterns=[
     path('accounts/signup/', views.signup, name='signup'),
 
     # GOOGLE OAUTH
-    path("logout", views.google_logout, name="google_logout" )
+    path("logout", views.google_logout, name="google_logout" ),
+
+
+    # GOOGLE MAP API
+    path("geocoding/<int:pk>", GeocodingView.as_view(), name='my_geocoding_view')
 
 
 ]

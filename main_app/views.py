@@ -1,11 +1,7 @@
-import json
-import os
 from django import forms
-from datetime import datetime
+from django.views import View
 from django.forms.widgets import DateInput
-from typing import Any
 from django.db.models.query import QuerySet
-import requests
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
@@ -18,9 +14,14 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+from datetime import datetime
+from typing import Any
 from .forms import CustomUserCreationForm, VehicleForm
 from .models import *
 from .api import get_makes
+import json
+import os
+import requests
 
 
 # API Fns:
@@ -350,3 +351,4 @@ def trip_detail(request, trip_id):
     return render(request, 'trips/detail.html', {'trip': trip})
 
 # ------------------------------------------------------------------------------------------#
+class GeocodingView(ListView):

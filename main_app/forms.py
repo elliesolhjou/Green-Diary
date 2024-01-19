@@ -55,4 +55,4 @@ class DistanceForm(ModelForm):
 
     class Meta:
         model = Distances
-        exclude = ['created_at', 'distance_km', 'duration_mins', 'duration_traffic_mins']
+        exclude = ['created_at', 'distance']

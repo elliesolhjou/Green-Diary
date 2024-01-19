@@ -2,42 +2,16 @@
 {% load static %}
 
 {% block content %}
-    <div class="title">Google Maps Distance API</div>
-        <div class="linkholder" id="address">
-            {% if distance.count == 0 %}
-                <div>No data available</div>
-            {% else %}
-                <table>
-
-                    <tbody>
-                        {% for a in distances %}
-                        <tr>
-                            <!-- <td>{{a.id}}</td>
-                            <td>{{a.from_location}}</td>
-                            <td>{{a.to_location}}</td>
-                            <td>{{a.mode}}</td> -->
-                            <td> Distance is {{a.distance_km}} mile</td>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
-        </div>
-        <form action="" method="POST">
-            {%csrf_token%}
-            <div> 
-                <div class="distance-form">
-                    {{form.from_location}}
-                </div>
-                <div class="distance-form">
-                    {{form.to_location }}
-                </div>
-                <div class="distance-form">
-                    {{form.mode}}
-                </div>
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Calculate Distance">
+    </form>
+    <div class="title">
+        <h1>Distance Calculation Result</h1>
+        <p>Distance: {{ distance_miles }} miles</p>
     </div>
+
 {% endblock %}
 
 

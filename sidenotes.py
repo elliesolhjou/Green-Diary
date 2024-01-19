@@ -273,16 +273,19 @@ class CreateVehicle(LoginRequiredMixin, CreateView):
         # fetch estimate for specified vehicle
         estimate = get_estimate(selected_model)
 
-        # update data for model creation
-        vehicle.make = estimate['data']['attributes']['vehicle_make']
-        vehicle.model = estimate['data']['attributes']['vehicle_model']
-        vehicle.year = estimate['data']['attributes']['vehicle_year']
-        vehicle.fuel = 'R'
-        vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
-        vehicle.user = self.request.user
-
-        # save data to model
-        vehicle.save()
+        # Check if estimate is not None before proceeding
+        if estimate is not None:
+            # update data for model creation
+            vehicle.make = estimate['data']['attributes']['vehicle_make']
+            vehicle.model = estimate['data']['attributes']['vehicle_model']
+            vehicle.year = estimate['data']['attributes']['vehicle_year']
+            vehicle.fuel = 'R'
+            vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
+        else:
+            # Handle the case where estimate is None
+            # You might want to set default values or handle the error appropriately
+            # For example, you could redirect to an error page or show a message to the user
+            pass
 
         return super(CreateVehicle, self).form_valid(form)
     
@@ -298,14 +301,29 @@ class DeleteVehicle(LoginRequiredMixin, DeleteView):
 
 @login_required
 def vehicle_detail( request, vehicle_id):
-    vehicles = Vehicle.objects.all()
-    trips = Trip.objects.all()
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    trips = Trip.objects.filter(vehicle=vehicle)
+
+    # Initialize Google Maps client
+    gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
 
     for trip in trips:
-        print(trip.vehicle_id)
+        if not trip.distance:  # Assuming 'distance' is a field on Trip model
+            # Perform the Google Maps Distance Matrix API query
+            departure_address = f'{trip.departure.address}, {trip.departure.city}'
+            destination_address = f'{trip.destination.address}, {trip.destination.city}'
+            distance_result = gmaps.distance_matrix(departure_address, destination_address)
 
-    vehicle= Vehicle.objects.get(id=vehicle_id)
-    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips})
+            # Check if the API call was successful
+            if distance_result['status'] == 'OK':
+                distance_info = distance_result['rows'][0]['elements'][0]
+                if distance_info['status'] == 'OK':
+                    # Save the distance in meters to the trip and save it
+                    trip.distance = distance_info['distance']['value']
+                    trip.save()
+
+    # Now all trips have distances calculated and saved
+    return render(request, 'vehicle_detail.html', {'vehicle': vehicle, 'trips': trips})
 
 # ------------------------------------------------------------------------------------------#
 class TripList(LoginRequiredMixin, ListView):
@@ -315,6 +333,7 @@ class TripList(LoginRequiredMixin, ListView):
 class CreateTripForm(forms.ModelForm):
     class Meta:
         model = Trip
+        # fields = ['date', 'departure', 'destination', 'co_em', 'distance']
         fields = ['date', 'departure', 'destination']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
@@ -327,13 +346,57 @@ class CreateTripForm(forms.ModelForm):
 class CreateTrip(LoginRequiredMixin, CreateView):
     model = Trip
     form_class = CreateTripForm
-
     def form_valid(self, form):
-        vehicle_id = self.kwargs['vehicle_id']
-        form.instance.vehicle_id = vehicle_id
-        form.save()
+            try:
+                vehicle_id = self.kwargs['vehicle_id']
+                form.instance.vehicle_id = vehicle_id
+                form.save()
+                return super().form_valid(form)
+            except Exception as e:
+                print(f"Error saving trip: {e}")
+                # Handle the error appropriately
+                return render(request, self.template_name, {'form': form, 'error': 'Error saving trip'})
 
-        return redirect('vehicle_detail', vehicle_id=vehicle_id)
+    def post(self, request, **kwargs):
+            vehicle_id = kwargs.get('vehicle_id', None)
+            form = CreateTripForm(request.POST)
+            if form.is_valid():
+                distance_instance = form.save(commit=False)
+
+                # Fetching location information from the form
+                departure_info = form.cleaned_data['departure']
+                destination_info = form.cleaned_data['destination']
+
+                # Preparing address strings
+                departure_address_string = f"{departure_info.address}, {departure_info.zipcode}, {departure_info.city}, {departure_info.country}"
+                destination_address_string = f"{destination_info.address}, {destination_info.zipcode}, {destination_info.city}, {destination_info.country}"
+
+                # Initializing Google Maps client
+                gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+
+                # Making the API call
+                calculate = gmaps.distance_matrix(
+                    departure_address_string,
+                    destination_address_string,
+                    departure_time=datetime.now()
+                )
+
+                # Extracting the distance from the Google Maps API response
+                distance_data = calculate['rows'][0]['elements'][0]
+                if distance_data['status'] != 'OK':
+                    # If API call fails, render the form with error
+                    print("API call failed:", distance_data['status'])
+                    return render(request, self.template_name, {'form': form, 'error': 'API call failed'})
+
+                # Assigning values to the distance_instance fields
+                distance_instance.distance = distance_data['distance']['value'] / 1609.34  # Convert meters to miles
+
+                # Saving the instance
+                distance_instance.save()
+
+                # Redirect to the vehicle detail page
+                return redirect('vehicle_detail', vehicle_id=vehicle_id)
+
 
 class UpdateTrip(LoginRequiredMixin, UpdateView):
     model = Trip
@@ -411,63 +474,64 @@ class DistanceView(View):
     template_name = 'distance.html'
 
     def get(self, request):
-        form = DistanceForm()
+        form = DistanceForm
         distances = Distances.objects.all()
         context = {
             'form': form,
             'distances': distances
         }
+
         return render(request, self.template_name, context)
     
     def post(self, request):
+        # form = DistanceForm(request.POST)
         form = DistanceForm(request.POST)
         if form.is_valid():
-            departure_location = form.cleaned_data.get('from_location')
-            destination_location = form.cleaned_data.get('to_location')
+            distance_instance = form.save(commit=False)
 
-            # Print statements for debugging
-            print("Departure Location:", departure_location)
-            print("Destination Location:", destination_location)
+            # Fetching location information from the form
+            from_location_info = form.cleaned_data['from_location']
+            to_location_info = form.cleaned_data['to_location']
 
-            if not departure_location or not destination_location:
-                form.add_error(None, "Please select both departure and destination locations.")
+            # Preparing address strings
+            from_address_string = f"{from_location_info.address}, {from_location_info.zipcode}, {from_location_info.city}, {from_location_info.country}"
+            to_address_string = f"{to_location_info.address}, {to_location_info.zipcode}, {to_location_info.city}, {to_location_info.country}"
+
+            # Initializing Google Maps client
+            gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+
+            # Making the API call
+            calculate = gmaps.distance_matrix(
+                from_address_string,
+                to_address_string,
+
+                departure_time=datetime.now()
+            )
+
+            # Extracting the distance and duration from the Google Maps API response
+            distance_data = calculate['rows'][0]['elements'][0]
+            if distance_data['status'] == 'OK':
+                # Check if duration data is available
+                if 'duration' in distance_data and 'value' in distance_data['duration']:
+                    duration_secs = distance_data['duration']['value']
+
+
+                # Assigning values to the distance_instance fields
+                distance_instance.distance = distance_data['distance']['value'] / 1609.34  # Convert meters to miles
+
+
+                # Saving the instance
+                distance_instance.save()
+
+                # Redirect to the desired view
+                return redirect('my_distance_view')
             else:
-                try:
-                    # Initialize Google Maps client
-                    gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+                # Handle the case where the API call is not successful
+                print("API call failed:", distance_data['status'])
+                return render(request, self.template_name, {'form': form, 'error': 'API call failed'})
 
-                    # Get the addresses from the selected locations
-                    departure_address = departure_location.address
-                    destination_address = destination_location.address
+        else:
+            print(form.errors)
+            return render(request, self.template_name, {'form': form})
 
-                    # Calculate distance using Google Maps Distance Matrix API
-                    distance_result = gmaps.distance_matrix(departure_address, destination_address)
-                    distance_info = distance_result['rows'][0]['elements'][0]
-
-                    # Check if the distance calculation was successful
-                    if distance_info['status'] == 'OK':
-                        distance_meters = distance_info['distance']['value']
-                        distance_miles = distance_meters / 1609.34  # Convert meters to miles
-
-                        # Prepare context with the calculated distance
-                        context = {
-                            'form': form,
-                            'distance_miles': distance_miles,
-                            'distances': Distances.objects.all()  # Update or exclude as per your requirement
-                        }
-
-                        # Render a template with the calculated distance
-                        return render(request, 'distance.html', context)
-                    else:
-                        form.add_error(None, "Distance calculation failed.")
-                except Exception as e:
-                    # Print the exception for debugging
-                    print("Error during distance calculation:", e)
-                    form.add_error(None, "Distance calculation failed.")
-
-        # Re-render the page with the form (and possibly errors)
-        context = {
-            'form': form,
-            'distances': Distances.objects.all()  # Update or exclude as per your requirement
-        }
-        return render(request, self.template_name, context)
+        

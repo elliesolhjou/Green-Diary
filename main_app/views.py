@@ -82,11 +82,13 @@ class VehicleList(LoginRequiredMixin, ListView):
     template_name = 'vehicles/index.html'
 
     def dispatch(self, request, *args, **kwargs):
-        redirect_url = get_login_redirect()
-        return redirect(redirect_url)
+        if not self.get_queryset().exists():
+            return redirect('vehicle_create')
+        return super().dispatch(request, *args, **kwargs)
     
     def get_queryset(self):
         return Vehicle.objects.filter(user=self.request.user)
+
 
 class CreateVehicle(CreateView):
     model = Vehicle
@@ -237,13 +239,10 @@ def delete_vehicle(request, vehicle_id):
 
 
 def vehicle_detail(request, vehicle_id):
-    if not vehicle_id: return redirect(request, 'home.html')
+    if not vehicle_id: return redirect(request, 'vehicle_form.html')
     user = request.user.userprofile
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
-
-    for trip in trips:
-        print(trip.vehicle_id)
 
     vehicle= Vehicle.objects.get(id=vehicle_id)
     return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips, 'output': user.output, 'cost': user.cost})

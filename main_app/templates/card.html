@@ -2,7 +2,7 @@
 {% load static %}
 
 {% for trip in trips %}
-    {% if trip.vehicle.id == vehicle.id %}
+    {% if trip.vehicle.id == vehicle.id and trip.vehicle.user == request.user %}
         <div class="trip-card row py-3 px-2 justify-content-center align-items-center">
             <div class="col-1">
                 <img class="marker" src="{% static 'images/marker.svg' %}">

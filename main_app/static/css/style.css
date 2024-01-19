@@ -5,16 +5,14 @@
 }
 body {
   min-height: 100vh;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
-
 nav {
   background: none;
 }
 main {
   width: 100%;
   max-width: 750px;
-  height: 100vh;
 }
 form {
   display: flex;
@@ -63,15 +61,39 @@ form a {
 .logo {
   max-height: clamp(50px, 8vmin, 75px);
 }
-
-.leaf-btn {
-  background: rgb(38, 187, 38);
-  padding: 10px 0;
+.login-container {
+  max-width: 400px;
 }
-.leaf-btn img{
+.login-btn {
+  background: rgb(38, 187, 38);
+  box-shadow: 5px 5px 5px rgb(135, 147, 134);
+  user-select: none;
+  cursor: pointer;
+}
+.login-btn:hover {
+  filter: brightness(120%);
+  box-shadow: 1px 1px 5px rgb(143, 154, 142);
+}
+.login-btn img{
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
   width: clamp(15px, 4vmin, 25px);
 }
-
+@media (max-width: 400) {
+  .login-btn img {
+    left: 2%;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+  }
+}
+.divider {
+  height: 5%;
+}
 .user {
   max-height: 50px
 }

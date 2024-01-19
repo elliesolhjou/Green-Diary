@@ -158,11 +158,70 @@ class CreateVehicle(CreateView):
 
 class UpdateVehicle(UpdateView):
     model= Vehicle
-    fields='__all__'
+    fields= ['make', 'model']
+    template_name = 'main_app/edit_form.html'
 
-# class DeleteVehicle(DeleteView):
-#     model = Vehicle
-#     success_url = '/'
+    def get_context_data(self, **kwargs):
+        context = super(UpdateVehicle, self).get_context_data(**kwargs)
+
+        # fetch make data
+        makes_response = get_makes()
+
+        # build and sort makes list
+        makes_data = [
+            {
+                'id': item['data']['id'], 
+                'name': item['data']['attributes']['name']
+            } 
+            for item in makes_response
+        ]
+        makes_data = sorted(makes_data, key=lambda x: x['name'])
+        makes_data.insert(0, {'id': '', 'name': '--- Select Make ---'})
+
+        # get make query param if make selected
+        selected_make = self.request.GET.get('make')
+
+        # fetch models and update models dropdown
+        if selected_make:
+            models_response = get_models(selected_make)
+            model_data = [
+                {
+                    'id': item['data']['id'], 
+                    'name': item['data']['attributes']['name'],
+                    'year': item['data']['attributes']['year']
+                } 
+                for item in models_response
+            ]
+
+            model_data = sorted(model_data, key=lambda x: x['name'])
+            model_data.insert(0, {'id': '', 'name': '--- Select Model ---'})
+            context['models'] = model_data if len(model_data) > 1 else []
+
+        # use context to set dropdown options
+        context['makes'] = makes_data if len(makes_data) > 0 else []
+
+        return context
+
+    def form_valid(self, form):
+        vehicle = form.save(commit=False)
+
+        # get selected model ID
+        selected_model = form.cleaned_data.get('model')
+        
+        # fetch estimate for specified vehicle
+        estimate = get_estimate(selected_model)
+
+        # update data for model creation
+        vehicle.make = estimate['data']['attributes']['vehicle_make']
+        vehicle.model = estimate['data']['attributes']['vehicle_model']
+        vehicle.year = estimate['data']['attributes']['vehicle_year']
+        vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
+
+        # save data to model
+        vehicle.save()
+
+        return super(UpdateVehicle, self).form_valid(form)
+
 
 def delete_vehicle(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, pk=vehicle_id)

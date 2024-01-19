@@ -65,7 +65,7 @@ form a {
   max-width: 400px;
 }
 .login-image {
-  width: 75%;
+  width: clamp(100px, 60%, 200px);
   border-radius: 50%;
 }
 .login-btn {

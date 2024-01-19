@@ -62,3 +62,8 @@ class LocationForm(ModelForm):
     class Meta:
         model = Locations
         exclude = ['created_at', 'place_id', 'lng', 'lat']
+
+class TripForm(ModelForm):
+    class Meta:
+        model= Trip
+        fields = ("date", "departure_txt", "destination_txt", "distance")

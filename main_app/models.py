@@ -40,6 +40,8 @@ class Trip(models.Model):
     date = models.DateField()
     co_em= models.IntegerField()
     distance= models.IntegerField() 
+    departure_txt =models.TextField(max_length=255)
+    destination_txt =models.TextField(max_length=255)
     departure= models.ForeignKey(Locations, related_name='trip_departure', on_delete=models.CASCADE)
     destination= models.ForeignKey(Locations, related_name='trip_destination', on_delete=models.CASCADE)
     vehicle=models.ForeignKey(Vehicle, on_delete=models.CASCADE, null=True)

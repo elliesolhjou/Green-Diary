@@ -28,39 +28,6 @@ from .forms import DistanceForm
 from datetime import datetime
 
 
-# API Fns:
-# @require_http_methods(["GET", "POST"])
-# def add_or_edit_vehicle(request, vehicle_id=None):
-#     if vehicle_id:
-#         vehicle = Vehicle.objects.get(pk=vehicle_id)
-#         form = VehicleForm(request.POST or None, instance=vehicle)
-#     else:
-#         vehicle = None
-#         form = VehicleForm(request.POST or None)
-#     
-#     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-#         make_id = request.GET.get('make_id')
-#         if make_id:
-#             models = get_models_for_make(make_id)
-#             return JsonResponse({'models': models})
-# 
-#     if request.method == 'POST' and form.is_valid():
-#         form.save()
-#         return redirect('vehicle_list')  # Redirect to vehicle list or detail view as appropriate
-# 
-#     # Ensure this part is outside of the 'if' block
-#     car_makes = get_makes()  # This will be called on both GET and POST if form is not valid
-#     print(car_makes) 
-#     context = {
-#         'form': form,
-#         'car_makes': car_makes,
-#         'vehicle_id': vehicle_id,
-#     }
-# 
-#     return render(request, 'add_or_edit_vehicle.html', context)  # Make sure this template exists
-
-
-
 # Create your views here.
 
 def home(request):
@@ -76,15 +43,6 @@ def home(request):
         pounds = 300 / 453.592
         trip.output = int(trip.distance * pounds)
         trip.cost = int(trip.output / 48)
-
-    # for make in makes:
-    #     print(make['data']['id'])
-    #     print(make['data']['attributes']['name'])
-
-    # for model in models:
-    #     print(model['data']['id'])
-    #     print(model['data']['attributes']['name'])
-    #     print(model['data']['attributes']['year'])
 
 
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
@@ -202,7 +160,6 @@ class VehicleList(LoginRequiredMixin, ListView):
         return Vehicle.objects.filter(user=self.request.user)
 
 
-
 class CreateVehicle(LoginRequiredMixin, CreateView):
     model = Vehicle
     fields = ['make', 'model']
@@ -248,43 +205,10 @@ class CreateVehicle(LoginRequiredMixin, CreateView):
     
     def form_valid(self, form):        
         vehicle = form.save(commit=False)
-
         # get selected model ID
-        selected_model = form.cleaned_data.get('model')
-        
-        # {"data":{
-        #         "id":"fe61a2be-a69f-4016-b2a0-3203433d0afc",
-        #         "type":"estimate",
-        #         "attributes":{
-        #             "distance_value":100.0,
-        #             "vehicle_make":"Infiniti",
-        #             "vehicle_model":"FX35 AWD",
-        #             "vehicle_year":2003,
-        #             "vehicle_model_id":"c7ea1f8d-b6bf-4618-9bd2-88c12313c171",
-        #             "distance_unit":"mi",
-        #             "estimated_at":"2024-01-17T16:11:20.476Z",
-        #             "carbon_g":52276,
-        #             "carbon_lb":115.25,
-        #             "carbon_kg":52.28,
-        #             "carbon_mt":0.05
-        #         }
-        #     }
-        # }
-        
+        selected_model = form.cleaned_data.get('model')      
         # fetch estimate for specified vehicle
         estimate = get_estimate(selected_model)
-
-        # update data for model creation
-        vehicle.make = estimate['data']['attributes']['vehicle_make']
-        vehicle.model = estimate['data']['attributes']['vehicle_model']
-        vehicle.year = estimate['data']['attributes']['vehicle_year']
-        vehicle.fuel = 'R'
-        vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
-        vehicle.user = self.request.user
-
-        # save data to model
-        vehicle.save()
-
         return super(CreateVehicle, self).form_valid(form)
     
     
@@ -313,36 +237,31 @@ class TripList(LoginRequiredMixin, ListView):
     model = Trip
     template_name= 'trips/index.html'
 
-class CreateTripForm(forms.ModelForm):
-    class Meta:
-        model = Trip
-        fields = ['date', 'departure', 'destination']
-        widgets = {
-            'date': DateInput(attrs={'type': 'date'}),
-        }
+# class CreateTripForm(forms.ModelForm):
+#     class Meta:
+#         model = Trip
+#         fields = ['date', 'departure', 'destination']
+#         widgets = {
+#             'date': DateInput(attrs={'type': 'date'}),
+#         }
         
-    def get_queryset(self):
-        return Trip.objects.filter(vehicle__user = self.request.user)
+#     def get_queryset(self):
+#         return Trip.objects.filter(vehicle__user = self.request.user)
 
+# class CreateTrip(LoginRequiredMixin, CreateView):
+#     model = Trip
+#     form_class = CreateTripForm
 
-class CreateTrip(LoginRequiredMixin, CreateView):
-    model = Trip
-    form_class = CreateTripForm
+#     def form_valid(self, form):
+#         vehicle_id = self.kwargs['vehicle_id']
+#         form.instance.vehicle_id = vehicle_id
+#         form.save()
 
-    def form_valid(self, form):
-        vehicle_id = self.kwargs['vehicle_id']
-        form.instance.vehicle_id = vehicle_id
-        form.save()
-
-        return redirect('vehicle_detail', vehicle_id=vehicle_id)
+#         return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 class UpdateTrip(LoginRequiredMixin, UpdateView):
     model = Trip
     fields = '__all__'
-
-# class DeleteTrip(DeleteView):
-#     model=Trip
-#     success_url = '/'
 
 @login_required
 def delete_trip(request, vehicle_id, pk):
@@ -512,3 +431,138 @@ class DistanceView(View):
 
             }
         return render(request, 'distance.html', context)
+    
+
+class CreateTrip(LoginRequiredMixin, CreateView):
+    model = Trip
+    form_class = TripForm
+    template_name = 'main_app/trip_form.html'
+
+   
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vehicle_id'] = self.kwargs.get('vehicle_id')
+        # Add your additional context here
+        context['form_one'] = DistanceForm()
+        context['form_two'] = LocationForm()
+        context['distances'] = Distances.objects.all()
+        context['locations'] = Locations.objects.all()
+        context['vehicle_id'] = self.kwargs.get('vehicle_id') 
+        # Do not include 'trip_form' as it's added by default
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if 'form_trip_submit' in request.POST:
+            return self.post_form_trip(request)
+        elif 'form_one_submit' in request.POST:
+            return self.post_form_one(request)
+        elif 'form_two_submit' in request.POST:
+            return self.post_form_two(request)
+        else:
+            return super(CreateTrip, self).post(request, *args, **kwargs)
+    
+    def post_form_trip(self,request):
+        form_trip = TripForm(request.POST)
+        if form_trip.is_valid():
+            form = form_trip.save()
+            context = {
+            'form':TripForm(),   
+            'form_one': DistanceForm(),  # Initialize a new form for distance calculation
+            'form_two': LocationForm(),
+            'distances': Distances.objects.all(),
+            'locations': Locations.objects.all(),
+
+            }
+            
+        return render(request, 'distance.html', context)
+        
+    def post_form_one(self, request):
+        form = DistanceForm(request.POST)
+        if form.is_valid():
+            departure_location = form.cleaned_data.get('from_location')
+            destination_location = form.cleaned_data.get('to_location')
+
+            # Print statements for debugging
+            print("Departure Location:", departure_location)
+            print("Destination Location:", destination_location)
+
+            if not departure_location or not destination_location:
+                form.add_error(None, "Please select both departure and destination locations.")
+            else:
+                try:
+                    # Initialize Google Maps client
+                    gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+
+                    # Get the addresses from the selected locations
+                    departure_address = departure_location.address
+                    destination_address = destination_location.address
+
+                    # Calculate distance using Google Maps Distance Matrix API
+                    distance_result = gmaps.distance_matrix(departure_address, destination_address)
+                    distance_info = distance_result['rows'][0]['elements'][0]
+
+                    # Check if the distance calculation was successful
+                    if distance_info['status'] == 'OK':
+                        distance_meters = distance_info['distance']['value']
+                        distance_miles = round(float(distance_meters / 1609.34 ),2) # Convert meters to miles
+
+                        # Create a new instance of the Distances model and save it to the database
+                        distance_record = Distances(
+                            from_location=departure_location,  # Assign the location instance
+                            to_location=destination_location,  # Assign the location instance
+                            distance=distance_miles
+                        )
+                        distance_record.save()
+
+                        # Prepare context with the calculated distance
+                        context = {
+                            'form': form,
+                            'form_two': LocationForm(),
+                            'form_one': DistanceForm(),
+                            'distance_miles': distance_miles,
+                            'departure_location':departure_location,
+                            'destination_location':destination_location
+
+                        }
+
+                        # Render a template with the calculated distance
+                        return render(request, 'distance.html', context)
+                    else:
+                        form.add_error(None, "Distance calculation failed.")
+                except Exception as e:
+                    # Print the exception for debugging
+                    print("Error during distance calculation:", e)
+                    form.add_error(None, "Distance calculation failed.")
+        save_form_one = form.save()
+
+        # Re-render the page with the form (and possibly errors)
+        context = {
+            'form_one': save_form_one,
+            'form_two': LocationForm(),
+            'form_trip':TripForm(),
+            'distance_mile':distance_miles,
+            'distances': Distances.objects.all(),  
+            'locations': Locations.objects.all()
+        }
+
+
+        return render(request, self.template_name, context)
+    
+    def post_form_two(self,request):
+        form_address = LocationForm(request.POST)
+        if form_address.is_valid():
+            form = form_address.save()
+            context = {
+            'form_one': DistanceForm(),  # Initialize a new form for distance calculation
+            'form_two': LocationForm(),
+            'form_trip':TripForm(),
+            'distances': Distances.objects.all(),
+            'locations': Locations.objects.all(),
+
+            }
+        return render(request, 'distance.html', context)
+    
+    def form_valid(self, form):
+        form.instance.vehicle = Vehicle.objects.get(pk=self.kwargs.get('vehicle_id'))
+        form.save()
+        return super(CreateTrip, self).form_valid(form)

@@ -56,3 +56,9 @@ class DistanceForm(ModelForm):
     class Meta:
         model = Distances
         exclude = ['created_at', 'distance', 'duration_mins']
+
+
+class LocationForm(ModelForm):
+    class Meta:
+        model = Locations
+        exclude = ['created_at', 'place_id', 'lng', 'lat']

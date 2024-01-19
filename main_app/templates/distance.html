@@ -1,18 +1,38 @@
-{% extends 'base.html' %} 
-{% load static %}
+{% extends 'base.html' %} {% load static %} {% block content %}
+<br />
+<br />
+<br />
+<br />
+<div>
+  <h1>Distance Calculation Result</h1>
+  <form method="post">
+    {% csrf_token %} {{ form_one.as_p }}
+    <input type="submit" name="form_one_submit" value="Calculate Distance" />
+  </form>
+  <br />
 
-{% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Calculate Distance">
-    </form>
-    <div class="title">
-        <h1>Distance Calculation Result</h1>
-        <p>Distance: {{ distance_miles }} miles</p>
-    </div>
+  <div class="title">
+    {% if distance_miles == None%}
+        <p>Please select Departure and Destination</p>
+    {% elif distance_miles < 2 %}
+        <p> The distance from {{departure_location}} to {{destination_location}} is {{ distance_miles }} mile</p>
+    {%else%}
+        <p> The distance from {{departure_location}} to {{destination_location}} is  {{ distance_miles }} miles</p>
+    {% endif %}
+  </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<div>
+  <h1>Add New Address:</h1>
+  <form action="" method="POST">
+    {% csrf_token%} 
+    {{form_two.as_table}}
+    <input type="submit" name="form_two_submit" value="Submit New Address" />
+  </form>
+</div>
 
 {% endblock %}
-
-
-

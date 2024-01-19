@@ -412,15 +412,26 @@ class DistanceView(View):
     template_name = 'distance.html'
 
     def get(self, request):
-        form = DistanceForm()
+        form_one = DistanceForm()
+        form_two = LocationForm()
         distances = Distances.objects.all()
+        locations = Locations.objects.all()
         context = {
-            'form': form,
-            'distances': distances
+            'form_one':form_one,
+            'form_two': form_two,
+            'distances': distances,
+            'locations':locations
         }
         return render(request, self.template_name, context)
-    
     def post(self, request):
+        if 'form_one_submit' in request.POST:
+            return self.post_form_one(request)
+        elif 'form_two_submit' in request.POST:
+            return self.post_form_two(request)
+        else: 
+            return render(request, 'distance.html')
+        
+    def post_form_one(self, request):
         form = DistanceForm(request.POST)
         if form.is_valid():
             departure_location = form.cleaned_data.get('from_location')
@@ -448,7 +459,7 @@ class DistanceView(View):
                     # Check if the distance calculation was successful
                     if distance_info['status'] == 'OK':
                         distance_meters = distance_info['distance']['value']
-                        distance_miles = distance_meters / 1609.34  # Convert meters to miles
+                        distance_miles = round(float(distance_meters / 1609.34 ),2) # Convert meters to miles
 
                         # Create a new instance of the Distances model and save it to the database
                         distance_record = Distances(
@@ -461,8 +472,12 @@ class DistanceView(View):
                         # Prepare context with the calculated distance
                         context = {
                             'form': form,
+                            'form_two': LocationForm(),
+                            'form_one': DistanceForm(),
                             'distance_miles': distance_miles,
-                            'distances': Distances.objects.all()  # Update or exclude as per your requirement
+                            'departure_location':departure_location,
+                            'destination_location':destination_location
+
                         }
 
                         # Render a template with the calculated distance
@@ -473,10 +488,27 @@ class DistanceView(View):
                     # Print the exception for debugging
                     print("Error during distance calculation:", e)
                     form.add_error(None, "Distance calculation failed.")
+        save_form_one = form.save()
 
         # Re-render the page with the form (and possibly errors)
         context = {
-            'form': form,
-            'distances': Distances.objects.all()  #
+            'form_one': save_form_one,
+            'form_two': LocationForm(),
+            'distance_mile':distance_miles,
+            'distances': Distances.objects.all(),  
+            'locations': Locations.objects.all()
         }
         return render(request, self.template_name, context)
+    
+    def post_form_two(self,request):
+        form_address = LocationForm(request.POST)
+        if form_address.is_valid():
+            form = form_address.save()
+            context = {
+            'form_one': DistanceForm(),  # Initialize a new form for distance calculation
+            'form_two': LocationForm(),
+            'distances': Distances.objects.all(),
+            'locations': Locations.objects.all(),
+
+            }
+        return render(request, 'distance.html', context)

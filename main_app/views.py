@@ -248,7 +248,7 @@ def delete_vehicle(request, vehicle_id):
     user.save()
     vehicle.delete()
 
-    all_vehicles = Vehicle.objects.exclude(id=vehicle_id).order_by('id')
+    all_vehicles = Vehicle.objects.filter(user=vehicle.user).exclude(id=vehicle_id).order_by('id')
 
     try:
         new_vehicle = all_vehicles.first()

@@ -11,7 +11,9 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="vehicleMenu">
                     {% for vehicle_item in vehicles %}
-                    <a class="dropdown-item" href="{% url 'vehicle_detail' vehicle_item.id %}"><b>{{vehicle_item.year}}</b> {{vehicle_item.make}} - {{ vehicle_item.model }}</a>
+                        {% if vehicle_item.user == request.user %}
+                            <a class="dropdown-item" href="{% url 'vehicle_detail' vehicle_item.id %}"><b>{{vehicle_item.year}}</b> {{vehicle_item.make}} - {{ vehicle_item.model }}</a>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

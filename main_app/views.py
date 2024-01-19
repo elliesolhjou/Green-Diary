@@ -5,6 +5,7 @@ from datetime import datetime
 from django.forms.widgets import DateInput
 from typing import Any
 from django.db.models.query import QuerySet
+from django.db.models import Sum
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -48,6 +49,7 @@ class DeleteUser(DeleteView):
 def signup(request):
     error_message= ""
     if request.method =='POST':
+
         # create a form with info passed in through Req.Post
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -58,10 +60,13 @@ def signup(request):
         else:
             print(form.errors)
             error_message= " Invalid. Please try again!"
+
     # clear form after user creation
     form = CustomUserCreationForm
+
     # pass data to html to display
     context = {'form': form, 'error_message': error_message}
+
     return render (request, 'registration/signup.html', context)
 
 
@@ -228,7 +233,19 @@ class UpdateVehicle(UpdateView):
 
 
 def delete_vehicle(request, vehicle_id):
+    user = request.user.userprofile
     vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+
+    trips = vehicle.trip_set.all()
+    totals = trips.aggregate(total_carbon=Sum('carbon'), total_cost=Sum('cost'))
+    
+    total_carbon = totals.get('total_carbon', 0) or 0
+    total_cost = totals.get('total_cost', 0) or 0
+
+    user.output -= total_carbon / 2204
+    user.cost -= total_cost
+
+    user.save()
     vehicle.delete()
 
     all_vehicles = Vehicle.objects.exclude(id=vehicle_id).order_by('id')
@@ -273,7 +290,6 @@ class CreateTrip(CreateView):
     def form_valid(self, form):
         trip = form.save(commit=False)
         
-
         # set vehicle id reference
         vehicle_id = self.kwargs['vehicle_id']
         form.instance.vehicle_id = vehicle_id
@@ -287,8 +303,6 @@ class CreateTrip(CreateView):
         pounds = vehicle.carbon / 453.592
         trip.carbon = pounds * distance
         trip.cost = int(trip.carbon / 48)
-
-
 
         # set cost based on distance
         vehicle.mileage += trip.distance
@@ -308,8 +322,18 @@ class UpdateTrip(UpdateView):
     fields = '__all__'
 
 def delete_trip(request, vehicle_id, pk):
+    user = request.user.userprofile
     trip = get_object_or_404(Trip, vehicle_id=vehicle_id, pk=pk)
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+
+    vehicle.mileage -= trip.distance
+    user.output -= trip.carbon / 2204
+    user.cost -= trip.cost
+
+    vehicle.save()
+    user.save()
     trip.delete()
+
     return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 

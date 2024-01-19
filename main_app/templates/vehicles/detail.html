@@ -2,71 +2,73 @@
 {% load static %}
 
 {% block content %}
-    <div class="row d-flex align-items-start">
-        {% include 'vehicle.html' %}
-    </div>
-    <div class="row position-relative py-3 d-flex align-items-stretch" style="height: 65vh;">
-        <div class="col-12 h-100 p-0 pb-4 w-100 position-relative bg-white rounded-5 border overflow-hidden">
-            <div class="row m-0 shadow-sm">
-                <h1 class="text-lg ps-4 pe-2 pt-2 mb-0 bg-white text-start rounded-5">My Trips</h1>
-                <div class="col-12 light">
-                    <div class="row text-center text-reg pt-2">
-                        <div class="col-1"></div>
-                        <div class="col-4 p-0 pe-lg-4">Dates Traveled</div>
-                        <div class="col-2 p-0 pe-lg-4">Distance</div>
-                        <div class="col-2 p-0 pe-lg-3">Carbon</div>
-                        <div class="col-2 p-0">Cost</div>
-                        <div class="col-1"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row h-100 pb-4 d-flex flex-column justify-content-start align-items-center overflow-auto">
-                {% if trips %}
-                    <div class="col-12 w-100 mb-4 d-flex flex-column justify-content-center">
-                        {% include 'card.html' %}
-                    </div>
-                {% else %}
-                    <div class="container h-100 d-flex align-items-center justify-content-center">
-                        <p>Add a trip to get started</p>
-                    </div>
-                {% endif %}
-            </div>
-            <a href="{% url 'trip_create' vehicle.id %}" class="btn-green btn-add position-absolute top-0 end-0 d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Create a new trip">
-                New Trip
-            </a>
+    <div class="flex-container">
+        <div class="row d-flex align-items-start">
+            {% include 'vehicle.html' %}
         </div>
-    </div>
-    <div class="row pb-4 d-flex justify-content-around align-items-end mt-auto">
-        <div class="col-5 bg-white p-0 rounded-5 border">
-            <div class="row text-reg d-flex justify-content-center">
-                Total Impact
-            </div>
-            <div class="row py-2 h-70">
-                <div class="col-6 text-xl d-flex justify-content-end align-items-center">
-                    {{output|floatformat:2}}
+        <div class="row position-relative py-3 mt-4 d-flex justify-content-stretch">
+            <div class="col-12 p-0 pb-2 w-100 position-relative bg-white rounded-5 border overflow-hidden">
+                <div class="row m-0 shadow-sm">
+                    <h1 class="text-lg ps-4 pe-2 pt-2 mb-0 bg-white text-start rounded-5">My Trips</h1>
+                    <div class="col-12 light">
+                        <div class="row text-center text-reg pt-2">
+                            <div class="col-1"></div>
+                            <div class="col-4 p-0 pe-lg-4">Dates Traveled</div>
+                            <div class="col-2 p-0 pe-lg-4">Distance</div>
+                            <div class="col-2 p-0 pe-lg-3">Carbon</div>
+                            <div class="col-2 p-0">Cost</div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-6 d-flex justify-content-start align-items-center">
-                    <img class="w-50" src="{% static '/images/carbon.svg' %}">
+                <div class="row h-75 pb-4 d-flex flex-column justify-content-start align-items-center overflow-auto">
+                    {% if trips %}
+                        <div class="col-12 w-100 mb-4 d-flex flex-column justify-content-center">
+                            {% include 'card.html' %}
+                        </div>
+                    {% else %}
+                        <div class="container h-100 d-flex align-items-center justify-content-center">
+                            <p>Add a trip to get started</p>
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
-            <div class="row text-reg h-10 d-flex justify-content-center align-items-center">
-                metric tons
+                <a href="{% url 'trip_create' vehicle.id %}" class="btn-green btn-add position-absolute top-0 end-0 d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Create a new trip">
+                    New Trip
+                </a>
             </div>
         </div>
-        <div class="col-5 bg-white rounded-5 border">
-            <div class="row text-reg d-flex justify-content-center">
-                Total Cost
-            </div>
-            <div class="row py-2 h-70">
-                <div class="col-6 text-xl d-flex justify-content-end align-items-center">
-                    {{cost}}
+        <div class="row pb-4 d-flex justify-content-around align-items-end mt-auto">
+            <div class="col-5 bg-white p-0 rounded-5 border">
+                <div class="row text-reg d-flex justify-content-center">
+                    Total Impact
                 </div>
-                <div class="col-6 d-flex justify-content-start align-items-center">
-                    <img class="w-50" src="{% static '/images/tree.svg' %}">
+                <div class="row py-2 h-70">
+                    <div class="col-6 text-xl d-flex justify-content-end align-items-center">
+                        {{output|floatformat:2}}
+                    </div>
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <img class="w-50" src="{% static '/images/carbon.svg' %}">
+                    </div>
+                </div>
+                <div class="row text-reg h-10 d-flex justify-content-center align-items-center">
+                    metric tons
                 </div>
             </div>
-            <div class="row h-10 text-reg d-flex justify-content-center align-items-center">
-                trees to offset
+            <div class="col-5 bg-white rounded-5 border">
+                <div class="row text-reg d-flex justify-content-center">
+                    Total Cost
+                </div>
+                <div class="row py-2 h-70">
+                    <div class="col-6 text-xl d-flex justify-content-end align-items-center">
+                        {{cost}}
+                    </div>
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <img class="w-50" src="{% static '/images/tree.svg' %}">
+                    </div>
+                </div>
+                <div class="row h-10 text-reg d-flex justify-content-center align-items-center">
+                    trees to offset
+                </div>
             </div>
         </div>
     </div>

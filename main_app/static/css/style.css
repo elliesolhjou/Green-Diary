@@ -28,9 +28,7 @@ form tr {
 }
 form select,
 form textarea,
-form input[type="password"],
-form input[type="number"],
-form input[type="text"] {
+form input {
   width: 100%;
   height: clamp(35px, 3vmin, 45px);
   border-radius: 5px;

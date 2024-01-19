@@ -76,6 +76,7 @@ form a {
   box-shadow: 5px 5px 5px rgb(135, 147, 134);
   user-select: none;
   cursor: pointer;
+  transition: all .25s;
 }
 .login-btn:hover {
   filter: brightness(120%);
@@ -98,11 +99,8 @@ form a {
     height: 20px;
   }
 }
-.divider {
-  height: 5%;
-}
 .user {
-  max-height: 50px
+  max-height: 40px
 }
 .dropdown.show a:focus {
   box-shadow: none;

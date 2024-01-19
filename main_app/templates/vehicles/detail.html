@@ -1,4 +1,5 @@
 {% extends 'base.html' %} 
+{% load static %}
 
 {% block content %}
     <div class="row d-flex align-items-start">
@@ -39,11 +40,11 @@
                     {{output|floatformat:2}}
                 </div>
                 <div class="col-6 d-flex justify-content-start align-items-center">
-                    metric tons
+                    <img class="w-50" src="{% static '/images/carbon.svg' %}">
                 </div>
             </div>
             <div class="row text-reg h-10 d-flex justify-content-center align-items-center">
-                carbon released
+                metric tons released
             </div>
         </div>
         <div class="col-5 pb-3 bg-white rounded-5 border">
@@ -55,7 +56,7 @@
                     {{cost}}
                 </div>
                 <div class="col-6 d-flex justify-content-start align-items-center">
-                    trees
+                    <img class="w-50" src="{% static '/images/tree.svg' %}">
                 </div>
             </div>
             <div class="row h-10 text-reg d-flex justify-content-center align-items-center">

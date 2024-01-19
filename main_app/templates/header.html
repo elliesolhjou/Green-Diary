@@ -10,10 +10,10 @@
 
   <p class="fs-2 header-title">Green Diary</p>
 
-  {% if request.path != '/' %}
+  {% if request.path != '/' and request.path != '/accounts/login/' %}
     <div class="dropdown show">
       <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img src="{% static 'images/no-user.svg' %}" class="img-fluid user">
+        <img src="{% static 'images/menu.svg' %}" class="img-fluid user">
       </a>
       
       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">

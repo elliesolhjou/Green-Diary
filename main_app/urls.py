@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns=[
     path('', views.home, name='home'),
-    # path('user/', views.user, name='user_profile'),
+    path('about/', views.about, name='about'),
 
 
     # CBV Paths

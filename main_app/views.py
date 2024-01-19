@@ -143,7 +143,8 @@ def get_estimate(vehicle_id):
     else:
         print(f"Error: {response.status_code}, {response.text}")
 
-
+def about(request):
+    return render(request, 'about.html')
 
 # ------------------------------------------------------------------------------------------#
                                             # CBV 

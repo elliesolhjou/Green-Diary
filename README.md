@@ -15,10 +15,17 @@ Green Diary is an innovative CO2 tracking platform that helps you monitor the en
 - **Django**: A high-level Python Web framework that encourages rapid development and clean, pragmatic design.
 - **Bootstrap**: For responsive design, ensuring the application is mobile-friendly and accessible on various devices.
 - **PostgreSQL**: A powerful, open-source object-relational database system.
-- **HTML/CSS**: For structuring and styling the platform's web pages.
+- **HTML**: For structuring the platform's web pages.
+- **CSS**: For styling the platform's web pages.
 - **Django Authentication**: For managing user accounts and authentication within the application.
 - **Google Authentication**: To allow users to sign in with their Google accounts for a faster and secure login experience.
 - **Third-Party APIs**: Integration of external APIs to fetch vehicle data and calculate emissions accurately.
+
+
+## Live Website
+
+The live website will be available after deployment. This section will be updated with the URL to access the Green Diary platform.
+
 
 ## Getting Started
 
@@ -32,7 +39,6 @@ To get started with Green Diary:
 ## Contribution
 
 Contributions are welcome! If you have ideas for improvements or want to help in developing new features, please read the CONTRIBUTING.md file for guidelines.
-
 
 
 ## Acknowledgements

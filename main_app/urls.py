@@ -47,9 +47,12 @@ urlpatterns=[
     path("logout", views.google_logout, name="google_logout" ),
 
 
-    # GOOGLE MAP API
+
+# ICEBOX FEATURE:
+     # GOOGLE MAP API
     path("geocoding/<int:pk>", views.GeocodingView.as_view(), name='my_geocoding_view'),
     path("distance/", views.DistanceView.as_view(), name='my_distance_view'),
+    path("map/", views.MapView.as_view(), name='my_map_view'),
 
 
 ]

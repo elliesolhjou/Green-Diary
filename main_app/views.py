@@ -479,3 +479,7 @@ class DistanceView(View):
             'distances': Distances.objects.all()  #
         }
         return render(request, self.template_name, context)
+    
+
+
+    # MAP

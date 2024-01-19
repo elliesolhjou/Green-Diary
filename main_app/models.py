@@ -59,7 +59,7 @@ class Distances(models.Model):
     from_location = models.ForeignKey(Locations, related_name='from_location', on_delete = models.CASCADE)
     to_location = models.ForeignKey(Locations, related_name='to_location', on_delete = models.CASCADE)
     distance = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    duration_mins = models.IntegerField(default=0)
+    # duration_mins = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add =True, blank = True, null=True)
 
     def __str__(self):

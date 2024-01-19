@@ -64,7 +64,12 @@ form a {
 .login-container {
   max-width: 400px;
 }
+.login-image {
+  width: 75%;
+  border-radius: 50%;
+}
 .login-btn {
+  font-weight: bold;
   background: rgb(38, 187, 38);
   box-shadow: 5px 5px 5px rgb(135, 147, 134);
   user-select: none;

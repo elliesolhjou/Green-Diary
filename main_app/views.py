@@ -80,8 +80,6 @@ def get_login_redirect():
 class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
     template_name = 'vehicles/index.html'
-    
-    
 
     def dispatch(self, request, *args, **kwargs):
         redirect_url = get_login_redirect()
@@ -162,13 +160,25 @@ class UpdateVehicle(UpdateView):
     model= Vehicle
     fields='__all__'
 
-class DeleteVehicle(DeleteView):
-    model = Vehicle
-    success_url = '/'
+# class DeleteVehicle(DeleteView):
+#     model = Vehicle
+#     success_url = '/'
+
+def delete_vehicle(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+    vehicle.delete()
+
+    all_vehicles = Vehicle.objects.exclude(id=vehicle_id).order_by('id')
+
+    try:
+        new_vehicle = all_vehicles.first()
+        return redirect('vehicle_detail', vehicle_id=new_vehicle.id)
+    except:
+        return redirect('vehicle_create')
 
 
 def vehicle_detail(request, vehicle_id):
-
+    if not vehicle_id: return redirect(request, 'home.html')
     user = request.user.userprofile
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()

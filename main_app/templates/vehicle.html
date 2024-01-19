@@ -48,7 +48,7 @@
                     </a>
                 </div>
                 <div class="w-100 d-flex justify-content-center">
-                    <a href="#" class="red pb-1 w-100 w-sm-50 h-100 h-sm-50 rounded-4" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Remove current vehicle">
+                    <a href="{% url 'vehicle_delete' vehicle_id=vehicle.id %}" class="red pb-1 w-100 w-sm-50 h-100 h-sm-50 rounded-4" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Remove current vehicle">
                         <div>
                             -
                         </div>

@@ -542,7 +542,8 @@ class CreateTrip(LoginRequiredMixin, CreateView):
             'form_trip':TripForm(),
             'distance_mile':distance_miles,
             'distances': Distances.objects.all(),  
-            'locations': Locations.objects.all()
+            'locations': Locations.objects.all(),
+            'trip': Trip.objects.all()
         }
 
 

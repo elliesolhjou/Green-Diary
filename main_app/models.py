@@ -38,18 +38,20 @@ class Locations(models.Model):
 
 class Trip(models.Model):
     date = models.DateField()
-    co_em= models.IntegerField()
+    co_em= models.IntegerField(null=True)
     distance= models.IntegerField() 
     departure_txt =models.TextField(max_length=255)
     destination_txt =models.TextField(max_length=255)
     departure= models.ForeignKey(Locations, related_name='trip_departure', on_delete=models.CASCADE)
+
     destination= models.ForeignKey(Locations, related_name='trip_destination', on_delete=models.CASCADE)
+
     vehicle=models.ForeignKey(Vehicle, on_delete=models.CASCADE, null=True)
     
 
     def __str__(self):
         return f'Trip ID: {self.id} - Trip Date: {self.date}'
-    
+
     def get_absolute_url(self):
         return reverse('trip_detail', kwargs={'trip_id': self.id})
     

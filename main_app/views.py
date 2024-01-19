@@ -449,6 +449,14 @@ class DistanceView(View):
                         distance_meters = distance_info['distance']['value']
                         distance_miles = distance_meters / 1609.34  # Convert meters to miles
 
+                        # Create a new instance of the Distances model and save it to the database
+                        distance_record = Distances(
+                            from_location=departure_location,  # Assign the location instance
+                            to_location=destination_location,  # Assign the location instance
+                            distance=distance_miles
+                        )
+                        distance_record.save()
+
                         # Prepare context with the calculated distance
                         context = {
                             'form': form,
@@ -468,6 +476,6 @@ class DistanceView(View):
         # Re-render the page with the form (and possibly errors)
         context = {
             'form': form,
-            'distances': Distances.objects.all()  # Update or exclude as per your requirement
+            'distances': Distances.objects.all()  #
         }
         return render(request, self.template_name, context)

@@ -71,7 +71,7 @@ form a {
 }
 .login-btn {
   max-height: 75px;
-  min-height: 40px;
+  min-height: 60px;
   background: rgb(38, 187, 38);
   box-shadow: 5px 5px 5px rgb(135, 147, 134);
   user-select: none;

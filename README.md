@@ -46,3 +46,5 @@ Contributions are welcome! If you have ideas for improvements or want to help in
 Special thanks to all the APIs and open-source projects that made Green Diary possible.
 
 
+## Future Enhancement
+

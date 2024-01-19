@@ -69,6 +69,8 @@ form a {
   border-radius: 50%;
 }
 .login-btn {
+  max-height: 75px;
+  min-height: 40px;
   font-weight: bold;
   background: rgb(38, 187, 38);
   box-shadow: 5px 5px 5px rgb(135, 147, 134);

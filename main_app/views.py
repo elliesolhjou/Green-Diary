@@ -474,7 +474,7 @@ class CreateTrip(LoginRequiredMixin, CreateView):
 
             }
             
-        return render(request, 'distance.html', context)
+        return render(request, self.template_name, context)
         
     def post_form_one(self, request):
         form = DistanceForm(request.POST)
@@ -516,7 +516,7 @@ class CreateTrip(LoginRequiredMixin, CreateView):
 
                         # Prepare context with the calculated distance
                         context = {
-                            'form': form,
+                            'form': TripForm(),
                             'form_two': LocationForm(),
                             'form_one': DistanceForm(),
                             'distance_miles': distance_miles,
@@ -526,13 +526,14 @@ class CreateTrip(LoginRequiredMixin, CreateView):
                         }
 
                         # Render a template with the calculated distance
-                        return render(request, 'distance.html', context)
+                        return render(request, self.template_name, context)
                     else:
                         form.add_error(None, "Distance calculation failed.")
                 except Exception as e:
                     # Print the exception for debugging
                     print("Error during distance calculation:", e)
                     form.add_error(None, "Distance calculation failed.")
+                    
         save_form_one = form.save()
 
         # Re-render the page with the form (and possibly errors)
@@ -565,5 +566,6 @@ class CreateTrip(LoginRequiredMixin, CreateView):
     
     def form_valid(self, form):
         form.instance.vehicle = Vehicle.objects.get(pk=self.kwargs.get('vehicle_id'))
+        
         form.save()
         return super(CreateTrip, self).form_valid(form)

@@ -67,3 +67,7 @@ class TripForm(ModelForm):
     class Meta:
         model= Trip
         fields = ("date", "departure_txt", "destination_txt", "distance")
+        
+    def __init__(self, *args, **kwargs):
+        super(TripForm, self).__init__(*args, **kwargs)
+        self.fields['date'].widget.attrs.update({'class': 'datepicker'})

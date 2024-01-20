@@ -1,15 +1,29 @@
 {%extends 'base.html'%}
+{% load static %}
 {% block content%}
 
-<h1>Log In</h1>
+<div class="container-fluid bg-white border rounded-5 login-container w-75 py-2 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-around align-items-center">
+  <img class="login-image" src="{% static '/images/login-image.png' %}">
 
-
-<form method="POST" action="">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="hidden" name="next" value="{{ next }}">
-  <button type="submit" class="btn">Log In</button>
-</form>
+  <form class="w-100 h-75 d-flex flex-column justify-content-around" method="POST" action="">
+    {% csrf_token %}
+    <div class="mb-3 pt-4 text-center">
+      {{ form.username.label_tag }}
+      {{ form.username }}
+    </div>
+    <div class="mb-3 text-center">
+      {{ form.password.label_tag }}
+      {{ form.password }}
+    </div>
+    <div class="container-fluid p-0 py-4 m-0 d-flex justify-content-around">
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit" class="btn-green rounded-3">Log In</button>
+      <a href="#" class="w-auto" onclick="window.history.back();">
+        <input type="button" value="Cancel" class="btn-red rounded-3">
+      </a>
+    </div>
+  </form>
+</div>
 
 
 {%endblock%}

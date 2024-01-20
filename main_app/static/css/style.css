@@ -7,14 +7,12 @@ body {
   min-height: 100vh;
   /* overflow: hidden; */
 }
-
 nav {
   background: none;
 }
 main {
   width: 100%;
   max-width: 750px;
-  height: 100vh;
 }
 form {
   display: flex;
@@ -30,6 +28,7 @@ form tr {
 }
 form select,
 form textarea,
+form input[type="password"],
 form input[type="number"],
 form input[type="text"] {
   width: 100%;
@@ -63,17 +62,68 @@ form a {
 .logo {
   max-height: clamp(50px, 8vmin, 75px);
 }
-
-.leaf-btn {
-  background: rgb(38, 187, 38);
-  padding: 10px 0;
+.login-container {
+  max-width: 400px;
 }
-.leaf-btn img{
+.login-image {
+  width: clamp(100px, 60%, 200px);
+  border-radius: 50%;
+}
+.login-btn {
+  max-height: 75px;
+  min-height: 60px;
+  box-shadow: 5px 5px 10px rgb(157, 176, 155);
+  user-select: none;
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.bg-green-1 {
+  background-color: #0ce9bd;
+}
+.bg-green-2 {
+  background-color: #27e016;
+}
+.bg-green-3 {
+  background-color: #4ae48a;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+}
+
+.flex-container .row.position-relative.py-3.d-flex.justify-content-stretch {
+  flex-grow: 1;
+}
+
+.flex-container .row.pb-4.d-flex.justify-content-around.align-items-end.mt-auto {
+  flex-shrink: 0;
+}
+.login-btn:hover {
+  filter: brightness(120%);
+  box-shadow: 1px 1px 5px rgb(143, 154, 142);
+}
+.login-btn img{
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
   width: clamp(15px, 4vmin, 25px);
 }
-
+@media (max-width: 400) {
+  .login-btn img {
+    left: 2%;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+  }
+}
 .user {
-  max-height: 50px
+  max-height: 40px
 }
 .dropdown.show a:focus {
   box-shadow: none;
@@ -83,7 +133,7 @@ form a {
   border: none !important;
 }
 .bg-white {
-  background-color: rgb(250, 255, 247) !important;
+  background-color: rgb(247, 255, 247) !important;
 }
 .vehicle-edit {
   width: clamp(15px, 4vmin, 25px);
@@ -138,7 +188,7 @@ form a {
   color: rgb(122, 122, 122);
 }
 .text-lg {
-  font-size: clamp(14px, 2.5vmin, 30px);
+  font-size: clamp(14px, 2.5vmin, 25px);
   color: rgb(71, 71, 71);
 }
 .text-xl {
@@ -147,6 +197,9 @@ form a {
 }
 .w-35 {
   width: 35%;
+}
+.h-65 {
+  height: 65%;
 }
 .h-70 {
   height: 70%;
@@ -181,8 +234,8 @@ form a {
   background: rgba(174, 220, 174, 0.5);
 }
 .btn-add {
-  width: 15%;
-  height: 5%;
+  width: clamp(75px, 15%, 150px);
+  height: 30px;
   font-size: clamp(8px, 1.5vmin, 14px);
   text-decoration: none;
   border-radius: 0 10px;
@@ -200,6 +253,9 @@ form a {
 }
 .hr {
   width: 94%;
+}
+.divider {
+  height: 50px;
 }
 .dark {
   color: rgb(42, 42, 42);

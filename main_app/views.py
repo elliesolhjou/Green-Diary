@@ -2,6 +2,8 @@ from django import forms
 from django.views import View
 from django.forms.widgets import DateInput
 from django.db.models.query import QuerySet
+from django.db.models import Sum
+import requests
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
@@ -52,55 +54,6 @@ def google_logout(request):
     logout(request)
     return redirect("/")
 
-def get_makes():
-    api_url = 'https://www.carboninterface.com/api/v1/vehicle_makes'
-    headers = {
-        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg'
-    }
-
-    response = requests.get(api_url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-
-def get_models(make_id):
-    api_url = f'https://www.carboninterface.com/api/v1/vehicle_makes/{make_id}/vehicle_models'
-    headers = {
-        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg'
-    }
-
-    response = requests.get(api_url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-
-def get_estimate(vehicle_id):
-    api_url = 'https://www.carboninterface.com/api/v1/estimates'
-    headers = {
-        'Authorization': 'Bearer sjXOxFgqEqHpfHKwvIclAg',
-        'Content-Type': 'application/json'
-    }
-
-    data = {
-        "type": "vehicle",
-        "distance_unit": "mi",
-        "distance_value": 100,
-        "vehicle_model_id": vehicle_id
-    }
-    
-    json_data = json.dumps(data)
-
-    response = requests.post(api_url, data=json_data, headers=headers)
-
-    if response.status_code == 201:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-
 def about(request):
     return render(request, 'about.html')
 
@@ -120,6 +73,7 @@ class DeleteUser(DeleteView):
 def signup(request):
     error_message= ""
     if request.method =='POST':
+
         # create a form with info passed in through Req.Post
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -130,10 +84,13 @@ def signup(request):
         else:
             print(form.errors)
             error_message= " Invalid. Please try again!"
+
     # clear form after user creation
     form = CustomUserCreationForm
+
     # pass data to html to display
     context = {'form': form, 'error_message': error_message}
+
     return render (request, 'registration/signup.html', context)
 
 
@@ -147,12 +104,16 @@ def get_login_redirect():
 
     return '/' 
 
+        
 # ------------------------------------------------------------------------------------------#
 class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
     template_name = 'vehicles/index.html'
 
     def dispatch(self, request, *args, **kwargs):
+        if not self.get_queryset().exists():
+            return redirect('vehicle_create')
+        
         redirect_url = get_login_redirect()
         return redirect(redirect_url)
     
@@ -179,6 +140,7 @@ class CreateVehicle(LoginRequiredMixin, CreateView):
             for item in makes_response
         ]
         makes_data = sorted(makes_data, key=lambda x: x['name'])
+        makes_data.insert(0, {'id': '', 'name': '--- Select Make ---'})
 
         # get make query param if make selected
         selected_make = self.request.GET.get('make')
@@ -196,7 +158,8 @@ class CreateVehicle(LoginRequiredMixin, CreateView):
             ]
 
             model_data = sorted(model_data, key=lambda x: x['name'])
-            context['models'] = model_data if len(model_data) > 0 else []
+            model_data.insert(0, {'id': '', 'name': '--- Select Model ---'})
+            context['models'] = model_data if len(model_data) > 1 else []
 
         # use context to set dropdown options
         context['makes'] = makes_data if len(makes_data) > 0 else []
@@ -220,17 +183,171 @@ class UpdateVehicle(LoginRequiredMixin, UpdateView):
 class DeleteVehicle(LoginRequiredMixin, DeleteView):
     model = Vehicle
     success_url = '/'
+    fields= ['make', 'model']
+    template_name = 'main_app/edit_form.html'
 
-@login_required
-def vehicle_detail( request, vehicle_id):
+    def get_context_data(self, **kwargs):
+        context = super(UpdateVehicle, self).get_context_data(**kwargs)
+
+        # fetch make data
+        makes_response = get_makes()
+
+        # build and sort makes list
+        makes_data = [
+            {
+                'id': item['data']['id'], 
+                'name': item['data']['attributes']['name']
+            } 
+            for item in makes_response
+        ]
+        makes_data = sorted(makes_data, key=lambda x: x['name'])
+        makes_data.insert(0, {'id': '', 'name': '--- Select Make ---'})
+
+        # get make query param if make selected
+        selected_make = self.request.GET.get('make')
+
+        # fetch models and update models dropdown
+        if selected_make:
+            models_response = get_models(selected_make)
+            model_data = [
+                {
+                    'id': item['data']['id'], 
+                    'name': item['data']['attributes']['name'],
+                    'year': item['data']['attributes']['year']
+                } 
+                for item in models_response
+            ]
+
+            model_data = sorted(model_data, key=lambda x: x['name'])
+            model_data.insert(0, {'id': '', 'name': '--- Select Model ---'})
+            context['models'] = model_data if len(model_data) > 1 else []
+
+        # use context to set dropdown options
+        context['makes'] = makes_data if len(makes_data) > 0 else []
+
+        return context
+
+    def form_valid(self, form):
+        vehicle = form.save(commit=False)
+
+        # get selected model ID
+        selected_model = form.cleaned_data.get('model')
+        
+        # fetch estimate for specified vehicle
+        estimate = get_estimate(selected_model)
+
+        # update data for model creation
+        vehicle.make = estimate['data']['attributes']['vehicle_make']
+        vehicle.model = estimate['data']['attributes']['vehicle_model']
+        vehicle.year = estimate['data']['attributes']['vehicle_year']
+        vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
+
+        # save data to model
+        vehicle.save()
+
+        return super(CreateVehicle, self).form_valid(form)
+    
+
+class UpdateVehicle(LoginRequiredMixin, UpdateView):
+    model= Vehicle
+    fields= ['make', 'model']
+    template_name = 'main_app/edit_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateVehicle, self).get_context_data(**kwargs)
+
+        # fetch make data
+        makes_response = get_makes()
+
+        # build and sort makes list
+        makes_data = [
+            {
+                'id': item['data']['id'], 
+                'name': item['data']['attributes']['name']
+            } 
+            for item in makes_response
+        ]
+        makes_data = sorted(makes_data, key=lambda x: x['name'])
+        makes_data.insert(0, {'id': '', 'name': '--- Select Make ---'})
+
+        # get make query param if make selected
+        selected_make = self.request.GET.get('make')
+
+        # fetch models and update models dropdown
+        if selected_make:
+            models_response = get_models(selected_make)
+            model_data = [
+                {
+                    'id': item['data']['id'], 
+                    'name': item['data']['attributes']['name'],
+                    'year': item['data']['attributes']['year']
+                } 
+                for item in models_response
+            ]
+
+            model_data = sorted(model_data, key=lambda x: x['name'])
+            model_data.insert(0, {'id': '', 'name': '--- Select Model ---'})
+            context['models'] = model_data if len(model_data) > 1 else []
+
+        # use context to set dropdown options
+        context['makes'] = makes_data if len(makes_data) > 0 else []
+
+        return context
+
+    def form_valid(self, form):
+        vehicle = form.save(commit=False)
+
+        # get selected model ID
+        selected_model = form.cleaned_data.get('model')
+        
+        # fetch estimate for specified vehicle
+        estimate = get_estimate(selected_model)
+
+        # update data for model creation
+        vehicle.make = estimate['data']['attributes']['vehicle_make']
+        vehicle.model = estimate['data']['attributes']['vehicle_model']
+        vehicle.year = estimate['data']['attributes']['vehicle_year']
+        vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
+
+        # save data to model
+        vehicle.save()
+
+        return super(UpdateVehicle, self).form_valid(form)
+
+
+def delete_vehicle(request, vehicle_id):
+    user = request.user.userprofile
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+
+    trips = vehicle.trip_set.all()
+    totals = trips.aggregate(total_carbon=Sum('carbon'), total_cost=Sum('cost'))
+    
+    total_carbon = totals.get('total_carbon', 0) or 0
+    total_cost = totals.get('total_cost', 0) or 0
+
+    user.output -= total_carbon / 2204
+    user.cost -= total_cost
+
+    user.save()
+    vehicle.delete()
+
+    all_vehicles = Vehicle.objects.filter(user=vehicle.user).exclude(id=vehicle_id).order_by('id')
+
+    try:
+        new_vehicle = all_vehicles.first()
+        return redirect('vehicle_detail', vehicle_id=new_vehicle.id)
+    except:
+        return redirect('vehicle_create')
+
+
+def vehicle_detail(request, vehicle_id):
+    if not vehicle_id: return redirect(request, 'vehicle_form.html')
+    user = request.user.userprofile
     vehicles = Vehicle.objects.all()
     trips = Trip.objects.all()
 
-    for trip in trips:
-        print(trip.vehicle_id)
-
     vehicle= Vehicle.objects.get(id=vehicle_id)
-    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips})
+    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips, 'output': user.output, 'cost': user.cost})
 
 # ------------------------------------------------------------------------------------------#
 class TripList(LoginRequiredMixin, ListView):
@@ -252,12 +369,35 @@ class TripList(LoginRequiredMixin, ListView):
 #     model = Trip
 #     form_class = CreateTripForm
 
-#     def form_valid(self, form):
-#         vehicle_id = self.kwargs['vehicle_id']
-#         form.instance.vehicle_id = vehicle_id
-#         form.save()
+    def form_valid(self, form):
+        trip = form.save(commit=False)
+        
+        # set vehicle id reference
+        vehicle_id = self.kwargs['vehicle_id']
+        form.instance.vehicle_id = vehicle_id
+        
+        # define vehicle and user
+        vehicle = Vehicle.objects.get(id=vehicle_id)
+        user = UserProfile.objects.get(user=vehicle.user)
+        
+        distance = form.cleaned_data['distance']
 
-#         return redirect('vehicle_detail', vehicle_id=vehicle_id)
+        pounds = vehicle.carbon / 453.592
+        trip.carbon = pounds * distance
+        trip.cost = int(trip.carbon / 48)
+
+        # set cost based on distance
+        vehicle.mileage += trip.distance
+        user.output += trip.carbon / 2204
+        user.cost += trip.cost
+
+        user.save()
+        vehicle.save()
+        trip.save()
+
+        print(user.output, trip.carbon)
+        
+        return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 class UpdateTrip(LoginRequiredMixin, UpdateView):
     model = Trip
@@ -265,8 +405,18 @@ class UpdateTrip(LoginRequiredMixin, UpdateView):
 
 @login_required
 def delete_trip(request, vehicle_id, pk):
+    user = request.user.userprofile
     trip = get_object_or_404(Trip, vehicle_id=vehicle_id, pk=pk)
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+
+    vehicle.mileage -= trip.distance
+    user.output -= trip.carbon / 2204
+    user.cost -= trip.cost
+
+    vehicle.save()
+    user.save()
     trip.delete()
+
     return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 @login_required

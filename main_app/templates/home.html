@@ -2,23 +2,23 @@
 {% load static %}
 
 {% block content %}
-    <div class="col h-100 d-flex justify-content-center align-items-center">
-        <div class="row leaf-container w-25">
-            <div class="col leaf-btn rounded-5 border-dark">
-                <img src="{% static '/images/leaf.svg' %}">
+        <div class="container-fluid login-buttons bg-white border rounded-5 login-container w-75 p-4 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-between align-items-center">
+            <img class="login-image" src="{% static '/images/login-image.png' %}">
+            <div class="container">
+                <a class="col login-btn bg-green-1 w-100 my-4 border position-relative rounded-5 text-decoration-none d-flex justify-content-center align-items-center" href="{%url 'signup'%}">
+                        <img class="mx-2" src="{% static '/images/email.svg' %}">
+                        <p class="m-0 text-lg">Sign up with Email</p>
+                </a>
+                <a class="col login-btn bg-green-2 w-100 my-4 border position-relative rounded-5 text-decoration-none d-flex justify-content-center align-items-center" href="{% provider_login_url 'google' %}?next=/">
+                    <img class="mx-2" src="{% static '/images/google.svg' %}">
+                    <p class="m-0 text-lg">Sign up with Google</p>
+                </a>
             </div>
-            <div class = 'google-signin'>
-                {% load socialaccount %}
-                {% if user.is_authenticated %}
-                    <p> You are signed in as {{user.email}} </p>
-                    <a href="{% url 'google_logout' %}">Logout</a>
-                {% else %}
-                    <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
-                {% endif %}
-            </div>
-            <a href="{% url 'my_distance_view' %}?next=/">calculate</a>
-            <a href="{% url 'about' %}">About</a>
+            <hr class="hr">
+            <a class="col login-btn bg-green-3 w-100 border position-relative rounded-5 text-decoration-none d-flex justify-content-center align-items-center" href="{%url 'login'%}">
+                <img class="mx-2" src="{% static '/images/leaf.svg' %}">
+                <p class="m-0 text-lg">Login</p>
+            </a>
         </div>
-    </div>
 {% endblock %}
 

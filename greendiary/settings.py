@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-SITE_ID = 9
+SITE_ID = 8
 
 INSTALLED_APPS = [
     'main_app',
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware'
 ]
 
-ROOT_URLCONF = 'greheroku --versionendiary.urls'
+ROOT_URLCONF = 'greendiary.urls'
 
 TEMPLATES = [
     {
@@ -156,6 +156,7 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+
+# Configure Django App for Heroku.
 import django_on_heroku
 django_on_heroku.settings(locals())
-

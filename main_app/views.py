@@ -217,9 +217,29 @@ class UpdateVehicle(LoginRequiredMixin, UpdateView):
     model= Vehicle
     fields='__all__'
 
-class DeleteVehicle(LoginRequiredMixin, DeleteView):
-    model = Vehicle
-    success_url = '/'
+def delete_vehicle(request, vehicle_id):
+    user = request.user.userprofile
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+
+    trips = vehicle.trip_set.all()
+    totals = trips.aggregate(total_carbon=Sum('carbon'), total_cost=Sum('cost'))
+    
+    total_carbon = totals.get('total_carbon', 0) or 0
+    total_cost = totals.get('total_cost', 0) or 0
+
+    user.output -= total_carbon / 2204
+    user.cost -= total_cost
+
+    user.save()
+    vehicle.delete()
+
+    all_vehicles = Vehicle.objects.filter(user=vehicle.user).exclude(id=vehicle_id).order_by('id')
+
+    try:
+        new_vehicle = all_vehicles.first()
+        return redirect('vehicle_detail', vehicle_id=new_vehicle.id)
+    except:
+        return redirect('vehicle_create')
 
 @login_required
 def vehicle_detail( request, vehicle_id):

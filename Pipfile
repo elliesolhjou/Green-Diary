@@ -13,6 +13,7 @@ django-heroku = "*"
 gunicorn = "*"
 django-on-heroku = "*"
 googlemaps = "*"
+django-allauth = "*"
 
 [dev-packages]
 

@@ -6,11 +6,6 @@ name = "pypi"
 [packages]
 django = "*"
 psycopg2-binary = "*"
-<<<<<<< HEAD
-django-heroku = "*"
-django-on-heroku = "*"
-gunicorn = "*"
-=======
 requests = "*"
 python-dotenv = "*"
 django-bootstrap-v5 = "*"
@@ -18,7 +13,6 @@ django-heroku = "*"
 gunicorn = "*"
 django-on-heroku = "*"
 googlemaps = "*"
->>>>>>> fb431b79fe9edde6891ce666235e4e659591ff72
 
 [dev-packages]
 

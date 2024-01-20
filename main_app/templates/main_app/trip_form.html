@@ -1,0 +1,71 @@
+{% extends 'base.html'%}
+{% load static %} 
+
+{% block content%}
+  <!-- New if/else block -->
+  {% if object %}
+    <h1>Edit <span class="teal-text">{{object.name}}</span></h1>
+  {% else %}
+    <h1>Add Trip</h1>
+  {%endif%}
+<form action="" method="POST">
+    {%csrf_token%}
+    <table>
+        {{form.as_table}}
+    </table>
+    <div class="row w-100 mt-4">
+      <div class="col-4">
+      </div>
+      <div class="col-6 d-flex flex-row justify-content-around">
+        <input type="submit" name="form_trip_submit" value="Create Trip!" class="btn-green  rounded-3">
+        <div class="w-50">
+          <a href="#" onclick="window.history.back();">
+            <input type="button" value="Cancel" class="btn-red  rounded-3">
+          </a>
+        </div>
+      </div>
+    </div>
+</form>
+
+<br />
+<br />
+<br />
+<br />
+<div>
+  <h1>Distance Calculation Result</h1>
+  <form method="post">
+    {% csrf_token %} 
+    {{ form_one.as_p }}
+    <input type="submit" name="form_one_submit" value="Calculate Distance" />
+  </form>
+  <br />
+
+  <div class="title">
+    {% if distance_miles == None%}
+        <p>Please select Departure and Destination</p>
+    {% elif distance_miles < 2 %}
+        <p> The distance from {{departure_location}} to {{destination_location}} is {{ distance_miles }} mile</p>
+    {%else%}
+        <p> The distance from {{departure_location}} to {{destination_location}} is  {{ distance_miles }} miles</p>
+    {% endif %}
+  </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<div>
+  <h1>Add New Address:</h1>
+  <form action="" method="POST">
+    {% csrf_token%} 
+    {{form_two.as_table}}
+    <input type="submit" name="form_two_submit" value="Submit New Address" />
+  </form>
+</div>
+
+
+
+
+
+{% endblock%}

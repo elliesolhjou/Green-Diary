@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+body {
+  min-height: 100vh;
+  /* overflow: hidden; */
+}
+nav {
+  background: none;
+}
+main {
+  width: 100%;
+  max-width: 750px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+form table {
+  border-collapse: collapse;
+}
+form tr {
+  border: 10px solid transparent; /* This creates the 'space' */
+}
+form select,
+form textarea,
+form input[type="password"],
+form input[type="number"],
+form input[type="text"] {
+  width: 100%;
+  height: clamp(35px, 3vmin, 45px);
+  border-radius: 5px;
+  border: 2px solid rgb(225, 245, 227);
+}
+form textarea {
+  height: 80px;
+}
+form select:focus,
+form textarea:focus,
+form input[type="number"]:focus,
+form input[type="text"]:focus {
+  outline: 2px solid rgb(172, 216, 172) !important;
+}
+form .btn,
+form a {
+  width: 15%;
+  text-decoration: none;
+}
+
+.header-title{
+  font-family: 'Josefin Sans', sans-serif;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #3f7a2b;
+}
+.logo {
+  max-height: clamp(50px, 8vmin, 75px);
+}
+.login-container {
+  max-width: 400px;
+}
+.login-image {
+  width: clamp(100px, 60%, 200px);
+  border-radius: 50%;
+}
+.login-btn {
+  max-height: 75px;
+  min-height: 60px;
+  box-shadow: 5px 5px 10px rgb(157, 176, 155);
+  user-select: none;
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.bg-green-1 {
+  background-color: #0ce9bd;
+}
+.bg-green-2 {
+  background-color: #27e016;
+}
+.bg-green-3 {
+  background-color: #4ae48a;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+}
+
+.flex-container .row.position-relative.py-3.d-flex.justify-content-stretch {
+  flex-grow: 1;
+}
+
+.flex-container .row.pb-4.d-flex.justify-content-around.align-items-end.mt-auto {
+  flex-shrink: 0;
+}
+.login-btn:hover {
+  filter: brightness(120%);
+  box-shadow: 1px 1px 5px rgb(143, 154, 142);
+}
+.login-btn img{
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  width: clamp(15px, 4vmin, 25px);
+}
+@media (max-width: 400) {
+  .login-btn img {
+    left: 2%;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+  }
+}
+.user {
+  max-height: 40px
+}
+.dropdown.show a:focus {
+  box-shadow: none;
+}
+.transparent {
+  background: transparent !important;
+  border: none !important;
+}
+.bg-white {
+  background-color: rgb(247, 255, 247) !important;
+}
+.vehicle-edit {
+  width: clamp(15px, 4vmin, 25px);
+}
+.vehicle-edit:hover {
+  opacity: .25;
+}
+.vehicle-container > div {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.vehicle-container h1 {
+  margin: 0;
+  padding: 0;
+}
+.vehicle-arrow {
+  width: clamp(20px, 3vmin, 40px);
+  margin: 0 2%;
+  transform: rotate(90deg);
+}
+.vehicle-arrow:hover {
+  outline: 2px solid rgba(79, 176, 79, 0.275);
+}
+.vehicle-stats {
+  font-size: clamp(6px, 1.5vmin, 30px);
+  color: rgb(165, 165, 165);
+}
+.trip-card {
+  padding: 1% 0;
+  user-select: none;
+}
+.trip-card:hover {
+  background: rgb(240, 246, 240);
+}
+.trip-card {
+  text-decoration: none;
+}
+
+.light {
+  color: rgb(165, 165, 165);
+}
+.marker {
+  width: clamp(20px, 3vmin, 40px);
+}
+.text-sm {
+  font-size: clamp(10px, 1vmin, 18px);
+  color: rgb(165, 165, 165);
+}
+.text-reg {
+  font-size: clamp(12px, 1.5vmin, 22px);
+  color: rgb(122, 122, 122);
+}
+.text-lg {
+  font-size: clamp(14px, 2.5vmin, 25px);
+  color: rgb(71, 71, 71);
+}
+.text-xl {
+  font-size: clamp(20px, 3.5vmin, 40px);
+  color: rgb(71, 71, 71);
+}
+.w-35 {
+  width: 35%;
+}
+.h-65 {
+  height: 65%;
+}
+.h-70 {
+  height: 70%;
+}
+.rounded-4 {
+  border-radius: 10px;
+}
+.rounded-5 {
+  border-radius: 20px;
+}
+.btn-red {
+  height: 40px;
+  padding: 0 10px;
+  color: rgb(192, 0, 0);
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: none;
+  background: none;
+}
+.btn-green {
+  height: 40px;
+  color: green;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: none;
+  background: none;
+}
+.btn-red:hover {
+  background: rgba(230, 194, 194, 0.5);
+}
+.btn-green:hover {
+  background: rgba(174, 220, 174, 0.5);
+}
+.btn-add {
+  width: clamp(75px, 15%, 150px);
+  height: 30px;
+  font-size: clamp(8px, 1.5vmin, 14px);
+  text-decoration: none;
+  border-radius: 0 10px;
+}
+.btn-add:hover {
+  color: green;
+}
+.background {
+  background-image: url('../images/bg-map.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: .25;
+  z-index: -1;
+}
+.hr {
+  width: 94%;
+}
+.divider {
+  height: 50px;
+}
+.dark {
+  color: rgb(42, 42, 42);
+}
+.vehicle-buttons > div {
+  font-size: 2.5rem;
+  border-radius: 10px;
+}
+@media (max-width: 450px){
+  .vehicle-buttons > div {
+    font-size: 1.5rem;
+  }
+}
+.green,
+.red {
+  text-decoration: none;
+}
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
+.green:hover {
+  color: rgb(3, 205, 3);
+  background: rgba(174, 220, 174, 0.5);
+  user-select: none;
+}
+.red:hover {
+  color: rgb(255, 135, 135);
+  background: rgb(253, 213, 213);
+}

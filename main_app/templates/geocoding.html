@@ -1,0 +1,39 @@
+{% extends 'base.html' %} 
+
+
+{% block content %}
+    <div class="title">Geocoding Template for {{location.name}}({{label}})</div>
+        <div class="linkholder" id="address">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>ZipCode</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>lat</th>
+                        <th>lng</th>
+                        <th>place_id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{location.id}}</td>
+                        <td>{{location.name}}</td>
+                        <td>{{location.address}}</td>
+                        <td>{{location.zipcode}}</td>
+                        <td>{{location.city}}</td>
+                        <td>{{location.country}}</td>
+                        <td>{{lat}}, </td>
+                        <td>{{lng}}, </td>
+                        <td>{{place_id}}</td>
+                       
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+

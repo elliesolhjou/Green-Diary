@@ -1,0 +1,54 @@
+
+{% load static %}
+
+{% for trip in trips %}
+    {% if trip.vehicle.id == vehicle.id and trip.vehicle.user == request.user %}
+        <div class="trip-card row py-3 px-2 justify-content-center align-items-center">
+            <div class="col-1">
+                <img class="marker" src="{% static 'images/marker.svg' %}">
+            </div>
+            <div class="col-4">
+                <div class="row d-flex align-items-center">
+                    <div class="col"><h2 class="m-0 text-lg">{{trip.date|date:"Y"}}</h2></div>
+                    <div class="col d-flex flex-column align-items-start">
+                        <div class="row text-reg">
+                            {{trip.date|date:"F j"}}
+                        </div>
+                        <div class="row text-reg">
+                            {{trip.end}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="row d-flex align-items-center">
+                    <div class="col text-lg p-0 text-lg-end">{{trip.distance}}</div>
+                    <small class="col text-sm text-md-start">miles</small>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="row d-flex align-items-center">
+                    <div class="col text-lg text-lg-end">{{trip.carbon}}</div>
+                    <div class="col text-sm p-lg-0 text-md-start">lb</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="row d-flex align-items-center">
+                    <div class="col text-lg text-lg-end">{{trip.cost}}</div>
+                    <div class="col text-sm p-lg-0 text-md-start">trees</div>
+                </div>
+            </div>
+            <div class="col-1 p-0">
+            <a href="{% url 'trip_delete' vehicle_id=vehicle.id pk=trip.id %}" class="red w-75 pt-1 pb-2 rounded-4 d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-delay='400' title="Remove Trip">
+                <div class="w-35">
+                    <img class="img-fluid" src="{% static 'images/trash.svg' %}">
+                </div>
+            </a>
+            </div>
+        </div>
+
+        <div class="ruler d-flex justify-content-center w-100">
+            <hr class="hr my-0">
+        </div>
+    {% endif %}
+{% endfor %}

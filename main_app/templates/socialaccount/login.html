@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/custom_login_style.css' %}">
+
+<div class="custom-login-page">
+    <h2>Login with Google</h2>
+    <!-- Your custom content and design here -->
+    <form method="post" action="{% provider_login_url 'google' method='oauth2' %}">
+        {% csrf_token %}
+        <button type="submit" class="google-login-button">Login with Google</button>
+    </form>
+</div>
+{% endblock %}

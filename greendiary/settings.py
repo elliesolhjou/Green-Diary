@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware'
 ]
 
-ROOT_URLCONF = 'greendiary.urls'
+ROOT_URLCONF = 'greheroku --versionendiary.urls'
 
 TEMPLATES = [
     {

@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from django.forms.widgets import DateInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import *
@@ -66,4 +67,7 @@ class LocationForm(ModelForm):
 class TripForm(ModelForm):
     class Meta:
         model= Trip
-        fields = ("date", "departure_txt", "destination_txt", "distance")
+        fields = ("date", "distance")
+        widgets = {
+            'date': DateInput(attrs={'type': 'date'}),
+        }

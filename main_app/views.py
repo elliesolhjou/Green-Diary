@@ -22,10 +22,9 @@ from datetime import datetime
 from typing import Any
 from .forms import *
 from .models import *
-from .api import get_makes
+from .api import *
 import json
 import os
-import requests
 from .forms import DistanceForm
 from datetime import datetime
 
@@ -79,7 +78,7 @@ def signup(request):
         if form.is_valid():
             # create new user if form is valid
             user = form.save()
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect("vehicle_create")
         else:
             print(form.errors)
@@ -111,6 +110,7 @@ class VehicleList(LoginRequiredMixin, ListView):
     template_name = 'vehicles/index.html'
 
     def dispatch(self, request, *args, **kwargs):
+
         if not self.get_queryset().exists():
             return redirect('vehicle_create')
         
@@ -122,57 +122,71 @@ class VehicleList(LoginRequiredMixin, ListView):
 
 
 class CreateVehicle(LoginRequiredMixin, CreateView):
-    model = Vehicle
-    fields = ['make', 'model']
+        model = Vehicle
+        fields = ['make', 'model']
 
-    def get_context_data(self, **kwargs):
-        context = super(CreateVehicle, self).get_context_data(**kwargs)
-        
-        # fetch make data
-        makes_response = get_makes()
+        def get_context_data(self, **kwargs):
+            context = super(CreateVehicle, self).get_context_data(**kwargs)
+            
+            # fetch make data
+            makes_response = get_makes()
 
-        # build and sort makes list
-        makes_data = [
-            {
-                'id': item['data']['id'], 
-                'name': item['data']['attributes']['name']
-            } 
-            for item in makes_response
-        ]
-        makes_data = sorted(makes_data, key=lambda x: x['name'])
-        makes_data.insert(0, {'id': '', 'name': '--- Select Make ---'})
-
-        # get make query param if make selected
-        selected_make = self.request.GET.get('make')
-
-        # fetch models and update models dropdown
-        if selected_make:
-            models_response = get_models(selected_make)
-            model_data = [
+            # build and sort makes list
+            makes_data = [
                 {
                     'id': item['data']['id'], 
-                    'name': item['data']['attributes']['name'],
-                    'year': item['data']['attributes']['year']
+                    'name': item['data']['attributes']['name']
                 } 
-                for item in models_response
+                for item in makes_response
             ]
+            makes_data = sorted(makes_data, key=lambda x: x['name'])
+            makes_data.insert(0, {'id': '', 'name': '--- Select Make ---'})
 
-            model_data = sorted(model_data, key=lambda x: x['name'])
-            model_data.insert(0, {'id': '', 'name': '--- Select Model ---'})
-            context['models'] = model_data if len(model_data) > 1 else []
+            # get make query param if make selected
+            selected_make = self.request.GET.get('make')
 
-        # use context to set dropdown options
-        context['makes'] = makes_data if len(makes_data) > 0 else []
+            # fetch models and update models dropdown
+            if selected_make:
+                models_response = get_models(selected_make)
+                model_data = [
+                    {
+                        'id': item['data']['id'], 
+                        'name': item['data']['attributes']['name'],
+                        'year': item['data']['attributes']['year']
+                    } 
+                    for item in models_response
+                ]
 
-        return context
-    
-    def form_valid(self, form):        
-        vehicle = form.save(commit=False)
-        # get selected model ID
-        selected_model = form.cleaned_data.get('model')      
-        # fetch estimate for specified vehicle
-        estimate = get_estimate(selected_model)
-        return super(CreateVehicle, self).form_valid(form)
+                model_data = sorted(model_data, key=lambda x: x['name'])
+                model_data.insert(0, {'id': '', 'name': '--- Select Model ---'})
+                context['models'] = model_data if len(model_data) > 1 else []
+
+            # use context to set dropdown options
+            context['makes'] = makes_data if len(makes_data) > 0 else []
+
+            return context
+        
+        def form_valid(self, form):        
+            vehicle = form.save(commit=False)
+
+            # get selected model ID
+            selected_model = form.cleaned_data.get('model')
+            
+            # fetch estimate for specified vehicle
+            estimate = get_estimate(selected_model)
+
+            # update data for model creation
+            vehicle.make = estimate['data']['attributes']['vehicle_make']
+            vehicle.model = estimate['data']['attributes']['vehicle_model']
+            vehicle.year = estimate['data']['attributes']['vehicle_year']
+            vehicle.fuel = 'R'
+            vehicle.carbon = estimate['data']['attributes']['carbon_g'] / 100
+            vehicle.user = self.request.user
+
+            # save data to model
+            vehicle.save()
+
+            return super(CreateVehicle, self).form_valid(form)
     
     
 
@@ -587,6 +601,7 @@ class CreateTrip(LoginRequiredMixin, CreateView):
     model = Trip
     form_class = TripForm
     template_name = 'main_app/trip_form.html'
+    
 
    
     def get_context_data(self, **kwargs):
@@ -612,20 +627,43 @@ class CreateTrip(LoginRequiredMixin, CreateView):
             return super(CreateTrip, self).post(request, *args, **kwargs)
     
     def post_form_trip(self,request):
-        form_trip = TripForm(request.POST)
-        if form_trip.is_valid():
-            form = form_trip.save()
+        trip = TripForm(request.POST)
+        if trip.is_valid():
+            vehicle_id = self.kwargs['vehicle_id']
+            trip.instance.vehicle_id = vehicle_id
+            
+            # define vehicle and user
+            vehicle = Vehicle.objects.get(id=vehicle_id)
+            user = UserProfile.objects.get(user=vehicle.user)
+            
+            distance = trip.cleaned_data['distance']
+
+            pounds = vehicle.carbon / 453.592
+            trip.instance.carbon = pounds * distance
+            trip.instance.cost = int(trip.instance.carbon / 48)
+
+            # set cost based on distance
+            vehicle.mileage += trip.instance.distance
+            user.output += trip.instance.carbon / 2204
+            user.cost += trip.instance.cost
+
+            user.save()
+            vehicle.save()
+            trip.save()
+
+
             context = {
             'form':TripForm(),   
             'form_one': DistanceForm(),  # Initialize a new form for distance calculation
             'form_two': LocationForm(),
             'distances': Distances.objects.all(),
             'locations': Locations.objects.all(),
+            'vehicle_id': self.kwargs.get('vehicle_id') 
 
             }
             
-        return render(request, self.template_name, context)
-        
+        return redirect('vehicle_detail', vehicle_id=vehicle_id)
+
     def post_form_one(self, request):
         form = DistanceForm(request.POST)
         if form.is_valid():
@@ -671,8 +709,8 @@ class CreateTrip(LoginRequiredMixin, CreateView):
                             'form_one': DistanceForm(),
                             'distance_miles': distance_miles,
                             'departure_location':departure_location,
-                            'destination_location':destination_location
-
+                            'destination_location':destination_location,
+                            'vehicle_id': self.kwargs.get('vehicle_id') 
                         }
 
                         # Render a template with the calculated distance
@@ -707,15 +745,14 @@ class CreateTrip(LoginRequiredMixin, CreateView):
             context = {
             'form_one': DistanceForm(),  # Initialize a new form for distance calculation
             'form_two': LocationForm(),
-            'form_trip':TripForm(),
+            'form':TripForm(),
             'distances': Distances.objects.all(),
             'locations': Locations.objects.all(),
 
             }
-        return render(request, 'distance.html', context)
+        return render(request, self.template_name, context)
     
     def form_valid(self, form):
         form.instance.vehicle = Vehicle.objects.get(pk=self.kwargs.get('vehicle_id'))
-        
-        form.save()
+        print(form.instance.vehicle)
         return super(CreateTrip, self).form_valid(form)

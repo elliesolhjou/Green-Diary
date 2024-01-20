@@ -1,5 +1,6 @@
 {% extends 'base.html' %} 
 {% load static %}
+{% load socialaccount %}
 
 {% block content %}
         <div class="container-fluid login-buttons bg-white border rounded-5 login-container w-75 p-4 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-between align-items-center">
@@ -9,7 +10,7 @@
                         <img class="mx-2" src="{% static '/images/email.svg' %}">
                         <p class="m-0 text-lg">Sign up with Email</p>
                 </a>
-                <a class="col login-btn bg-green-2 w-100 my-4 border position-relative rounded-5 text-decoration-none d-flex justify-content-center align-items-center" href="{% provider_login_url 'google' %}?next=/">
+                <a href="{% provider_login_url 'google' %}?next={{ next }}" class="col login-btn bg-green-2 w-100 my-4 border position-relative rounded-5 text-decoration-none d-flex justify-content-center align-items-center">
                     <img class="mx-2" src="{% static '/images/google.svg' %}">
                     <p class="m-0 text-lg">Sign up with Google</p>
                 </a>

@@ -125,7 +125,7 @@ def signup(request):
         if form.is_valid():
             # create new user if form is valid
             user = form.save()
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect("vehicle_create")
         else:
             print(form.errors)

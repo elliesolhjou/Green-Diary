@@ -3,9 +3,9 @@
 
 Green Diary is an innovative CO2 tracking platform that helps you monitor the environmental impact of your vehicle trips. By understanding the carbon footprint of your travels, Green Diary aims to foster more eco-conscious decisions and behaviors.
 
-![Alt text](main_app/static/images/image-1.png)
-![Alt text](main_app/static/images/image-2.png)
-![Alt text](main_app/static/images/image.png)
+![Alt text](./main_app/static/images/image-1.png)
+![Alt text](./main_app/static/images/image-2.png)
+![Alt text](./main_app/static/images/image.png)
 
 
 ## Features

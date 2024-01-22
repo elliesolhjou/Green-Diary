@@ -4,8 +4,8 @@
 Green Diary is an innovative CO2 tracking platform that helps you monitor the environmental impact of your vehicle trips. By understanding the carbon footprint of your travels, Green Diary aims to foster more eco-conscious decisions and behaviors.
 
 ![Alt text](./main_app/static/images/image-1.png)
-![Alt text](./main_app/static/images/image-2.png)
 ![Alt text](./main_app/static/images/image.png)
+![Alt text](./main_app/static/images/image-2.png)
 
 
 ## Features
@@ -18,13 +18,12 @@ Green Diary is an innovative CO2 tracking platform that helps you monitor the en
 ## Technologies Used
 
 - **Django**: A high-level Python Web framework that encourages rapid development and clean, pragmatic design.
-- **Bootstrap**: For responsive design, ensuring the application is mobile-friendly and accessible on various devices.
-- **PostgreSQL**: A powerful, open-source object-relational database system.
-- **HTML**: For structuring the platform's web pages.
-- **CSS**: For styling the platform's web pages.
 - **Django Authentication**: For managing user accounts and authentication within the application.
-- **Google Authentication**: To allow users to sign in with their Google accounts for a faster and secure login experience.
+- **PostgreSQL**: A powerful, open-source object-relational database system.
 - **Third-Party APIs**: Integration of external APIs to fetch vehicle data and calculate emissions accurately.
+- **Bootstrap**: For responsive design, ensuring the application is mobile-friendly and accessible on various devices.
+- **CSS**: For styling the platform's web pages.
+- **HTML**: For structuring the platform's web pages.
 
 
 ## Live Website

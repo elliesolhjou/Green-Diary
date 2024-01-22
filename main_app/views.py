@@ -11,8 +11,9 @@ from .forms import CustomUserCreationForm
 from .models import *
 from .api import *
 
+
 # ------------------------------------------------------------------------------------------#
-#                                            Home                                           #
+#                                            Main                                           #
 # ------------------------------------------------------------------------------------------#
 
 def home(request):
@@ -25,6 +26,10 @@ def home(request):
         vehicle = None
 
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
+
+def about(request):
+    return render(request, 'about.html')
+
 
 # ------------------------------------------------------------------------------------------#
 #                                            User                                           #

@@ -72,7 +72,7 @@ form a {
 }
 .login-btn {
   max-height: 75px;
-  min-height: 60px;
+  height: 60px;
   box-shadow: 5px 5px 10px rgb(157, 176, 155);
   user-select: none;
   cursor: pointer;
@@ -85,7 +85,7 @@ form a {
   background-color: #53d2ce;
 }
 .bg-green-2 {
-  background-color: #27e016;
+  background-color: #CBEDD5;
 }
 .bg-green-3 {
   background-color: #4ae48a;

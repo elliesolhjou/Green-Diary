@@ -1,0 +1,140 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Green Diary</title>
+    <!-- Link to Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      *{
+        background-color: #f4f5e4;
+      }
+      h2{
+        text-align: center;
+      }
+      .about-section {
+        padding: 40px;
+        background-color: #f4f5e4;
+      }
+      .about-btn {
+        background-color: #c7c8b1;
+        background-size: cover;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        color: black;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        text-decoration: none;
+        text-align: center;
+      }
+      .about-btn:hover {
+        background-color: #444c32;
+        color: #c7c8b1;
+      }
+
+      .about-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .about-image {
+        display: flex;
+        align-items: center;
+      }
+      .about-image img {
+        width: 100%;
+        object-fit: cover; 
+      }
+      h2 {
+        margin-bottom: 0; 
+      }
+      .row {
+        align-items: stretch; 
+      }
+      @media (min-width: 768px) {
+        .row {
+          display: flex;
+          align-items: stretch; 
+        }
+        .about-text,
+        .about-image {
+          display: flex;
+          flex-direction: column;
+        }
+        .about-image img {
+          height: 100%; 
+          object-fit: cover; /* Adjust how the image fits within its container */
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <section id="about" class="about-section">
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 about-text">
+            <h2><strong>About Green Diary</strong></h2>
+            <br>
+            <br>
+            <p>
+              Green Diary is a dedicated platform aimed at raising awareness about
+              the environmental impact of automotive emissions. We believe in the
+              power of information and the role it plays in guiding responsible
+              decision-making. Our CO2 tracker allows individuals to measure the
+              carbon footprint of their journeys, with each trip's data contributing
+              to a broader understanding of personal and collective ecological
+              impact.
+            </p>
+            <p>
+              Our innovative system not only calculates the emissions but also
+              equates them to the number of trees needed to offset the impact,
+              offering a tangible perspective on sustainability. By integrating
+              advanced APIs, Green Diary simplifies the process of vehicle data
+              collection and emission calculations, ensuring accuracy and ease of
+              use.
+            </p>
+            <p>
+              Developed with Django and Bootstrap, Green Diary features a robust and
+              user-friendly interface that makes tracking your environmental impact
+              both simple and effective. Our goal is to empower users with the
+              knowledge to make greener choices and to foster a community dedicated
+              to reducing carbon footprints, one trip at a time.
+            </p>
+            <p>
+              Join us in our journey towards a cleaner, greener planet. Your
+              contribution matters every mile, every choice, can lead to a
+              significant positive change.
+            </p>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <a href="https://green-diary-app-2098e92803f3.herokuapp.com/" class="about-btn">Green Diary Demo</a>
+            <a href="https://github.com/elliesolhjou/Green-Diary" class="about-btn">GitHub Repo</a>
+            <a href="https://plantatree.fs.usda.gov/" class="about-btn">Donate To Plant</a>
+          </div>
+
+          <div class="col-md-6 about-image">
+            <img src="{% static 'images/about.png' %}" alt="About Green Diary" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

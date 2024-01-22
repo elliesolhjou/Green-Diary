@@ -12,6 +12,9 @@ urlpatterns=[
     # User Signup
     path('accounts/signup/', views.signup, name='signup'),
 
+    # About Page
+    path('about/', views.about, name='about'),
+
     # Vehicle
     path('accounts/vehicle/', views.VehicleList.as_view(), name='vehicle_list'),
     path('accounts/vehicle/create/', views.CreateVehicle.as_view(), name='vehicle_create'),

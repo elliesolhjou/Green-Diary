@@ -1,11 +1,12 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 {% load static %}
 {% block content%}
 
 <div class="container-fluid bg-white border rounded-5 login-container w-75 py-2 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-around align-items-center">
-  <img class="login-image" src="{% static '/images/login-image.png' %}">
+  <p class="fs-2 login-container">Welcome Back!</p>
+  <img class="login-image mb-4" src="{% static '/images/login-image.png' %}">
 
-  <form class="w-100 h-75 d-flex flex-column justify-content-around" method="POST" action="">
+  <form class="w-100 h-75 mt-4 d-flex flex-column justify-content-around" method="POST" action="">
     {% csrf_token %}
     <div class="mb-3 pt-4 text-center">
       {{ form.username.label_tag }}

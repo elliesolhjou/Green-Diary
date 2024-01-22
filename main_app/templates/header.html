@@ -2,25 +2,27 @@
 
 <nav class="navbar test navbar-expand-lg d-flex justify-content-between fixed-top px-2">
 
-  {% if request.path != '/' %}
     <a href="/">
       <img src="{% static 'images/green-diary-logo.png' %}" class="img-fluid logo rounded-4 pt-1">
     </a>
-  {% endif %}
 
   <p class="fs-2 header-title">Green Diary</p>
 
-  {% if request.path != '/' and request.path != '/accounts/login/' %}
+  
     <div class="dropdown show">
       <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img src="{% static 'images/menu.svg' %}" class="img-fluid user">
       </a>
       
-      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+      <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="dropdownMenuLink">
+        <div class="container text-center pt-1 dark">
+          Hello, {{user.username}}!
+        </div>
+        <hr class="m-0 mt-2">
         {% if user.is_authenticated %}
           <form action="{%url 'logout'%}" method="POST">
             {%csrf_token%}
-            <button type="submit" class="btn w-100"> Log Out</button>
+            <button type="submit" class="btn logout-button w-100">Log Out</button>
           </form>
         {% else %}
           <a class="dropdown-item" href="{%url 'signup'%}">Sign Up</a>
@@ -28,6 +30,5 @@
         {% endif %}
       </div>
     </div>
-  {% endif %}
 
 </nav>

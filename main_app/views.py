@@ -70,9 +70,10 @@ def signup(request):
     return render (request, 'registration/signup.html', context)
 
 
-def get_login_redirect():
+def get_login_redirect(request):
+    user = request.user
     try:
-        default_vehicle = Vehicle.objects.first()
+        default_vehicle = Vehicle.objects.filter(user=user).first()
         if default_vehicle:
             return reverse('vehicle_detail', args=[default_vehicle.id])
     except Vehicle.DoesNotExist:
@@ -90,7 +91,7 @@ class VehicleList(LoginRequiredMixin, ListView):
         if not self.get_queryset().exists():
             return redirect('vehicle_create')
         
-        redirect_url = get_login_redirect()
+        redirect_url = get_login_redirect(request)
         return redirect(redirect_url)
     
     def get_queryset(self):
@@ -259,12 +260,12 @@ def delete_vehicle(request, vehicle_id):
 
 def vehicle_detail(request, vehicle_id):
     if not vehicle_id: return redirect(request, 'vehicle_form.html')
-    user = request.user.userprofile
-    vehicles = Vehicle.objects.all()
-    trips = Trip.objects.all()
+    user = request.user
+    vehicles = Vehicle.objects.filter(user=user)
+    vehicle = Vehicle.objects.get(id=vehicle_id)
+    trips = Trip.objects.filter(vehicle__user=user)
 
-    vehicle= Vehicle.objects.get(id=vehicle_id)
-    return render(request, 'vehicles/detail.html', {'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips, 'output': user.output, 'cost': user.cost})
+    return render(request, 'vehicles/detail.html', {'user':user, 'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips, 'output': user.userprofile.output, 'cost': user.userprofile.cost})
 
 # ------------------------------------------------------------------------------------------#
 class TripList(LoginRequiredMixin, ListView):
@@ -274,7 +275,7 @@ class TripList(LoginRequiredMixin, ListView):
 class CreateTripForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['date', 'departure', 'destination', 'distance']
+        fields = ['date', 'distance']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
         }
@@ -303,6 +304,8 @@ class CreateTrip(CreateView):
         pounds = vehicle.carbon / 453.592
         trip.carbon = pounds * distance
         trip.cost = int(trip.carbon / 48)
+        trip.departure = ''
+        trip.destination = ''
 
         # set cost based on distance
         vehicle.mileage += trip.distance

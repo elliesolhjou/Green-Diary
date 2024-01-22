@@ -1,29 +1,25 @@
 {% extends 'base.html'%}
 
 {% block content%}
-  <!-- New if/else block -->
-  {% if object %}
-    <h1>Edit <span class="teal-text">{{object.name}}</span></h1>
-  {% else %}
-    <h1>Add Trip</h1>
-  {%endif%}
-<form action="" method="POST">
-    {%csrf_token%}
-    <table>
-        {{form.as_table}}
-    </table>
-    <div class="row w-100 mt-4">
-      <div class="col-4">
-      </div>
-      <div class="col-6 d-flex flex-row justify-content-around">
-        <input type="submit" value="Submit" class="btn-green  rounded-3">
-        <div class="w-50">
-          <a href="#" onclick="window.history.back();">
-            <input type="button" value="Cancel" class="btn-red  rounded-3">
-          </a>
+  <div class="container-fluid login-buttons bg-white border rounded-5 login-container w-75 p-4 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-between align-items-center">
+    <p class="fs-2">Add a New Trip</p>
+    <form action="" method="POST">
+        {%csrf_token%}
+        <table>
+            {{form.as_table}}
+        </table>
+        <div class="row w-100 mt-4">
+          <div class="col-2">
+          </div>
+          <div class="col-8 d-flex flex-row justify-content-around">
+            <input type="submit" value="Submit" class="btn-green  rounded-3">
+            <div class="w-50">
+              <a href="#" onclick="window.history.back();">
+                <input type="button" value="Cancel" class="btn-red  rounded-3">
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-</form>
-
+    </form>
+  </div> 
 {% endblock%}

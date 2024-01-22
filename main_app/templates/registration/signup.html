@@ -2,19 +2,27 @@
 {% load static %}
 {% block content %}
 
-<h1>Sign Up</h1>
 <p class="red-text">{{ error_message }}</p>
 <p class="red-text">{{ form.non_field_errors }}</p>
 
 <div class="container-fluid bg-white border rounded-5 login-container w-75 py-2 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-around align-items-center">
-    <img class="login-image" src="{% static '/images/login-image.png' %}">
+    <p class="fs-2 login-container">Green Diary</p>
+    <img class="login-image mt-2 mb-4" src="{% static '/images/login-image.png' %}">
   
-    <form class="w-100 h-75 d-flex flex-column justify-content-around" method="POST" action="{% url 'signup' %}">
+    <form class="w-75 h-75 mx-4 mt-4 d-flex flex-column gap-3 justify-content-around" method="POST" action="{% url 'signup' %}">
         {% csrf_token %}
-        {{ form.username.label_tag }} {{ form.username }} {{ form.username.errors }}
-        {{ form.email.label_tag }} {{ form.email }} {{ form.email.errors }}
-        {{ form.password1.label_tag }} {{ form.password1 }} {{ form.password1.errors }}
-        {{ form.password2.label_tag }} {{ form.password2 }} {{ form.password2.errors }}
+        <div class="container">
+            {{ form.username.label_tag }} {{ form.username }} {{ form.username.errors }}
+        </div>
+        <div class="container">
+            {{ form.email.label_tag }} {{ form.email }} {{ form.email.errors }}
+        </div>
+        <div class="container">
+            {{ form.password1.label_tag }} {{ form.password1 }} {{ form.password1.errors }}
+        </div>
+        <div class="container">
+            {{ form.password2.label_tag }} {{ form.password2 }} {{ form.password2.errors }}
+        </div>
         <div class="container-fluid p-0 py-4 m-0 d-flex justify-content-around">
         <input type="hidden" name="next" value="{{ next }}">
         <button type="submit" class="btn-green rounded-3">Sign Up</button>

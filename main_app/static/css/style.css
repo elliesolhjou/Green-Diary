@@ -48,7 +48,10 @@ form a {
   width: 15%;
   text-decoration: none;
 }
-
+.login-container {
+  font-family: 'Josefin Sans', sans-serif;
+  color: #3f7a2b;
+}
 .header-title{
   font-family: 'Josefin Sans', sans-serif;
   position: absolute;
@@ -73,9 +76,11 @@ form a {
   box-shadow: 5px 5px 10px rgb(157, 176, 155);
   user-select: none;
   cursor: pointer;
-  transition: all .25s;
+  transition: all .15s;
 }
-
+.logout-button:hover {
+  background: rgb(229, 236, 229);
+}
 .bg-green-1 {
   background-color: #53d2ce;
 }

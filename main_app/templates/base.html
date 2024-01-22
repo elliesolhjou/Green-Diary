@@ -14,7 +14,9 @@
   {% bootstrap_javascript %}
 </head>
 <body class="h-100 d-flex flex-column align-items-center mt-4 mb-0">
-  {% include 'header.html' %}
+  {% if request.path != '' and request.path != '/' and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
+    {% include 'header.html' %}
+  {% endif %}
 
   <main class="container-fluid mt-5 px-4 mb-0 w-100 h-100 text-center">
     {% block content %}

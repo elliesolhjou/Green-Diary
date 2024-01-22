@@ -3,7 +3,7 @@
 
 {% for trip in trips %}
     {% if trip.vehicle.id == vehicle.id and trip.vehicle.user == request.user %}
-        <div class="trip-card row py-3 px-2 justify-content-center align-items-center">
+        <div class="trip-card row py-3 px-2 justify-content-center align-items-center text-center">
             <div class="col-1">
                 <img class="marker" src="{% static 'images/marker.svg' %}">
             </div>
@@ -21,21 +21,21 @@
                 </div>
             </div>
             <div class="col-2">
-                <div class="row d-flex align-items-center">
-                    <div class="col text-lg p-0 text-lg-end">{{trip.distance}}</div>
-                    <small class="col text-sm text-md-start">miles</small>
+                <div class="row d-flex flex-column">
+                    <div class="col text-lg">{{trip.distance}}</div>
+                    <small class="col text-sm">miles</small>
                 </div>
             </div>
             <div class="col-2">
-                <div class="row d-flex align-items-center">
-                    <div class="col text-lg text-lg-end">{{trip.carbon}}</div>
-                    <div class="col text-sm p-lg-0 text-md-start">lb</div>
+                <div class="row d-flex flex-column">
+                    <div class="col text-lg">{{trip.carbon}}</div>
+                    <div class="col text-sm">lb</div>
                 </div>
             </div>
             <div class="col-2">
-                <div class="row d-flex align-items-center">
-                    <div class="col text-lg text-lg-end">{{trip.cost}}</div>
-                    <div class="col text-sm p-lg-0 text-md-start">trees</div>
+                <div class="row d-flex flex-column">
+                    <div class="col text-lg text-center">{{trip.cost}}</div>
+                    <div class="col text-sm">trees</div>
                 </div>
             </div>
             <div class="col-1 p-0">

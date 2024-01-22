@@ -96,7 +96,9 @@ form a {
   flex-direction: column;
   height: calc(100vh - 60px);
 }
-
+.card-container {
+  overflow-y: hidden;
+}
 .flex-container .row.position-relative.py-3.d-flex.justify-content-stretch {
   flex-grow: 1;
 }

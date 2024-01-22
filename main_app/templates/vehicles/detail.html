@@ -5,8 +5,8 @@
         <div class="row d-flex align-items-start">
             {% include 'vehicle.html' %}
         </div>
-        <div class="row position-relative py-3 mt-4 d-flex justify-content-stretch">
-            <div class="col-12 p-0 pb-2 w-100 position-relative bg-white rounded-5 border overflow-hidden">
+        <div class="row position-relative py-3 my-4 d-flex justify-content-stretch rounded-5 overflow-hidden">
+            <div class="col-12 p-0 pb-2 w-100 position-relative bg-white rounded-5 border">
                 <div class="row m-0 shadow-sm">
                     <h1 class="text-lg ps-4 pe-2 pt-2 mb-0 bg-white text-start rounded-5">My Trips</h1>
                     <div class="col-12 light">
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row h-75 pb-4 d-flex flex-column justify-content-start align-items-center overflow-auto">
+                <div class="row h-75 pb-4 mb-4 d-flex flex-column justify-content-start align-items-center overflow-auto">
                     {% if trips %}
                         <div class="col-12 w-100 mb-4 d-flex flex-column justify-content-center">
                             {% include 'card.html' %}

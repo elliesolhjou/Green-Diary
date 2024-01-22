@@ -24,7 +24,9 @@ Green Diary is an innovative CO2 tracking platform that helps you monitor the en
 
 ## Live Website
 
-The live website will be available after deployment. This section will be updated with the URL to access the Green Diary platform.
+
+The Green Diary platform is now live and accessible! Visit us at [Green Diary](https://green-diary-app-2098e92803f3.herokuapp.com/) to start tracking your CO2 emissions and making more eco-conscious travel decisions.
+
 
 
 ## Getting Started
@@ -47,3 +49,11 @@ Special thanks to all the APIs and open-source projects that made Green Diary po
 
 
 ## Future Enhancement
+
+1. Route planning within the app to receive the most carbon efficient route possible
+2. Impact Statistics Visualization and Comparisons
+3. Cost Calculation of Trips
+4. Calendar View of Trips:
+![Alt text](image.png)
+![Alt text](image-1.png)
+![Alt text](image-2.png)

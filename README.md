@@ -58,4 +58,5 @@ Special thanks to all the APIs and open-source projects that made Green Diary po
 1. Route planning within the app to receive the most carbon efficient route possible
 2. Impact Statistics Visualization and Comparisons
 3. Cost Calculation of Trips
-4. Calendar View of Trips:
+4. Calendar View of Trips
+5. Links to Tree-Planting Programs

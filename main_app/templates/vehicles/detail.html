@@ -21,17 +21,17 @@
                     </div>
                 </div>
                 <div class="row h-75 d-flex flex-column justify-content-start align-items-center overflow-auto">
-                    <div class="col mb-75">
-                        {% if trips %}
+                    {% if trips %}
+                        <div class="col mb-75">
                             <div class="col-12 w-100 mb-4 d-flex flex-column justify-content-center">
                                 {% include 'card.html' %}
                             </div>
-                        {% else %}
-                            <div class="container h-100 d-flex align-items-center justify-content-center">
-                                <p>Add a trip to get started</p>
-                            </div>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% else %}
+                        <div class="container h-100 d-flex align-items-center justify-content-center">
+                            <p>Add a trip to get started</p>
+                        </div>
+                    {% endif %}
                 </div>
                 <a href="{% url 'trip_create' vehicle.id %}" class="btn-green btn-add position-absolute top-0 end-0 d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-delay='400' title="Create a new trip">
                     New Trip

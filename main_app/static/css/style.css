@@ -218,6 +218,12 @@ form a {
 .rounded-5 {
   border-radius: 20px;
 }
+.translate-x-middle {
+  transform: translateX(-50%);
+}
+.top-30 {
+  top: 25%;
+}
 .btn-red {
   height: 40px;
   padding: 0 10px;

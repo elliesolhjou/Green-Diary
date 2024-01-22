@@ -2,7 +2,7 @@
 
 {% block content%}
   <!-- New if/else block -->
-  <div class="container-fluid login-buttons bg-white border rounded-5 login-container w-75 p-4 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-between align-items-center">
+  <div class="container-fluid login-buttons bg-white border rounded-5 login-container w-75 p-4 position-absolute top-30 start-50 translate-x-middle d-flex flex-column justify-content-between align-items-center">
     <p class="fs-2">Edit Vehicle</p>
     <small>Current Vehicle:</small>
     <p class="">{{vehicle.make}} - {{vehicle.model}}</p>
@@ -28,13 +28,13 @@
                 </td>
             </tr>
         </table>
-        <div class="col-6 d-flex flex-row justify-content-around">
-          <input type="submit" value="Submit" class="btn-green  rounded-3">
-          <div class="w-50">
-            <a href="#" onclick="window.history.back();">
-              <input type="button" value="Cancel" class="btn-red  rounded-3">
-            </a>
-          </div>
+        <div class="col w-100 d-flex flex-row justify-content-around">
+            <input type="submit" value="Submit" class="btn-green  rounded-3">
+            <div class="w-50">
+                <a href="#" onclick="window.history.back();">
+                <input type="button" value="Cancel" class="btn-red  rounded-3">
+                </a>
+            </div>
         </div>
     </form>
   </div>

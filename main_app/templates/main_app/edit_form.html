@@ -10,7 +10,6 @@
         {% csrf_token %}
         <table class="w-100">
             <tr>
-                <td><label for="make">Make:</label></td>
                 <td>
                   <select name="make" id="make">
                       {% for make in makes %}
@@ -19,9 +18,7 @@
                   </select>
                 </td>
             </tr>
-  
             <tr>
-                <td><label for="model">Model:</label></td>
                 <td>
                     <select name="model" id="model">
                         {% for model in models %}

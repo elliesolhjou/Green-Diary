@@ -1,26 +1,19 @@
-import json
-import os
 from django import forms
-from datetime import datetime
 from django.forms.widgets import DateInput
-from typing import Any
-from django.db.models.query import QuerySet
 from django.db.models import Sum
-import requests
-from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.decorators.http import require_http_methods
-from .forms import CustomUserCreationForm, VehicleForm
+from .forms import CustomUserCreationForm
 from .models import *
 from .api import *
 
+# ------------------------------------------------------------------------------------------#
+#                                            Home                                           #
+# ------------------------------------------------------------------------------------------#
 
 def home(request):
     vehicles = Vehicle.objects.all()
@@ -34,7 +27,7 @@ def home(request):
     return render(request, 'home.html', {'vehicles': vehicles, 'trips': trips, 'vehicle': vehicle})
 
 # ------------------------------------------------------------------------------------------#
-                                            # CBV 
+#                                            User                                           #
 # ------------------------------------------------------------------------------------------#
     
 class UpdateUser(UpdateView):
@@ -44,7 +37,6 @@ class UpdateUser(UpdateView):
 class DeleteUser(DeleteView):
     model=User
     success_url  = '/'
-
 
 def signup(request):
     error_message= ""
@@ -69,7 +61,6 @@ def signup(request):
 
     return render (request, 'registration/signup.html', context)
 
-
 def get_login_redirect(request):
     user = request.user
     try:
@@ -81,8 +72,10 @@ def get_login_redirect(request):
 
     return '/' 
 
-        
 # ------------------------------------------------------------------------------------------#
+#                                           Vehicle                                         #
+# ------------------------------------------------------------------------------------------#
+
 class VehicleList(LoginRequiredMixin, ListView):
     model = Vehicle
     template_name = 'vehicles/index.html'
@@ -164,7 +157,7 @@ class CreateVehicle(CreateView):
         vehicle.save()
 
         return super(CreateVehicle, self).form_valid(form)
-    
+
 
 class UpdateVehicle(UpdateView):
     model= Vehicle
@@ -232,7 +225,6 @@ class UpdateVehicle(UpdateView):
 
         return super(UpdateVehicle, self).form_valid(form)
 
-
 def delete_vehicle(request, vehicle_id):
     user = request.user.userprofile
     vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
@@ -257,7 +249,6 @@ def delete_vehicle(request, vehicle_id):
     except:
         return redirect('vehicle_create')
 
-
 def vehicle_detail(request, vehicle_id):
     if not vehicle_id: return redirect(request, 'vehicle_form.html')
     user = request.user
@@ -267,7 +258,11 @@ def vehicle_detail(request, vehicle_id):
 
     return render(request, 'vehicles/detail.html', {'user':user, 'vehicle':vehicle, 'vehicles': vehicles, 'trips': trips, 'output': user.userprofile.output, 'cost': user.userprofile.cost})
 
+
 # ------------------------------------------------------------------------------------------#
+#                                            Trip                                           #
+# ------------------------------------------------------------------------------------------#
+
 class TripList(LoginRequiredMixin, ListView):
     model = Trip
     template_name= 'trips/index.html'

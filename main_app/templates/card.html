@@ -1,6 +1,5 @@
 
 {% load static %}
-
 {% for trip in trips %}
     {% if trip.vehicle.id == vehicle.id and trip.vehicle.user == request.user %}
         <div class="trip-card row py-3 px-2 justify-content-center align-items-center text-center">

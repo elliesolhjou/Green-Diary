@@ -4,11 +4,9 @@
 
 <p class="red-text">{{ error_message }}</p>
 <p class="red-text">{{ form.non_field_errors }}</p>
-
 <div class="container-fluid bg-white border rounded-5 login-container w-75 py-2 position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-around align-items-center">
     <p class="fs-2 login-container">Green Diary</p>
     <img class="login-image mt-2 mb-4" src="{% static '/images/login-image.png' %}">
-  
     <form class="w-75 h-75 mx-4 mt-4 d-flex flex-column gap-3 justify-content-around" method="POST" action="{% url 'signup' %}">
         {% csrf_token %}
         <div class="container">
@@ -32,4 +30,5 @@
         </div>
     </form>
 </div>
+
 {% endblock %}

@@ -20,3 +20,10 @@ class UserProfile(models.Model):
     latitude = models.CharField(verbose_name = "Latitude", max_length = 100, null=True, blank = True)
 
     captcha_score = models.FloatField(default = 0.0)
+    has_profile = models.BooleanField(default=False)
+
+    is_active = models.BooleanField(default = True)
+
+
+    def __str__(self):
+        return f'{self.user}'

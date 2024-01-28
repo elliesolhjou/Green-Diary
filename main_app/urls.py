@@ -2,10 +2,12 @@ from django.urls import path
 from . import views
 
 
-
+app_name ='main_app'
 
 urlpatterns=[
     path('', views.home, name='home'),
+    path('route', views.route, name='route'),
+    path('map', views.map, name='map'),
 
     # CBV Paths
 

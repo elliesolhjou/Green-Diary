@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-jvb=p*tf+n=j9(2^=za=5st^)&lq&8zofa7b#l@e2)e!djl1=u'
+RECAPTCHA_PUBLIC_KEY = "6LeKUV8pAAAAAPnf8BdyjGSb2ylKw8YEvgGS1kXQ"
+RECAPTCHA_PRIVATE_KEY = "6LeKUV8pAAAAAOR7caQ0tvw8JAlLfTKgFZkFoK4m"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,6 +35,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'main_app',
+    'users',
     'bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -117,17 +121,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATICFILES_DIRS = [
+    # BASE_DIR / "static",  # Adjust this path as necessary
+    os.path.join(BASE_DIR, 'static')
+]
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",  # Adjust this path as necessary
-# ]
+STATIC_ROOT=[os.path.join(BASE_DIR, 'static_cdn')]
 
-LOGIN_REDIRECT_URL = 'vehicle_list'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = "users:sign-in"
+LOGIN_REDIRECT_URL = "users:account"
+LOGOUT_REDIRECT_URL = "users: sign-in"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+BASE_COUNTRY = 'US'
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Configure Django App for Heroku.

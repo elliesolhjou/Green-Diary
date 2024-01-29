@@ -1,13 +1,15 @@
 from django import forms
 from django.forms.widgets import DateInput
 from django.db.models import Sum
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import login
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CustomUserCreationForm
+from django.conf import settings
+from greendiary.utility import Directions
 from .models import *
 from .api import *
 
@@ -345,3 +347,39 @@ def trip_detail(request, trip_id):
     return render(request, 'trips/detail.html', {'trip': trip})
 
 # ------------------------------------------------------------------------------------------#
+#                                            GOOGLE MAP                                     #
+# ------------------------------------------------------------------------------------------#
+# Display Map with Direction
+def map (request):
+    lat_a = request.GET.get("lat_a", None)
+    long_a = request.GET.get("long_a", None)
+    lat_b = request.GET.get("lat_b", None)
+    long_b = request.GET.get("long_b", None)
+
+    # Making API CALL
+    if lat_a and lat_b:
+        # Directions is configured in utlity.py
+        directions = Directions(
+            lat_a = lat_a
+            long_a = long_a
+            lat_b = lat_b
+            long_b = long_b
+        )
+
+    else:
+        return redirect("/")
+    
+    context={
+        'google_api_key': settings.SECRET_KEY,
+        'base_country': settings.BASE_COUNTRY,
+        'lat_a': lat_a,
+        'long_a': long_a,
+        'lat_b': lat_b,
+        'long_b': long_b,
+        'origin': f'{lat_a}, {long_a}',
+        'destination': f'{lat_b}, {long_b}',
+        "directions": directions
+    }
+    return render(request, 'googlemaps/map.html', context)
+
+

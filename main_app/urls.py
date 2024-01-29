@@ -32,7 +32,7 @@ urlpatterns=[
     path('accounts/vehicle/<int:vehicle_id>/trip/<int:trip_id>/', views.trip_detail, name='trip_detail'),
 
     #  Google Maps:
-    path("route", views.route, name='route')
+    path("route", views.route, name='route'),
     path("map", views.map, name='map')
 
 ]

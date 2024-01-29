@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'main_app',
-    'users',
+    # 'users',
     'bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,7 +60,9 @@ ROOT_URLCONF = 'greendiary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,9 +130,8 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 STATIC_ROOT=[os.path.join(BASE_DIR, 'static_cdn')]
 
-LOGIN_URL = "users:sign-in"
-LOGIN_REDIRECT_URL = "users:account"
-LOGOUT_REDIRECT_URL = "users: sign-in"
+LOGIN_REDIRECT_URL = 'vehicle_list'
+LOGOUT_REDIRECT_URL = 'home'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

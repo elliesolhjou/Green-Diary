@@ -349,6 +349,16 @@ def trip_detail(request, trip_id):
 # ------------------------------------------------------------------------------------------#
 #                                            GOOGLE MAP                                     #
 # ------------------------------------------------------------------------------------------#
+
+
+def route(request):
+    context={
+    "google_api_key": settings.SECRET_KEY,
+	"base_country": settings.BASE_COUNTRY
+    }
+    return render(request, 'main/route.html', context)
+
+
 # Display Map with Direction
 def map (request):
     lat_a = request.GET.get("lat_a", None)
@@ -360,10 +370,10 @@ def map (request):
     if lat_a and lat_b:
         # Directions is configured in utlity.py
         directions = Directions(
-            lat_a = lat_a
-            long_a = long_a
-            lat_b = lat_b
-            long_b = long_b
+            lat_a = lat_a,
+            long_a = long_a,
+            lat_b = lat_b,
+            long_b = long_b,
         )
 
     else:
@@ -381,5 +391,3 @@ def map (request):
         "directions": directions
     }
     return render(request, 'googlemaps/map.html', context)
-
-

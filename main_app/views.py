@@ -316,8 +316,6 @@ class CreateTrip(CreateView):
         vehicle.save()
         trip.save()
 
-        print(user.output, trip.carbon)
-        
         return redirect('vehicle_detail', vehicle_id=vehicle_id)
 
 class UpdateTrip(UpdateView):

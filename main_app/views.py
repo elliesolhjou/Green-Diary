@@ -356,7 +356,7 @@ def route(request):
     "google_api_key": settings.SECRET_KEY,
 	"base_country": settings.BASE_COUNTRY
     }
-    return render(request, 'main/route.html', context)
+    return render(request, 'route.html', context)
 
 
 # Display Map with Direction
@@ -377,7 +377,7 @@ def map (request):
         )
 
     else:
-        return redirect("/")
+        return redirect("/about")
     
     context={
         'google_api_key': settings.SECRET_KEY,
@@ -390,4 +390,4 @@ def map (request):
         'destination': f'{lat_b}, {long_b}',
         "directions": directions
     }
-    return render(request, 'googlemaps/map.html', context)
+    return render(request, 'map.html', context)

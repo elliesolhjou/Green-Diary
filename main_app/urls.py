@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 
-app_name ='main_app'
+
 
 urlpatterns=[
     path('', views.home, name='home'),
@@ -32,7 +32,7 @@ urlpatterns=[
     path('accounts/vehicle/<int:vehicle_id>/trip/<int:trip_id>/', views.trip_detail, name='trip_detail'),
 
     #  Google Maps:
-    path("route", views.route, name='route'),
-    path("map", views.map, name='map')
+    path("accounts/route", views.route, name='route'),
+    path("accounts/map/", views.map, name='map')
 
 ]
